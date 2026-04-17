@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to Covering Space Theory</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']], tags: 'ams' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.min.js"></script>
+<style>
+:root{--bg:#0a0f1e;--surface:#131b2e;--surface2:#1c2640;--surface3:#243050;--accent:#38bdf8;--accent2:#a78bfa;--accent3:#34d399;--text:#e2e8f0;--dim:#8899b4;--border:#2a3a5c;--red:#f87171;--orange:#fb923c;--yellow:#fbbf24;--pink:#f472b6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.8}
+.hero{text-align:center;padding:50px 20px 35px;background:linear-gradient(135deg,#1a1040 0%,#0a0f1e 60%)}
+.hero h1{font-size:2.1rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.hero .sub{color:var(--dim);font-size:1rem;max-width:720px;margin:0 auto}
+nav.tabs{display:flex;justify-content:center;gap:6px;padding:14px 10px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+nav.tabs button{padding:9px 22px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--dim);font-size:.92rem;cursor:pointer;transition:.2s}
+nav.tabs button:hover{border-color:var(--accent);color:var(--text)}
+nav.tabs button.active{background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(167,139,250,.12));border-color:var(--accent);color:#fff;font-weight:600}
+.sec{display:none;max-width:1060px;margin:0 auto;padding:36px 22px 70px}
+.sec.active{display:block}
+h2{font-size:1.55rem;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--accent);display:inline-block}
+h3{font-size:1.15rem;color:var(--accent2);margin:30px 0 10px;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 26px;margin:18px 0}
+.card.thm{border-left:4px solid var(--accent);background:linear-gradient(120deg,rgba(56,189,248,.04),rgba(167,139,250,.04))}
+.card.prf{border-left:4px solid var(--accent3)}
+.card.rmk{border-left:4px solid var(--orange)}
+.card.int{border-left:4px solid var(--yellow)}
+.card.def{border-left:4px solid var(--pink)}
+.tag{font-size:.72rem;text-transform:uppercase;letter-spacing:1.6px;font-weight:700;margin-bottom:8px}
+.thm .tag{color:var(--accent)}.prf .tag{color:var(--accent3)}.rmk .tag{color:var(--orange)}.int .tag{color:var(--yellow)}.def .tag{color:var(--pink)}
+p{margin:8px 0}
+.viz{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin:20px 0;text-align:center}
+.viz canvas{border-radius:6px;max-width:100%}
+.viz-title{font-size:.9rem;color:var(--accent);font-weight:600;margin-bottom:10px}
+.viz-caption{font-size:.84rem;color:var(--dim);line-height:1.6;margin-top:12px;text-align:left;padding:0 8px;border-top:1px solid rgba(42,58,92,.5);padding-top:10px}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.ctrls button{padding:7px 16px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);cursor:pointer;font-size:.84rem;transition:.2s}
+.ctrls button:hover{border-color:var(--accent);background:rgba(56,189,248,.08)}
+.ctrls button.on{background:var(--accent);color:var(--bg);font-weight:600;border-color:var(--accent)}
+.srow{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:8px;font-size:.85rem;color:var(--dim)}
+.srow input[type=range]{width:200px;accent-color:var(--accent)}
+.hl{color:var(--accent);font-weight:600}
+.hl2{color:var(--accent2);font-weight:600}
+.hl3{color:var(--accent3);font-weight:600}
+.hlr{color:var(--red);font-weight:600}
+mjx-container{overflow-x:auto;overflow-y:hidden}
+.case{margin:8px 0 8px 20px;padding-left:14px;border-left:2px solid var(--surface3)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Introduction to Covering Space Theory</h1>
+  <p class="sub">Harry Hyungryul Baik (KAIST)</p>
+</div>
+
+<nav class="tabs">
+  <button class="active" onclick="showTab('s0',this)">0 &middot; Motivation</button>
+  <button onclick="showTab('s1',this)">1 &middot; Covering Spaces</button>
+  <button onclick="showTab('s2',this)">2 &middot; Lifting Theorems</button>
+  <button onclick="showTab('s3',this)">3 &middot; Universal Cover</button>
+</nav>
+
+<!-- ============================== SECTION 0 ============================== -->
+<div id="s0" class="sec active">
+<h2>0. Motivation: From Poincar&eacute; to Coverings</h2>
+
+<div class="card int">
+  <div class="tag">The Big Picture</div>
+  <p>Recall the <strong>Poincar&eacute; Conjecture</strong> (now a theorem, proved by Perelman in 2003): every compact, simply connected 3-manifold is homeomorphic to $S^3$.</p>
+  <p>Why do topologists care so much about classifying simply connected spaces? One deep reason: <em>every "nice" space has a simply connected space sitting above it</em>, called its <strong>universal cover</strong>. This universal cover determines the topology of the original space almost completely, up to the action of the fundamental group.</p>
+  <p>In other words, if we understand simply connected spaces, then — through covering space theory — we can understand <em>all</em> spaces (of a given type), because every such space is a quotient of its universal cover by a group action. This is the motivation for this lecture: let us learn the theory that makes this precise.</p>
+</div>
+
+<h3>0.1 &ensp; Review: The Fundamental Group</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Fundamental Group</div>
+  <p>Let $X$ be a topological space and $x_0\in X$ a basepoint. A <strong>loop based at $x_0$</strong> is a continuous map $\gamma\colon [0,1]\to X$ with $\gamma(0) = \gamma(1) = x_0$.</p>
+  <p>Two loops $\gamma_0, \gamma_1$ are <strong>homotopic</strong> (relative to endpoints) if there exists a continuous map $H\colon [0,1]\times[0,1]\to X$ with
+  $$H(s,0) = \gamma_0(s),\quad H(s,1) = \gamma_1(s),\quad H(0,t) = H(1,t) = x_0 \;\;\text{for all } s,t.$$</p>
+  <p>The <strong>fundamental group</strong> $\pi_1(X,x_0)$ is the set of homotopy classes $[\gamma]$ of loops, with group operation given by concatenation:
+  $$[\gamma]\cdot[\delta] \;=\; [\gamma * \delta], \qquad (\gamma*\delta)(s) = \begin{cases}\gamma(2s) & 0\le s\le \tfrac{1}{2},\\ \delta(2s-1) & \tfrac{1}{2}\le s\le 1.\end{cases}$$
+  The identity is the class of the constant loop, and inverses are given by $[\gamma]^{-1} = [\bar\gamma]$ where $\bar\gamma(s) = \gamma(1-s)$.</p>
+</div>
+
+<div class="card def">
+  <div class="tag">Definition: Simply Connected</div>
+  <p>A path-connected space $X$ is <strong>simply connected</strong> if $\pi_1(X,x_0) = \{e\}$ (the trivial group) for some (hence every) basepoint $x_0$.</p>
+  <p>Equivalently, $X$ is simply connected if every loop in $X$ can be continuously shrunk to a point.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 0.1 — Simply Connected vs. Not Simply Connected</div>
+  <canvas id="c_sc" width="820" height="340"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setSCView(0,this)">Sphere $S^2$</button>
+    <button onclick="setSCView(1,this)">Torus $T^2$</button>
+  </div>
+  <div class="viz-caption"><strong>Click the buttons</strong> to compare. On $S^2$, every loop can be continuously contracted to a point ($\pi_1 = 0$). On the torus $T^2$, the red loop wrapping around the "hole" cannot be contracted ($\pi_1 \cong \mathbb{Z}^2$). Simply connected spaces have no such obstructions.</div>
+</div>
+
+<h3>0.2 &ensp; The Key Idea</h3>
+
+<div class="card int">
+  <div class="tag">From Universal Covers to Classification</div>
+  <p>Here is the paradigm that covering space theory establishes:</p>
+  <p><strong>Given</strong> a path-connected, locally path-connected, semi-locally simply connected space $B$:</p>
+  <p>1. There exists a <strong>universal covering space</strong> $\widetilde{B}\to B$, which is simply connected.</p>
+  <p>2. The fundamental group $\pi_1(B)$ acts on $\widetilde{B}$ by <strong>deck transformations</strong>, freely and properly discontinuously, and $B \cong \widetilde{B}/\pi_1(B)$.</p>
+  <p>3. <strong>Every</strong> connected covering space of $B$ corresponds to a conjugacy class of subgroups of $\pi_1(B)$.</p>
+  <p>So knowing $\widetilde{B}$ (a simply connected space) and $\pi_1(B)$ (a group) completely determines the topology of $B$ and all its coverings. This is why the Poincar&eacute; conjecture — a statement about simply connected spaces — has such far-reaching consequences.</p>
+</div>
+
+<h3>0.3 &ensp; The Prototypical Example</h3>
+
+<div class="card rmk">
+  <div class="tag">$\mathbb{R} \to S^1$</div>
+  <p>The map $p\colon\mathbb{R}\to S^1$ given by $p(t) = e^{2\pi i t}$ is the ur-example. $\mathbb{R}$ is the universal cover of $S^1$; it is simply connected. The fundamental group $\pi_1(S^1)\cong\mathbb{Z}$ acts on $\mathbb{R}$ by integer translations: $n\cdot t = t+n$. The quotient $\mathbb{R}/\mathbb{Z}$ recovers $S^1$.</p>
+  <p>The intermediate covers are $S^1\xrightarrow{z\mapsto z^n} S^1$, corresponding to the subgroups $n\mathbb{Z}\le\mathbb{Z}$. The larger the subgroup, the "smaller" the covering space.</p>
+</div>
+
+</div>
+
+<!-- ============================== SECTION 1 ============================== -->
+<div id="s1" class="sec">
+<h2>1. Covering Spaces</h2>
+
+<h3>1.1 &ensp; Definition</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Covering Map</div>
+  <p>Let $E$ and $B$ be topological spaces. A continuous surjection $p\colon E\to B$ is a <strong>covering map</strong> (and $E$ is a <strong>covering space</strong> of $B$) if every point $b\in B$ has an open neighborhood $U$ such that
+  $$p^{-1}(U) \;=\; \bigsqcup_{\alpha\in A} V_\alpha$$
+  is a disjoint union of open sets $V_\alpha\subseteq E$, each mapped homeomorphically onto $U$ by $p$.</p>
+  <p>Such a $U$ is called <strong>evenly covered</strong>. The sets $V_\alpha$ are called <strong>sheets</strong> over $U$.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Immediate Properties</div>
+  <p><strong>$p$ is a local homeomorphism.</strong> Each $V_\alpha\to U$ is a homeomorphism, so around every point $e\in E$ there is an open set mapped homeomorphically to an open set in $B$.</p>
+  <p><strong>$p$ is an open map.</strong> If $W\subseteq E$ is open and $e\in W$, find a sheet $V_\alpha$ containing $e$; then $p(W\cap V_\alpha) = p|_{V_\alpha}(W\cap V_\alpha)$ is open in $U$, hence in $B$.</p>
+  <p><strong>The fiber $p^{-1}(b)$ is discrete.</strong> Each sheet $V_\alpha$ contributes exactly one point to $p^{-1}(b)$, and the $V_\alpha$ are disjoint open sets. If $B$ is connected, the cardinality $|p^{-1}(b)|$ is constant; this is the <strong>number of sheets</strong> (or <strong>degree</strong>) of the covering.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.1 — Evenly Covered Neighborhoods</div>
+  <canvas id="c_evenly" width="820" height="380"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setEvenView(0,this)">2 sheets</button>
+    <button onclick="setEvenView(1,this)">3 sheets</button>
+    <button onclick="setEvenView(2,this)">Infinite sheets ($\mathbb{R}\to S^1$)</button>
+  </div>
+  <div class="viz-caption"><strong>Click the buttons</strong> to see coverings with different numbers of sheets. The base space $B$ is shown at the bottom with a highlighted neighborhood $U$. Above it, the covering space $E$ is drawn with the preimage $p^{-1}(U)$ split into disjoint sheets $V_1, V_2, \ldots$, each mapping homeomorphically onto $U$ via $p$. The vertical dashed arrows represent the projection $p$.</div>
+</div>
+
+<h3>1.2 &ensp; Key Examples</h3>
+
+<div class="card def">
+  <div class="tag">Example 1: $\mathbb{R}\to S^1$</div>
+  <p>$p(t) = e^{2\pi it}$. The real line $\mathbb{R}$ wraps around the circle infinitely many times. Every open arc $U\subsetneq S^1$ is evenly covered: $p^{-1}(U)$ is a countably infinite union of disjoint open intervals in $\mathbb{R}$, each mapped homeomorphically onto $U$. This is an <strong>infinite-sheeted</strong> covering.</p>
+</div>
+
+<div class="card def">
+  <div class="tag">Example 2: $S^1\to S^1$, $z\mapsto z^n$</div>
+  <p>For each integer $n\ge 1$, the map $p_n(z) = z^n$ (thinking of $S^1\subseteq\mathbb{C}$) is an $n$-sheeted covering. The fiber over any point $w$ is $p_n^{-1}(w) = \{z\in S^1 : z^n = w\}$, which consists of exactly $n$ equally spaced points.</p>
+</div>
+
+<div class="card def">
+  <div class="tag">Example 3: $S^n\to\mathbb{R}P^n$</div>
+  <p>The sphere $S^n$ is a double cover of real projective space $\mathbb{R}P^n$ via the quotient map $p(x) = [x]$ that identifies each $x$ with $-x$. Every fiber has exactly $2$ points. Since $S^n$ is simply connected for $n\ge 2$, this is the <strong>universal cover</strong> of $\mathbb{R}P^n$, and $\pi_1(\mathbb{R}P^n)\cong\mathbb{Z}/2\mathbb{Z}$.</p>
+</div>
+
+<div class="card def">
+  <div class="tag">Example 4: Product Coverings</div>
+  <p>If $p\colon E\to B$ and $p'\colon E'\to B'$ are covering maps, then $p\times p'\colon E\times E'\to B\times B'$ is a covering map. For instance, $\mathbb{R}^2\to T^2$ (given by $(s,t)\mapsto (e^{2\pi is}, e^{2\pi it})$) is the universal cover of the torus.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.2 — The Helix: $\mathbb{R}\to S^1$</div>
+  <canvas id="c_helix" width="820" height="400"></canvas>
+  <div class="srow">
+    <label>Turns shown:</label>
+    <input type="range" id="sl_turns" min="1" max="6" value="3" oninput="drawHelix()">
+    <span id="lb_turns">3</span>
+  </div>
+  <div class="viz-caption"><strong>Drag the slider</strong> to change the number of turns of the helix. The circle $S^1$ is shown at the bottom. Above it, $\mathbb{R}$ is drawn as a helix that winds around: the projection $p(t)=e^{2\pi it}$ "drops" each point of the helix straight down to the circle. Each full turn corresponds to one complete winding. The integer points $\ldots,-1,0,1,2,\ldots$ on $\mathbb{R}$ all project to the same point $1\in S^1$, forming the fiber $p^{-1}(1) = \mathbb{Z}$.</div>
+</div>
+
+<h3>1.3 &ensp; Deck Transformations</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Deck Transformation</div>
+  <p>Let $p\colon E\to B$ be a covering map. A <strong>deck transformation</strong> (or <strong>covering transformation</strong>) is a homeomorphism $\phi\colon E\to E$ such that $p\circ\phi = p$, i.e., $\phi$ permutes the fibers.</p>
+  <p>The set of all deck transformations forms a group under composition, denoted $\mathrm{Deck}(E/B)$ or $\mathrm{Aut}(p)$.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Examples of Deck Groups</div>
+  <p><strong>$\mathbb{R}\to S^1$:</strong> The deck transformations are the integer translations $t\mapsto t+n$ for $n\in\mathbb{Z}$. So $\mathrm{Deck}(\mathbb{R}/S^1)\cong\mathbb{Z}$.</p>
+  <p><strong>$S^n\to\mathbb{R}P^n$:</strong> The only nontrivial deck transformation is the antipodal map $x\mapsto -x$. So $\mathrm{Deck}(S^n/\mathbb{R}P^n)\cong\mathbb{Z}/2\mathbb{Z}$.</p>
+  <p><strong>$S^1\xrightarrow{z^n}S^1$:</strong> The deck transformations are rotations by $2\pi k/n$, i.e., $z\mapsto e^{2\pi ik/n}z$. So $\mathrm{Deck}\cong\mathbb{Z}/n\mathbb{Z}$.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Proposition: Deck Transformations are Determined by One Point</div>
+  <p>If $E$ is connected and $p\colon E\to B$ is a covering map, then a deck transformation $\phi$ is uniquely determined by the image of a single point. That is, if $\phi(e_0) = \psi(e_0)$ for some $e_0\in E$, then $\phi = \psi$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Let $S = \{e\in E : \phi(e) = \psi(e)\}$. We show $S$ is both open and closed in $E$; since $E$ is connected and $S\ni e_0$ is nonempty, $S = E$.</p>
+  <p><strong>$S$ is open.</strong> Let $e\in S$, so $\phi(e) = \psi(e) = e'$. Choose an evenly covered neighborhood $U$ of $p(e)$ and let $V$ be the sheet containing $e'$. Then $\phi^{-1}(V)\cap\psi^{-1}(V)$ is an open neighborhood of $e$ on which $\phi$ and $\psi$ agree (both map into $V$, and $p\circ\phi = p\circ\psi = p$ forces equality within a single sheet).</p>
+  <p><strong>$S$ is closed.</strong> Let $e\in\overline{S}$. Choose an evenly covered $U\ni p(e)$ with sheets $\{V_\alpha\}$. Then $\phi(e)$ and $\psi(e)$ lie in (possibly different) sheets. But every neighborhood of $e$ meets $S$, so for points in $S$ near $e$, $\phi$ and $\psi$ agree and hence map into the same sheet. By continuity, $\phi(e)$ and $\psi(e)$ lie in the same sheet, so they are equal. &square;</p>
+</div>
+
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div id="s2" class="sec">
+<h2>2. Lifting Theorems</h2>
+
+<div class="card int">
+  <div class="tag">The Central Question</div>
+  <p>Given a covering map $p\colon E\to B$ and a continuous map $f\colon Y\to B$, does there exist a <strong>lift</strong> $\tilde{f}\colon Y\to E$ with $p\circ\tilde{f} = f$?</p>
+  <p>$$\begin{array}{ccc} & & E \\ & \overset{\tilde{f}}{\nearrow} & \downarrow\, p \\ Y & \xrightarrow{f} & B \end{array}$$</p>
+  <p>The lifting theorems give precise conditions under which such lifts exist and are unique. They are the engine of covering space theory.</p>
+</div>
+
+<h3>2.1 &ensp; Unique Lifting Property</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem (Unique Lifting Property)</div>
+  <p>Let $p\colon E\to B$ be a covering map, $Y$ a connected space, and $f\colon Y\to B$ continuous. If $\tilde{f}_1, \tilde{f}_2\colon Y\to E$ are two lifts of $f$ (i.e., $p\circ\tilde{f}_1 = p\circ\tilde{f}_2 = f$) that agree at some point $y_0\in Y$, then $\tilde{f}_1 = \tilde{f}_2$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>The argument is identical to the uniqueness proof for deck transformations. Let $S = \{y\in Y : \tilde{f}_1(y)=\tilde{f}_2(y)\}$.</p>
+  <p><strong>$S$ is open.</strong> For $y\in S$, let $e = \tilde{f}_1(y) = \tilde{f}_2(y)$. Choose an evenly covered $U\ni f(y) = p(e)$ and the sheet $V$ containing $e$. Then $\tilde{f}_1^{-1}(V)\cap\tilde{f}_2^{-1}(V)$ is an open neighborhood of $y$. On this set, both $\tilde{f}_1$ and $\tilde{f}_2$ map into $V$ and satisfy $p\circ\tilde{f}_i = f$, so they agree (since $p|_V$ is injective).</p>
+  <p><strong>$S$ is closed.</strong> For $y\in\overline{S}$, the same sheet argument shows $\tilde{f}_1(y)$ and $\tilde{f}_2(y)$ must lie in the same sheet, hence are equal.</p>
+  <p>So $S$ is clopen, nonempty (contains $y_0$), and $Y$ is connected, giving $S = Y$. &square;</p>
+</div>
+
+<h3>2.2 &ensp; Path Lifting</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem (Path Lifting)</div>
+  <p>Let $p\colon E\to B$ be a covering map, $\gamma\colon [0,1]\to B$ a path, and $e_0\in E$ with $p(e_0) = \gamma(0)$. Then there exists a <strong>unique</strong> lift $\tilde\gamma\colon[0,1]\to E$ with $\tilde\gamma(0)=e_0$ and $p\circ\tilde\gamma = \gamma$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>Uniqueness</strong> follows immediately from the Unique Lifting Property (with $Y=[0,1]$, connected).</p>
+  <p><strong>Existence.</strong> For each $t\in[0,1]$, choose an evenly covered neighborhood $U_t$ of $\gamma(t)$. The collection $\{\gamma^{-1}(U_t)\}_{t\in[0,1]}$ is an open cover of the compact space $[0,1]$.</p>
+  <p>By the <strong>Lebesgue number lemma</strong>, there exists $\delta \gt 0$ such that every subinterval of $[0,1]$ of length $\le\delta$ is mapped by $\gamma$ into some $U_t$. Choose a partition $0 = t_0 \lt t_1 \lt \cdots \lt t_N = 1$ with $t_{j+1}-t_j \lt \delta$.</p>
+  <p>We build the lift inductively. On $[t_0,t_1]$: $\gamma([t_0,t_1])\subseteq U$ for some evenly covered $U$. Let $V$ be the sheet over $U$ containing $e_0$. Define $\tilde\gamma = (p|_V)^{-1}\circ\gamma$ on $[t_0,t_1]$. This is continuous, starts at $e_0$, and satisfies $p\circ\tilde\gamma = \gamma$.</p>
+  <p>At step $j$: suppose $\tilde\gamma$ is defined on $[0,t_j]$. The point $\tilde\gamma(t_j)$ lies in $E$ with $p(\tilde\gamma(t_j)) = \gamma(t_j)$. Choose an evenly covered $U'$ containing $\gamma([t_j,t_{j+1}])$ and the sheet $V'$ containing $\tilde\gamma(t_j)$. Extend $\tilde\gamma$ on $[t_j,t_{j+1}]$ by $\tilde\gamma = (p|_{V'})^{-1}\circ\gamma$. The extensions match at $t_j$ by construction.</p>
+  <p>After $N$ steps, $\tilde\gamma$ is defined on all of $[0,1]$. &square;</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 2.1 — Path Lifting: $\mathbb{R}\to S^1$</div>
+  <canvas id="c_plift" width="820" height="400"></canvas>
+  <div class="srow">
+    <label>Winding number:</label>
+    <input type="range" id="sl_wind" min="-3" max="3" value="1" oninput="drawPathLift()">
+    <span id="lb_wind">1</span>
+  </div>
+  <div class="viz-caption"><strong>Drag the slider</strong> to change the winding number of the path $\gamma$ in $S^1$. The base circle is on the left with the path $\gamma$ (green) starting and ending at $1\in S^1$. On the right, the covering space $\mathbb{R}$ is drawn vertically with the unique lift $\tilde\gamma$ (orange) starting at $0$. The endpoint of the lift is the winding number $n$ — this is exactly the isomorphism $\pi_1(S^1)\cong\mathbb{Z}$.</div>
+</div>
+
+<h3>2.3 &ensp; Homotopy Lifting</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem (Homotopy Lifting Property)</div>
+  <p>Let $p\colon E\to B$ be a covering map, and let $H\colon[0,1]\times[0,1]\to B$ be a continuous map (a homotopy). Given a lift $\tilde{H}_0\colon[0,1]\to E$ of $H(\cdot,0)$ (i.e., $p\circ\tilde{H}_0 = H(\cdot,0)$), there exists a <strong>unique</strong> lift
+  $$\widetilde{H}\colon[0,1]\times[0,1]\to E \quad\text{with}\quad \widetilde{H}(s,0) = \tilde{H}_0(s) \;\text{ for all } s, \quad p\circ\widetilde{H} = H.$$</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>Uniqueness</strong> follows from the Unique Lifting Property with $Y = [0,1]\times[0,1]$ (connected) and the two lifts agreeing on $[0,1]\times\{0\}$.</p>
+  <p><strong>Existence.</strong> The proof extends the path-lifting argument to two dimensions.</p>
+  <p><strong>Step 1 (Grid).</strong> For each $(s,t)\in[0,1]^2$, choose an evenly covered neighborhood $U_{s,t}$ of $H(s,t)$. The preimages $\{H^{-1}(U_{s,t})\}$ form an open cover of $[0,1]^2$. By the Lebesgue number lemma (applied to the compact metric space $[0,1]^2$), there exists $\delta \gt 0$ so that every square of side $\le\delta$ is mapped by $H$ into some evenly covered set. Choose partitions
+  $$0 = s_0 \lt s_1 \lt \cdots \lt s_M = 1, \qquad 0 = t_0 \lt t_1 \lt \cdots \lt t_N = 1$$
+  with mesh $\lt\delta$.</p>
+  <p><strong>Step 2 (Induction).</strong> We lift $H$ on the subrectangles $R_{ij} = [s_i,s_{i+1}]\times[t_j,t_{j+1}]$ in lexicographic order: first fill row $j=0$ (using $\tilde{H}_0$), then row $j=1$, etc.</p>
+  <p>For each rectangle $R_{ij}$: $H(R_{ij})$ lies in some evenly covered $U$. The lift is already defined on the bottom edge (from the previous row) and the left edge (from the previous column, or the initial condition). Since $R_{ij}$ is connected, the previously lifted boundary forces us into a unique sheet $V$ over $U$. Define $\widetilde{H} = (p|_V)^{-1}\circ H$ on $R_{ij}$.</p>
+  <p><strong>Step 3 (Consistency).</strong> Adjacent rectangles share an edge on which the lift is already defined, and both constructions agree on this edge by the uniqueness of lifts on connected sets. So the piecewise definition glues to a continuous map on all of $[0,1]^2$. &square;</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 2.2 — Homotopy Lifting: the Grid Method</div>
+  <canvas id="c_hlift" width="820" height="380"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setHLView(0,this)">The homotopy $H$</button>
+    <button onclick="setHLView(1,this)">Lebesgue grid</button>
+    <button onclick="setHLView(2,this)">Lift rectangle by rectangle</button>
+  </div>
+  <div class="viz-caption"><strong>Click the buttons</strong> to step through the proof. First, we see the homotopy $H:[0,1]^2\to B$ as a family of paths. Then the Lebesgue number lemma provides a fine grid so that each small rectangle maps into an evenly covered set. Finally, we lift rectangle by rectangle in order, using the previously lifted boundary to select the correct sheet. The Unique Lifting Property guarantees consistency at shared edges.</div>
+</div>
+
+<h3>2.4 &ensp; Consequences of Homotopy Lifting</h3>
+
+<div class="card thm">
+  <div class="tag">Corollary: Lifts of Homotopic Paths Share Endpoints</div>
+  <p>Let $p\colon E\to B$ be a covering map. If $\gamma_0,\gamma_1\colon[0,1]\to B$ are path-homotopic (rel endpoints) and $\tilde\gamma_0,\tilde\gamma_1$ are their lifts starting at the same point $e_0\in p^{-1}(\gamma_0(0))$, then $\tilde\gamma_0(1)=\tilde\gamma_1(1)$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Let $H$ be the homotopy from $\gamma_0$ to $\gamma_1$ rel endpoints. Lift $H$ to $\widetilde{H}$ with $\widetilde{H}(s,0)=\tilde\gamma_0(s)$. By uniqueness, $\widetilde{H}(\cdot,1)$ is the unique lift of $\gamma_1$ starting at $\tilde\gamma_0(0)=e_0$, so $\widetilde{H}(\cdot,1) = \tilde\gamma_1$.</p>
+  <p>Now $t\mapsto\widetilde{H}(1,t)$ is a lift of the constant path at $\gamma_0(1)=\gamma_1(1)$, starting at $\tilde\gamma_0(1)$. By uniqueness, this lift is constant, so $\tilde\gamma_1(1) = \widetilde{H}(1,1) = \widetilde{H}(1,0) = \tilde\gamma_0(1)$. &square;</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Corollary: The Induced Homomorphism $p_*$ is Injective</div>
+  <p>If $p\colon (E,e_0)\to (B,b_0)$ is a covering map, the induced homomorphism
+  $$p_*\colon\pi_1(E,e_0)\to\pi_1(B,b_0)$$
+  is injective.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Suppose $p_*([\tilde\gamma]) = [p\circ\tilde\gamma] = [c_{b_0}]$ (the constant loop at $b_0$). Then $p\circ\tilde\gamma$ is homotopic to the constant loop at $b_0$. The constant loop at $b_0$ lifts to the constant loop at $e_0$. By the previous corollary, $\tilde\gamma$ and the constant loop at $e_0$ share the same endpoint, which is $e_0$.</p>
+  <p>Now lift the homotopy between $p\circ\tilde\gamma$ and $c_{b_0}$: we get a homotopy between $\tilde\gamma$ and $c_{e_0}$ in $E$. So $[\tilde\gamma] = [c_{e_0}]$ is trivial. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Significance</div>
+  <p>The injectivity of $p_*$ means $\pi_1(E,e_0)$ embeds as a subgroup of $\pi_1(B,b_0)$. The image $p_*\bigl(\pi_1(E,e_0)\bigr)\le\pi_1(B,b_0)$ is the subgroup of loops in $B$ whose lifts starting at $e_0$ are again <em>loops</em> (i.e., return to $e_0$). This subgroup will be the key to classifying coverings (Section 3).</p>
+</div>
+
+<h3>2.5 &ensp; The General Lifting Criterion</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem (Lifting Criterion)</div>
+  <p>Let $p\colon (E,e_0)\to (B,b_0)$ be a covering map, and let $f\colon (Y,y_0)\to (B,b_0)$ be continuous with $Y$ path-connected and locally path-connected. Then a lift $\tilde{f}\colon (Y,y_0)\to (E,e_0)$ with $p\circ\tilde{f}=f$ exists if and only if
+  $$f_*\bigl(\pi_1(Y,y_0)\bigr) \;\subseteq\; p_*\bigl(\pi_1(E,e_0)\bigr).$$
+  Moreover, if a lift exists, it is unique.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof sketch</div>
+  <p><strong>($\Rightarrow$)</strong> If $\tilde{f}$ exists, then $f_* = (p\circ\tilde{f})_* = p_*\circ\tilde{f}_*$, so $\mathrm{Im}(f_*)\subseteq\mathrm{Im}(p_*)$.</p>
+  <p><strong>($\Leftarrow$, Construction)</strong> For $y\in Y$, choose a path $\alpha$ from $y_0$ to $y$. Then $f\circ\alpha$ is a path in $B$ from $b_0$ to $f(y)$. Lift it to $\widetilde{f\circ\alpha}$ starting at $e_0$. Define $\tilde{f}(y) = \widetilde{f\circ\alpha}(1)$.</p>
+  <p><strong>Well-definedness.</strong> If $\beta$ is another path from $y_0$ to $y$, then $\alpha*\bar\beta$ is a loop at $y_0$, and $f\circ(\alpha*\bar\beta)$ is a loop at $b_0$. The class $[f\circ(\alpha*\bar\beta)]$ lies in $f_*(\pi_1(Y))\subseteq p_*(\pi_1(E))$, so this loop lifts to a loop at $e_0$. This means the lifts of $f\circ\alpha$ and $f\circ\beta$ end at the same point.</p>
+  <p><strong>Continuity.</strong> Uses local path-connectedness of $Y$ and the evenly covered neighborhoods in $B$. &square;</p>
+</div>
+
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div id="s3" class="sec">
+<h2>3. The Universal Cover and Classification</h2>
+
+<h3>3.1 &ensp; The Universal Covering Space</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Universal Cover</div>
+  <p>A covering map $p\colon\widetilde{B}\to B$ is a <strong>universal covering</strong> if $\widetilde{B}$ is simply connected.</p>
+  <p>Equivalently (by the Lifting Criterion), $\widetilde{B}$ is universal because it covers <em>every</em> connected covering of $B$: if $q\colon E\to B$ is any connected covering, there exists a covering map $r\colon\widetilde{B}\to E$ with $q\circ r = p$.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Why "Universal"</div>
+  <p>Let $q\colon (E,e_0)\to (B,b_0)$ be any connected covering. Since $\widetilde{B}$ is simply connected, $p_*(\pi_1(\widetilde{B})) = \{e\} \subseteq q_*(\pi_1(E))$. By the Lifting Criterion, $p$ lifts through $q$: there exists $r\colon\widetilde{B}\to E$ with $q\circ r = p$. One checks that $r$ is itself a covering map. So the universal cover sits "above" every other cover.</p>
+</div>
+
+<h3>3.2 &ensp; Existence of the Universal Cover</h3>
+
+<div class="card def">
+  <div class="tag">Hypothesis: Semi-Locally Simply Connected</div>
+  <p>A space $B$ is <strong>semi-locally simply connected</strong> if every point $b\in B$ has a neighborhood $U$ such that the inclusion-induced map $\pi_1(U,b)\to\pi_1(B,b)$ is trivial: every loop in $U$ is null-homotopic <em>in $B$</em> (not necessarily in $U$).</p>
+  <p>This is the precise condition needed for the universal cover to exist. All manifolds and CW complexes satisfy it.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Theorem (Existence of the Universal Cover)</div>
+  <p>Let $B$ be path-connected, locally path-connected, and semi-locally simply connected. Then there exists a universal covering $p\colon\widetilde{B}\to B$, unique up to isomorphism of covering spaces.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Construction</div>
+  <p>Fix a basepoint $b_0\in B$. As a set, define
+  $$\widetilde{B} \;=\; \bigl\{[\gamma] : \gamma \text{ is a path in } B \text{ from } b_0 \text{ to some point } b\bigr\},$$
+  where $[\gamma]$ denotes the homotopy class of $\gamma$ rel endpoints.</p>
+
+  <p><strong>The projection.</strong> Define $p([\gamma]) = \gamma(1)$ (the endpoint of $\gamma$). This is well-defined since homotopic paths rel endpoints share the same endpoint.</p>
+
+  <p><strong>Topology.</strong> For an open set $U\subseteq B$ that is path-connected and whose loops are null-homotopic in $B$, and for a class $[\gamma]$ with $\gamma(1)\in U$, define
+  $$\langle [\gamma], U\rangle \;=\; \bigl\{[\gamma*\eta] : \eta \text{ is a path in } U \text{ starting at } \gamma(1)\bigr\}.$$
+  These sets form a basis for a topology on $\widetilde{B}$.</p>
+
+  <p><strong>Key verifications:</strong></p>
+  <p>(i) $p$ is continuous and maps each $\langle[\gamma],U\rangle$ homeomorphically onto $U$.</p>
+  <p>(ii) $p^{-1}(U) = \bigsqcup_{[\gamma]} \langle[\gamma],U\rangle$ where $[\gamma]$ ranges over distinct homotopy classes of paths ending in $U$, giving the evenly covered property.</p>
+  <p>(iii) $\widetilde{B}$ is simply connected: a loop $\tilde\alpha$ in $\widetilde{B}$ based at $[c_{b_0}]$ projects to a loop $\alpha = p\circ\tilde\alpha$ in $B$. The lift $\tilde\alpha$ returns to $[c_{b_0}]$, which means $[\alpha]$ is trivial in $\pi_1(B,b_0)$. But the endpoint of $\tilde\alpha$ is exactly $[\alpha]$, so $[\alpha]=[c_{b_0}]$. Hence $\alpha$ is null-homotopic, so $\tilde\alpha$ is null-homotopic by lifting. &square;</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.1 — Universal Cover Construction for $S^1$</div>
+  <canvas id="c_univ" width="820" height="380"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setUnivView(0,this)">The space of paths</button>
+    <button onclick="setUnivView(1,this)">Projection $p$</button>
+    <button onclick="setUnivView(2,this)">Deck group $\mathbb{Z}$</button>
+  </div>
+  <div class="viz-caption"><strong>Click the buttons</strong> to explore. For $B = S^1$, the universal cover is $\widetilde{B}=\mathbb{R}$. Each point of $\mathbb{R}$ corresponds to a homotopy class of paths from $1\in S^1$: the integer part counts how many times the path winds around, and the fractional part records where the endpoint is. The projection $p$ forgets the winding history and keeps only the endpoint. The deck group $\mathbb{Z}$ acts by "prepending one full loop," i.e., $n\cdot[\gamma] = [\ell^n * \gamma]$ where $\ell$ is the standard generator.</div>
+</div>
+
+<h3>3.3 &ensp; The Fundamental Group Acts on the Universal Cover</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem</div>
+  <p>Let $p\colon\widetilde{B}\to B$ be the universal covering. The deck transformation group $\mathrm{Deck}(\widetilde{B}/B)$ is isomorphic to $\pi_1(B,b_0)$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Fix a basepoint $\tilde{b}_0\in p^{-1}(b_0)$. For each $[\alpha]\in\pi_1(B,b_0)$, define $\phi_{[\alpha]}\colon\widetilde{B}\to\widetilde{B}$ as follows: for $\tilde{b}\in\widetilde{B}$, let $\tilde\sigma$ be a path from $\tilde{b}_0$ to $\tilde{b}$ in $\widetilde{B}$. Set $\sigma = p\circ\tilde\sigma$ (a path in $B$ from $b_0$ to $p(\tilde{b})$). Then define $\phi_{[\alpha]}(\tilde{b})$ to be the endpoint of the lift of $\alpha*\sigma$ starting at $\tilde{b}_0$.</p>
+  <p><strong>Well-defined</strong>: since $\widetilde{B}$ is simply connected, $\tilde\sigma$ is unique up to homotopy rel endpoints, so $[\sigma]$ depends only on $\tilde{b}$, and the construction depends only on the homotopy class $[\alpha]$ (by the homotopy lifting corollary).</p>
+  <p><strong>Deck transformation</strong>: $p\circ\phi_{[\alpha]}(\tilde{b}) = (p\circ\text{lift of }\alpha*\sigma)(1) = (\alpha*\sigma)(1) = \sigma(1) = p(\tilde{b})$, so $p\circ\phi_{[\alpha]}=p$.</p>
+  <p><strong>Homomorphism</strong>: $\phi_{[\alpha]}\circ\phi_{[\beta]}(\tilde{b})$ corresponds to prepending $\alpha$ then $\beta$, which is the lift of $\alpha*\beta*\sigma$, so $\phi_{[\alpha]}\circ\phi_{[\beta]} = \phi_{[\alpha*\beta]} = \phi_{[\alpha]\cdot[\beta]}$.</p>
+  <p><strong>Bijective</strong>: $\phi_{[\alpha]}(\tilde{b}_0)$ is the endpoint of the lift of $\alpha$ starting at $\tilde{b}_0$. Different $[\alpha]$ give different endpoints (by the homotopy lifting corollary), so $[\alpha]\mapsto\phi_{[\alpha]}$ is injective. It is surjective because every deck transformation is determined by where it sends $\tilde{b}_0$ (uniqueness), and every point in $p^{-1}(b_0)$ is the endpoint of some lifted loop. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">The Quotient Identification</div>
+  <p>The action of $\pi_1(B,b_0)$ on $\widetilde{B}$ is free (no fixed points) and properly discontinuous. It follows that
+  $$B \;\cong\; \widetilde{B}\,\big/\,\pi_1(B,b_0).$$
+  This is the precise sense in which $B$ is "determined" by its universal cover and its fundamental group.</p>
+</div>
+
+<h3>3.4 &ensp; Classification of Coverings (Galois Correspondence)</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem (Classification of Coverings)</div>
+  <p>Let $B$ be path-connected, locally path-connected, and semi-locally simply connected, with basepoint $b_0$. There is a bijection
+  $$\left\{\begin{array}{c}\text{Connected covering spaces}\\p\colon(E,e_0)\to(B,b_0)\\\text{(up to isomorphism)}\end{array}\right\} \;\;\longleftrightarrow\;\; \left\{\begin{array}{c}\text{Subgroups}\\ H\le\pi_1(B,b_0)\end{array}\right\}$$
+  given by $p\mapsto p_*(\pi_1(E,e_0))$. The correspondence reverses inclusions: a larger subgroup $H$ corresponds to a "smaller" (fewer sheets) covering.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Special cases</div>
+  <p><strong>$H = \{e\}$ (trivial subgroup):</strong> corresponds to the universal cover $\widetilde{B}\to B$. This has the most sheets (equal to $|\pi_1(B)|$ when finite).</p>
+  <p><strong>$H = \pi_1(B,b_0)$ (full group):</strong> corresponds to the trivial covering $\mathrm{id}\colon B\to B$. This has $1$ sheet.</p>
+  <p><strong>$H = n\mathbb{Z}\le\mathbb{Z}\cong\pi_1(S^1)$:</strong> corresponds to the $n$-fold covering $S^1\xrightarrow{z^n}S^1$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.2 — Galois Correspondence for $S^1$</div>
+  <canvas id="c_galois" width="820" height="380"></canvas>
+  <div class="viz-caption">The lattice of subgroups of $\pi_1(S^1)\cong\mathbb{Z}$ (left) is in bijection with the lattice of connected coverings of $S^1$ (right). The trivial subgroup $\{0\}$ corresponds to the universal cover $\mathbb{R}\to S^1$. The subgroup $n\mathbb{Z}$ corresponds to the $n$-fold cover $S^1\xrightarrow{z^n}S^1$. The full group $\mathbb{Z}$ corresponds to the identity cover. Larger subgroups give smaller (fewer-sheeted) coverings.</div>
+</div>
+
+<h3>3.5 &ensp; Back to Poincar&eacute;</h3>
+
+<div class="card int">
+  <div class="tag">Closing the Circle</div>
+  <p>We can now see why the Poincar&eacute; conjecture is so powerful. Let $M$ be any compact 3-manifold.</p>
+  <p>By covering space theory, $M$ has a universal cover $\widetilde{M}$, which is simply connected, and $M\cong\widetilde{M}/\pi_1(M)$.</p>
+  <p>If $\widetilde{M}$ is compact (which happens when $\pi_1(M)$ is finite), then $\widetilde{M}$ is a compact, simply connected 3-manifold, and the Poincar&eacute; conjecture tells us $\widetilde{M}\cong S^3$.</p>
+  <p>Therefore: <em>every compact 3-manifold with finite fundamental group is a quotient $S^3/\Gamma$</em> for some finite group $\Gamma$ acting freely on $S^3$. The classification of such manifolds reduces to the classification of finite subgroups of $\mathrm{SO}(4)$ acting freely on $S^3$, a concrete algebraic problem.</p>
+  <p>More broadly, covering space theory tells us that topology (at the level of coverings) is <em>equivalent</em> to algebra (subgroups of the fundamental group). This bridge between geometry and algebra is one of the most beautiful and productive ideas in mathematics.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.3 — The Big Picture</div>
+  <canvas id="c_bigpic" width="820" height="300"></canvas>
+  <div class="viz-caption">The logical structure of the lecture. Covering space theory converts topological questions (left) into algebraic ones (right). The universal cover $\widetilde{B}$ (simply connected) and the fundamental group $\pi_1(B)$ together determine the space $B$ and all its coverings. The Poincar&eacute; conjecture tells us what the simply connected piece looks like in dimension 3, completing the picture.</div>
+</div>
+
+</div>
+
+<!-- ============================== JAVASCRIPT ============================== -->
+<script>
+// ---- Tabs ----
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  requestAnimationFrame(function(){
+    if(id==='s0'){drawSC();}
+    if(id==='s1'){drawEvenly();drawHelix();}
+    if(id==='s2'){drawPathLift();drawHLift();}
+    if(id==='s3'){drawUniv();drawGalois();drawBigPic();}
+  });
+}
+
+// ---- Helpers ----
+function rr(c,x,y,w,h,r,f,s){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();if(f)c.fill();if(s)c.stroke();}
+function arr(c,x1,y1,x2,y2,col,lw){c.save();c.strokeStyle=col;c.fillStyle=col;c.lineWidth=lw||2;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();var a=Math.atan2(y2-y1,x2-x1);c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-10*Math.cos(a-.35),y2-10*Math.sin(a-.35));c.lineTo(x2-10*Math.cos(a+.35),y2-10*Math.sin(a+.35));c.closePath();c.fill();c.restore();}
+function bg(c,w,h){c.fillStyle='#131b2e';c.fillRect(0,0,w,h);}
+
+// ==== S0: Motivation ====
+var scView=0;
+function setSCView(v,btn){scView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawSC();}
+
+function drawSC(){
+  var c=document.getElementById('c_sc').getContext('2d'),W=820,H=340;bg(c,W,H);
+  if(scView===0){
+    // Sphere
+    var cx=280,cy=170,r=120;
+    c.fillStyle='rgba(56,189,248,.08)';c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=2;
+    c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='#38bdf8';c.font='bold 16px system-ui';c.fillText('S\u00B2',cx-10,cy-r-15);
+    // Loop that shrinks: draw several stages
+    var cols=['rgba(248,113,113,.8)','rgba(248,113,113,.5)','rgba(248,113,113,.3)','rgba(248,113,113,.15)'];
+    for(var stage=0;stage<4;stage++){
+      var scale=1-stage*0.28;
+      c.beginPath();c.strokeStyle=cols[stage];c.lineWidth=2.5-stage*0.5;
+      for(var i=0;i<=100;i++){
+        var t=i/100*Math.PI*2;
+        var px=cx+scale*40*Math.cos(t)+scale*10*Math.cos(3*t);
+        var py=cy-30+scale*35*Math.sin(t)+scale*8*Math.sin(2*t);
+        if(i===0)c.moveTo(px,py);else c.lineTo(px,py);
+      }
+      c.stroke();
+    }
+    c.beginPath();c.arc(cx,cy-30,4,0,Math.PI*2);c.fillStyle='#f87171';c.fill();
+    // Right side: explanation
+    var rx=480,ry=60;
+    c.fillStyle='#38bdf8';c.font='bold 15px system-ui';c.fillText('S\u00B2 is simply connected',rx,ry);
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('\u03C0\u2081(S\u00B2) = 0',rx,ry+35);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Every loop (red) can be continuously',rx,ry+72);
+    c.fillText('contracted to a point.',rx,ry+92);
+    c.fillText('The fading curves show intermediate',rx,ry+122);
+    c.fillText('stages of the contraction.',rx,ry+142);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('Poincar\u00E9: every closed simply',rx,ry+182);
+    c.fillText('connected 3-manifold \u2245 S\u00B3.',rx,ry+202);
+  } else {
+    // Torus
+    var cx=280,cy=170;
+    // Draw torus outline (top-down view as annular shape)
+    c.fillStyle='rgba(167,139,250,.08)';c.strokeStyle='rgba(167,139,250,.4)';c.lineWidth=2;
+    // Outer ellipse
+    c.beginPath();c.ellipse(cx,cy,140,90,0,0,Math.PI*2);c.fill();c.stroke();
+    // Inner hole
+    c.fillStyle='#131b2e';c.strokeStyle='rgba(167,139,250,.4)';
+    c.beginPath();c.ellipse(cx,cy,50,30,0,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='#a78bfa';c.font='bold 16px system-ui';c.fillText('T\u00B2',cx-10,cy-100);
+    // Non-contractible loop around the hole
+    c.beginPath();c.strokeStyle='#f87171';c.lineWidth=3;
+    c.ellipse(cx,cy,90,55,0,0,Math.PI*2);c.stroke();
+    c.fillStyle='#f87171';c.font='bold 12px system-ui';c.fillText('\u03B3',cx+92,cy-10);
+    // Another loop (meridian)
+    c.beginPath();c.strokeStyle='#34d399';c.lineWidth=2.5;
+    var mx2=cx+90,my2=cy;
+    for(var i=0;i<=100;i++){
+      var t=i/100*Math.PI*2;
+      var px=mx2+20*Math.cos(t);
+      var py=my2+30*Math.sin(t);
+      if(i===0)c.moveTo(px,py);else c.lineTo(px,py);
+    }
+    c.stroke();
+    c.fillStyle='#34d399';c.font='bold 12px system-ui';c.fillText('\u03B4',mx2+22,my2-20);
+    // Right side
+    var rx=480,ry=60;
+    c.fillStyle='#a78bfa';c.font='bold 15px system-ui';c.fillText('T\u00B2 is NOT simply connected',rx,ry);
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('\u03C0\u2081(T\u00B2) \u2245 \u2124 \u00D7 \u2124',rx,ry+35);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('The red loop \u03B3 wraps around the',rx,ry+72);
+    c.fillText('hole and cannot be contracted.',rx,ry+92);
+    c.fillText('The green loop \u03B4 wraps around',rx,ry+122);
+    c.fillText('the tube \u2014 also non-contractible.',rx,ry+142);
+    c.fillText('Together, [\u03B3] and [\u03B4] generate',rx,ry+172);
+    c.fillText('\u03C0\u2081(T\u00B2) \u2245 \u2124\u00B2 (free abelian).',rx,ry+192);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('Universal cover: \u211D\u00B2 \u2192 T\u00B2.',rx,ry+232);
+  }
+}
+
+// ==== S1: Covering Spaces ====
+var evenView=0;
+function setEvenView(v,btn){evenView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawEvenly();}
+
+function drawEvenly(){
+  var c=document.getElementById('c_evenly').getContext('2d'),W=820,H=380;bg(c,W,H);
+  var nSheets=evenView===0?2:evenView===1?3:5;
+  var isInf=(evenView===2);
+  // Base B
+  var bx=110,by=H-70,bw=600,bh=30;
+  c.fillStyle='rgba(56,189,248,.08)';c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=2;
+  rr(c,bx,by,bw,bh,6,true,true);
+  c.fillStyle='#38bdf8';c.font='bold 14px system-ui';c.fillText('B',bx+bw+15,by+20);
+  // U in B
+  var ux=bx+bw*0.35,uw=bw*0.2;
+  c.fillStyle='rgba(251,191,36,.15)';c.strokeStyle='#fbbf24';c.lineWidth=2;
+  rr(c,ux,by+3,uw,bh-6,4,true,true);
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('U',ux+uw/2-5,by+bh+20);
+  // Covering E above
+  var ey=30,eh=H-140;
+  c.fillStyle='rgba(167,139,250,.06)';c.strokeStyle='rgba(167,139,250,.3)';c.lineWidth=1.5;
+  rr(c,bx,ey,bw,eh,8,true,true);
+  c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('E',bx+bw+15,ey+eh/2);
+  // Sheets
+  var sheetH=Math.min(30,(eh-20)/nSheets-10);
+  var gap=(eh-nSheets*sheetH)/(nSheets+1);
+  var colors=['#f87171','#34d399','#38bdf8','#fb923c','#a78bfa'];
+  for(var i=0;i<nSheets;i++){
+    var sy=ey+gap+(gap+sheetH)*i;
+    // Full sheet in E
+    c.fillStyle='rgba(136,153,180,.04)';c.strokeStyle='rgba(136,153,180,.2)';c.lineWidth=1;
+    rr(c,bx+10,sy,bw-20,sheetH,4,true,true);
+    // V_i over U
+    var col=colors[i%5];
+    c.fillStyle=col.replace(')',',0.15)').replace('rgb','rgba');
+    c.strokeStyle=col;c.lineWidth=2;
+    rr(c,ux,sy+2,uw,sheetH-4,4,true,true);
+    c.fillStyle=col;c.font='bold 12px system-ui';
+    c.fillText('V'+(i+1),ux-25,sy+sheetH/2+4);
+    // Arrow from V_i to U
+    c.setLineDash([3,3]);c.strokeStyle='rgba(251,191,36,.4)';c.lineWidth=1;
+    c.beginPath();c.moveTo(ux+uw/2,sy+sheetH);c.lineTo(ux+uw/2,by);c.stroke();
+    c.setLineDash([]);
+  }
+  if(isInf){
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('\u22EE',ux+uw/2-3,ey+8);
+    c.fillText('(\u221E sheets)',bx+15,ey+eh-10);
+  }
+  // p arrow
+  arr(c,bx+bw+35,ey+eh/2,bx+bw+35,by+5,'#8899b4',2);
+  c.fillStyle='#8899b4';c.font='italic 14px system-ui';c.fillText('p',bx+bw+42,ey+eh/2+30);
+  // Label
+  c.fillStyle='#e2e8f0';c.font='13px system-ui';
+  c.fillText('p\u207B\u00B9(U) = V\u2081 \u2294 V\u2082'+(nSheets>2?' \u2294 \u2026':''),ux+uw+20,by+20);
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('each V\u1D62 \u2245 U via p',ux+uw+20,by+40);
+}
+
+function drawHelix(){
+  var c=document.getElementById('c_helix').getContext('2d'),W=820,H=400;bg(c,W,H);
+  var turns=parseInt(document.getElementById('sl_turns').value);
+  document.getElementById('lb_turns').textContent=turns;
+  // Circle at bottom
+  var cx=250,cy=H-70,cr=80;
+  c.strokeStyle='rgba(56,189,248,.5)';c.lineWidth=2;
+  c.beginPath();c.arc(cx,cy,cr,0,Math.PI*2);c.stroke();
+  c.fillStyle='#38bdf8';c.font='bold 14px system-ui';c.fillText('S\u00B9',cx+cr+10,cy+5);
+  // Mark 1 on circle
+  c.beginPath();c.arc(cx+cr,cy,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='12px system-ui';c.fillText('1',cx+cr+8,cy-8);
+  // Helix above
+  var helixBot=H-130,helixTop=40;
+  var helixH=helixBot-helixTop;
+  var totalPts=turns*100;
+  // Draw helix (back half first, then front)
+  for(var pass=0;pass<2;pass++){
+    c.beginPath();c.strokeStyle=pass===0?'rgba(167,139,250,.2)':'rgba(167,139,250,.8)';c.lineWidth=pass===0?1.5:2.5;
+    var started=false;
+    for(var i=0;i<=totalPts;i++){
+      var t=i/totalPts;
+      var angle=t*turns*Math.PI*2;
+      var cosA=Math.cos(angle),sinA=Math.sin(angle);
+      if(pass===0&&sinA>0)continue;
+      if(pass===1&&sinA<0)continue;
+      var px=cx+cr*cosA*0.7;
+      var py=helixBot-t*helixH;
+      if(!started){c.moveTo(px,py);started=true;}else c.lineTo(px,py);
+    }
+    c.stroke();
+  }
+  // Integer points on helix
+  for(var n=0;n<=turns;n++){
+    var t2=n/turns;
+    var px2=cx+cr*0.7;
+    var py2=helixBot-t2*helixH;
+    c.beginPath();c.arc(px2,py2,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText(String(n),px2+10,py2+4);
+    // Dashed line to circle
+    c.setLineDash([3,3]);c.strokeStyle='rgba(251,191,36,.3)';c.lineWidth=1;
+    c.beginPath();c.moveTo(px2,py2);c.lineTo(cx+cr,cy);c.stroke();c.setLineDash([]);
+  }
+  c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('\u211D',cx-cr-30,helixTop);
+  // Right side labels
+  var rx=480,ry=60;
+  c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('The covering  p : \u211D \u2192 S\u00B9',rx,ry);
+  c.fillStyle='#8899b4';c.font='13px system-ui';
+  c.fillText('p(t) = e^{2\u03C0it}',rx,ry+30);
+  c.fillText('Fiber: p\u207B\u00B9(1) = \u2124 = {0,1,2,...}',rx,ry+65);
+  c.fillText('Showing '+turns+' turn'+(turns>1?'s':''),rx,ry+100);
+  c.fillText('Each turn = one full winding',rx,ry+125);
+  c.fillStyle='#fbbf24';c.font='12px system-ui';
+  c.fillText('Yellow dots: integer points',rx,ry+165);
+  c.fillText('(all project to 1 \u2208 S\u00B9)',rx,ry+185);
+  c.fillStyle='#34d399';c.font='12px system-ui';
+  c.fillText('Deck group: n \u00B7 t = t + n',rx,ry+225);
+  c.fillText('Deck(\u211D/S\u00B9) \u2245 \u2124',rx,ry+245);
+}
+
+// ==== S2: Lifting ====
+function drawPathLift(){
+  var c=document.getElementById('c_plift').getContext('2d'),W=820,H=400;bg(c,W,H);
+  var wind=parseInt(document.getElementById('sl_wind').value);
+  document.getElementById('lb_wind').textContent=wind;
+  // Left: circle with path
+  var cx=200,cy=250,cr=100;
+  c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=2;
+  c.beginPath();c.arc(cx,cy,cr,0,Math.PI*2);c.stroke();
+  c.fillStyle='#38bdf8';c.font='bold 14px system-ui';c.fillText('S\u00B9',cx+cr+10,cy);
+  // Basepoint
+  c.beginPath();c.arc(cx+cr,cy,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='12px system-ui';c.fillText('1',cx+cr+10,cy-8);
+  // Path gamma winding 'wind' times
+  c.beginPath();c.strokeStyle='#34d399';c.lineWidth=3;
+  var pts=Math.abs(wind)*100+1;if(pts<50)pts=50;
+  var dir=wind>=0?1:-1;
+  for(var i=0;i<=pts;i++){
+    var t=i/pts;
+    var angle=-dir*t*Math.abs(wind)*Math.PI*2;
+    var px=cx+(cr-3)*Math.cos(angle);
+    var py=cy+(cr-3)*Math.sin(angle);
+    if(i===0)c.moveTo(px,py);else c.lineTo(px,py);
+  }
+  c.stroke();
+  c.fillStyle='#34d399';c.font='bold 13px system-ui';c.fillText('\u03B3 (winds '+wind+'x)',cx-50,cy+cr+35);
+  // Right: R vertical with lift
+  var rx=550,rtop=40,rbot=H-40;
+  // vertical R line
+  c.strokeStyle='rgba(167,139,250,.3)';c.lineWidth=2;
+  c.beginPath();c.moveTo(rx,rtop);c.lineTo(rx,rbot);c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('\u211D',rx-20,rtop-10);
+  // Tick marks
+  var maxN=Math.max(Math.abs(wind)+1,4);
+  var unitH=(rbot-rtop)/(2*maxN);
+  var zeroY=(rtop+rbot)/2;
+  for(var n=-maxN;n<=maxN;n++){
+    var y=zeroY-n*unitH;
+    if(y<rtop||y>rbot)continue;
+    c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;
+    c.beginPath();c.moveTo(rx-5,y);c.lineTo(rx+5,y);c.stroke();
+    c.fillStyle='#8899b4';c.font='11px system-ui';c.fillText(String(n),rx+10,y+4);
+  }
+  // Lift
+  c.beginPath();c.strokeStyle='#fb923c';c.lineWidth=3;
+  for(var i2=0;i2<=pts;i2++){
+    var t2=i2/pts;
+    var val=wind*t2;
+    var y2=zeroY-val*unitH;
+    if(i2===0)c.moveTo(rx,y2);else c.lineTo(rx,y2);
+  }
+  c.stroke();
+  // Start dot
+  c.beginPath();c.arc(rx,zeroY,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='12px system-ui';c.fillText('e\u2080 = 0',rx+15,zeroY-8);
+  // End dot
+  var endY=zeroY-wind*unitH;
+  c.beginPath();c.arc(rx,endY,5,0,Math.PI*2);c.fillStyle='#f87171';c.fill();
+  c.fillStyle='#f87171';c.font='bold 12px system-ui';c.fillText('\u0303\u03B3(1) = '+wind,rx+15,endY-8);
+  c.fillStyle='#fb923c';c.font='bold 13px system-ui';c.fillText('\u0303\u03B3 (lift)',rx+50,zeroY-wind*unitH/2);
+  // Arrow p
+  arr(c,rx-30,(rtop+rbot)/2,cx+cr+30,cy,'#8899b4',1.5);
+  c.fillStyle='#8899b4';c.font='italic 13px system-ui';c.fillText('p',rx-60,cy-20);
+}
+
+var hlView=0;
+function setHLView(v,btn){hlView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawHLift();}
+
+function drawHLift(){
+  var c=document.getElementById('c_hlift').getContext('2d'),W=820,H=380;bg(c,W,H);
+  var sx=60,sy=50,sw=300,sh=260;
+  // [0,1]^2 domain
+  c.strokeStyle='#2a3a5c';c.lineWidth=2;c.strokeRect(sx,sy,sw,sh);
+  c.fillStyle='#8899b4';c.font='13px system-ui';
+  c.fillText('[0,1]\u00B2',sx+sw/2-20,sy-10);
+  c.fillText('s \u2192',sx+sw/2-10,sy+sh+22);
+  c.save();c.translate(sx-15,sy+sh/2);c.rotate(-Math.PI/2);c.fillText('t \u2192',0,0);c.restore();
+  // Labels
+  c.fillStyle='#34d399';c.font='12px system-ui';
+  c.fillText('\u03B3\u2080 = H(\u00B7,0)',sx+sw/2-30,sy+sh+40);
+  c.fillStyle='#f87171';c.fillText('\u03B3\u2081 = H(\u00B7,1)',sx+sw/2-30,sy-25);
+
+  if(hlView>=1){
+    // Grid
+    var M=4,N=5;
+    c.strokeStyle='rgba(251,191,36,.3)';c.lineWidth=1;c.setLineDash([3,3]);
+    for(var i=1;i<M;i++){var x=sx+i*sw/M;c.beginPath();c.moveTo(x,sy);c.lineTo(x,sy+sh);c.stroke();}
+    for(var j=1;j<N;j++){var y=sy+j*sh/N;c.beginPath();c.moveTo(sx,y);c.lineTo(sx+sw,y);c.stroke();}
+    c.setLineDash([]);
+    // Label rectangles
+    c.fillStyle='#fbbf24';c.font='11px system-ui';c.fillText('R\u2081\u2081',sx+sw/(2*M)-8,sy+sh-sh/(2*N)+4);
+  }
+  if(hlView>=2){
+    // Color rectangles to show order
+    var M2=4,N2=5;
+    var count=0;
+    for(var j2=0;j2<N2;j2++){
+      for(var i2=0;i2<M2;i2++){
+        count++;
+        var alpha=0.04+0.03*count/20;
+        var hue=130+count*15;
+        c.fillStyle='hsla('+hue+',60%,60%,'+alpha+')';
+        c.fillRect(sx+i2*sw/M2+1,sy+(N2-1-j2)*sh/N2+1,sw/M2-2,sh/N2-2);
+        c.fillStyle='hsla('+hue+',60%,70%,.7)';c.font='10px system-ui';
+        c.fillText(String(count),sx+i2*sw/M2+sw/(2*M2)-5,sy+(N2-1-j2)*sh/N2+sh/(2*N2)+3);
+      }
+    }
+    // Arrow showing order
+    c.fillStyle='#e2e8f0';c.font='12px system-ui';c.fillText('Lift order: row by row, left to right',sx,sy+sh+55);
+  }
+  // Right side: explanation
+  var rx=420,ry=60;
+  if(hlView===0){
+    // H family of paths
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Homotopy H : [0,1]\u00B2 \u2192 B',rx,ry);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('A continuous family of paths:',rx,ry+35);
+    c.fillText('  t = 0 : path \u03B3\u2080',rx,ry+65);
+    c.fillText('  t = 1 : path \u03B3\u2081',rx,ry+90);
+    c.fillText('H deforms \u03B3\u2080 into \u03B3\u2081 continuously.',rx,ry+125);
+    c.fillStyle='#fbbf24';c.font='13px system-ui';
+    c.fillText('Goal: lift entire H to the',rx,ry+170);
+    c.fillText('covering space E.',rx,ry+195);
+    // Draw some horizontal paths in the square
+    c.strokeStyle='rgba(52,211,153,.4)';c.lineWidth=1.5;
+    for(var tt=0;tt<=5;tt++){
+      var y3=sy+tt*sh/5;
+      c.beginPath();c.moveTo(sx,y3);c.lineTo(sx+sw,y3);c.stroke();
+    }
+  }
+  if(hlView===1){
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Step 1: Lebesgue Grid',rx,ry);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('[0,1]\u00B2 is compact. For each (s,t),',rx,ry+35);
+    c.fillText('H(s,t) has an evenly covered nbhd.',rx,ry+60);
+    c.fillText('By the Lebesgue number lemma:',rx,ry+95);
+    c.fillStyle='#fbbf24';c.font='13px system-ui';
+    c.fillText('\u2203 \u03B4 > 0 : every \u03B4-square maps',rx,ry+130);
+    c.fillText('into an evenly covered set.',rx,ry+155);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Subdivide [0,1]\u00B2 accordingly.',rx,ry+195);
+  }
+  if(hlView===2){
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Step 2: Lift Square by Square',rx,ry);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Start from bottom-left (row 0).',rx,ry+35);
+    c.fillText('Bottom row: use \u0303H\u2080 (given lift of \u03B3\u2080).',rx,ry+60);
+    c.fillText('Each rectangle R\u1D62\u2C7C maps into',rx,ry+95);
+    c.fillText('an evenly covered U. The already-',rx,ry+120);
+    c.fillText('lifted boundary selects a sheet V.',rx,ry+145);
+    c.fillStyle='#fbbf24';c.font='13px system-ui';
+    c.fillText('Define \u0303H = (p|_V)\u207B\u00B9 \u2218 H on R\u1D62\u2C7C.',rx,ry+185);
+    c.fillStyle='#34d399';c.font='13px system-ui';
+    c.fillText('Unique Lifting \u21D2 consistency',rx,ry+220);
+    c.fillText('at shared edges. \u25A0',rx,ry+245);
+  }
+}
+
+// ==== S3: Universal Cover ====
+var univView=0;
+function setUnivView(v,btn){univView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawUniv();}
+
+function drawUniv(){
+  var c=document.getElementById('c_univ').getContext('2d'),W=820,H=380;bg(c,W,H);
+  // S^1 at bottom
+  var cx=250,cy=H-65,cr=60;
+  c.strokeStyle='rgba(56,189,248,.5)';c.lineWidth=2;
+  c.beginPath();c.arc(cx,cy,cr,0,Math.PI*2);c.stroke();
+  c.fillStyle='#38bdf8';c.font='bold 13px system-ui';c.fillText('S\u00B9',cx-5,cy+cr+18);
+  c.beginPath();c.arc(cx+cr,cy,4,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='11px system-ui';c.fillText('b\u2080',cx+cr+8,cy-5);
+  // R above as number line
+  var rx=60,ry=60,rw=580;
+  c.strokeStyle='rgba(167,139,250,.5)';c.lineWidth=2;
+  c.beginPath();c.moveTo(rx,ry);c.lineTo(rx+rw,ry);c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('\u0303B = \u211D',rx+rw/2-20,ry-20);
+  // Integer ticks
+  var nTicks=7,unit=rw/(nTicks-1);
+  var startN=-3;
+  for(var i=0;i<nTicks;i++){
+    var n=startN+i,x=rx+i*unit;
+    c.strokeStyle='rgba(167,139,250,.5)';c.lineWidth=1;
+    c.beginPath();c.moveTo(x,ry-6);c.lineTo(x,ry+6);c.stroke();
+    c.fillStyle=(n===0)?'#fbbf24':'#8899b4';c.font='bold 12px system-ui';
+    c.fillText(String(n),x-5,ry+22);
+    // dots for fiber
+    c.beginPath();c.arc(x,ry,4,0,Math.PI*2);c.fillStyle=(n===0)?'#fbbf24':'rgba(251,191,36,.4)';c.fill();
+  }
+
+  if(univView===0){
+    // space of paths interpretation
+    var infoX=480,infoY=140;
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Points of \u0303B = homotopy classes of paths',infoX-200,infoY);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Each integer n \u2208 \u211D represents:',infoX-200,infoY+35);
+    c.fillText('"path from b\u2080 that winds n times"',infoX-200,infoY+60);
+    c.fillText('Fractional part = position on S\u00B9',infoX-200,infoY+90);
+    c.fillText('Example: t = 1.5 means',infoX-200,infoY+125);
+    c.fillText('"wound 1.5 times from b\u2080"',infoX-200,infoY+150);
+  }
+  if(univView>=1){
+    // Projection arrows
+    for(var i2=0;i2<nTicks;i2++){
+      var x2=rx+i2*unit;
+      c.setLineDash([3,3]);c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;
+      c.beginPath();c.moveTo(x2,ry+30);c.lineTo(cx+cr,cy-cr);c.stroke();
+      c.setLineDash([]);
+    }
+    c.fillStyle='#8899b4';c.font='italic 14px system-ui';c.fillText('p(t) = e^{2\u03C0it}',cx+cr+30,cy-cr+20);
+  }
+  if(univView>=2){
+    // Deck transformations
+    var infoX2=480,infoY2=160;
+    c.fillStyle='#34d399';c.font='bold 14px system-ui';c.fillText('Deck Transformations',infoX2-50,infoY2);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Each n \u2208 \u2124 gives a deck transformation:',infoX2-100,infoY2+30);
+    c.fillText('  \u03C6\u2099(t) = t + n',infoX2-100,infoY2+55);
+    c.fillText('This is the action of \u03C0\u2081(S\u00B9) \u2245 \u2124 on \u211D.',infoX2-100,infoY2+85);
+    c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
+    c.fillText('S\u00B9 \u2245 \u211D / \u2124',infoX2-50,infoY2+125);
+    // Show translation arrows
+    for(var j=0;j<nTicks-1;j++){
+      var x3=rx+j*unit,x4=rx+(j+1)*unit;
+      arr(c,x3+15,ry-20,x4-15,ry-20,'rgba(52,211,153,.5)',1.5);
+    }
+    c.fillStyle='#34d399';c.font='11px system-ui';c.fillText('+1',rx+unit/2-5,ry-28);
+  }
+}
+
+function drawGalois(){
+  var c=document.getElementById('c_galois').getContext('2d'),W=820,H=380;bg(c,W,H);
+  // Left: subgroup lattice
+  var lx=120,ly=50;
+  c.fillStyle='#e2e8f0';c.font='bold 15px system-ui';c.fillText('Subgroups of \u2124',lx-40,ly);
+  // Nodes
+  var nodes=[
+    {label:'{0}',x:lx+60,y:ly+40,col:'#f87171'},
+    {label:'2\u2124',x:lx,y:ly+110,col:'#fb923c'},
+    {label:'3\u2124',x:lx+60,y:ly+110,col:'#fbbf24'},
+    {label:'4\u2124',x:lx+120,y:ly+110,col:'#a78bfa'},
+    {label:'\u22EE',x:lx+60,y:ly+170,col:'#8899b4'},
+    {label:'\u2124',x:lx+60,y:ly+240,col:'#38bdf8'}
+  ];
+  for(var i=0;i<nodes.length;i++){
+    var nd=nodes[i];
+    if(nd.label==='\u22EE'){c.fillStyle=nd.col;c.font='18px system-ui';c.fillText(nd.label,nd.x,nd.y);continue;}
+    c.fillStyle='rgba(136,153,180,.1)';c.strokeStyle=nd.col;c.lineWidth=2;
+    c.beginPath();c.arc(nd.x,nd.y,22,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle=nd.col;c.font='bold 12px system-ui';
+    c.fillText(nd.label,nd.x-c.measureText(nd.label).width/2,nd.y+5);
+  }
+  // Edges: {0} -> n*Z -> Z
+  c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;
+  for(var j=1;j<=3;j++){c.beginPath();c.moveTo(nodes[0].x,nodes[0].y+22);c.lineTo(nodes[j].x,nodes[j].y-22);c.stroke();}
+  for(var j2=1;j2<=3;j2++){c.beginPath();c.moveTo(nodes[j2].x,nodes[j2].y+22);c.lineTo(nodes[5].x,nodes[5].y-22);c.stroke();}
+
+  // Right: covering lattice
+  var rlx=520,rly=50;
+  c.fillStyle='#e2e8f0';c.font='bold 15px system-ui';c.fillText('Coverings of S\u00B9',rlx-20,rly);
+  var rnodes=[
+    {label:'\u211D \u2192 S\u00B9',x:rlx+60,y:rly+40,col:'#f87171',sub:'\u221E sheets'},
+    {label:'z\u00B2',x:rlx,y:rly+110,col:'#fb923c',sub:'2 sheets'},
+    {label:'z\u00B3',x:rlx+60,y:rly+110,col:'#fbbf24',sub:'3 sheets'},
+    {label:'z\u2074',x:rlx+120,y:rly+110,col:'#a78bfa',sub:'4 sheets'},
+    {label:'\u22EE',x:rlx+60,y:rly+170,col:'#8899b4',sub:''},
+    {label:'id',x:rlx+60,y:rly+240,col:'#38bdf8',sub:'1 sheet'}
+  ];
+  for(var i2=0;i2<rnodes.length;i2++){
+    var nd2=rnodes[i2];
+    if(nd2.label==='\u22EE'){c.fillStyle=nd2.col;c.font='18px system-ui';c.fillText(nd2.label,nd2.x,nd2.y);continue;}
+    c.fillStyle='rgba(136,153,180,.1)';c.strokeStyle=nd2.col;c.lineWidth=2;
+    c.beginPath();c.arc(nd2.x,nd2.y,22,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle=nd2.col;c.font='bold 11px system-ui';
+    c.fillText(nd2.label,nd2.x-c.measureText(nd2.label).width/2,nd2.y+4);
+    if(nd2.sub){c.fillStyle='rgba(136,153,180,.6)';c.font='10px system-ui';c.fillText(nd2.sub,nd2.x+28,nd2.y+4);}
+  }
+  for(var j3=1;j3<=3;j3++){c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;c.beginPath();c.moveTo(rnodes[0].x,rnodes[0].y+22);c.lineTo(rnodes[j3].x,rnodes[j3].y-22);c.stroke();}
+  for(var j4=1;j4<=3;j4++){c.beginPath();c.moveTo(rnodes[j4].x,rnodes[j4].y+22);c.lineTo(rnodes[5].x,rnodes[5].y-22);c.stroke();}
+
+  // Correspondence arrows
+  c.setLineDash([6,4]);c.strokeStyle='rgba(251,191,36,.4)';c.lineWidth=1.5;
+  for(var k=0;k<6;k++){
+    if(nodes[k].label==='\u22EE')continue;
+    c.beginPath();c.moveTo(nodes[k].x+28,nodes[k].y);c.lineTo(rnodes[k].x-28,rnodes[k].y);c.stroke();
+  }
+  c.setLineDash([]);
+
+  // Bottom label
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
+  c.fillText('H \u2264 \u2124   \u27F7   covering with [\u2124 : H] sheets',W/2-150,H-30);
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('Larger subgroup  \u21D4  fewer sheets  \u21D4  smaller cover',W/2-170,H-10);
+}
+
+function drawBigPic(){
+  var c=document.getElementById('c_bigpic').getContext('2d'),W=820,H=300;bg(c,W,H);
+  // Three boxes
+  var boxes=[
+    {label:'\u0303B (simply conn.)',x:80,y:30,w:180,h:60,col:'#f87171'},
+    {label:'p : \u0303B \u2192 B',x:320,y:30,w:180,h:60,col:'#34d399'},
+    {label:'B = \u0303B / \u03C0\u2081(B)',x:560,y:30,w:180,h:60,col:'#38bdf8'},
+  ];
+  for(var i=0;i<3;i++){
+    var b=boxes[i];
+    c.fillStyle='rgba(136,153,180,.06)';c.strokeStyle=b.col;c.lineWidth=2;
+    rr(c,b.x,b.y,b.w,b.h,8,true,true);
+    c.fillStyle=b.col;c.font='bold 13px system-ui';
+    c.fillText(b.label,b.x+b.w/2-c.measureText(b.label).width/2,b.y+b.h/2+5);
+  }
+  arr(c,boxes[0].x+boxes[0].w+5,boxes[0].y+boxes[0].h/2,boxes[1].x-5,boxes[1].y+boxes[1].h/2,'#8899b4',2);
+  arr(c,boxes[1].x+boxes[1].w+5,boxes[1].y+boxes[1].h/2,boxes[2].x-5,boxes[2].y+boxes[2].h/2,'#8899b4',2);
+
+  // Bottom: key facts
+  var facts=[
+    {text:'Poincar\u00E9 Conjecture',sub:'classifies \u0303B in dim 3',x:80,y:140,col:'#f87171'},
+    {text:'Lifting Theorems',sub:'path & homotopy lifting',x:320,y:140,col:'#34d399'},
+    {text:'Galois Correspondence',sub:'coverings \u2194 subgroups of \u03C0\u2081',x:560,y:140,col:'#38bdf8'},
+  ];
+  for(var j=0;j<3;j++){
+    var f=facts[j];
+    c.fillStyle='rgba(136,153,180,.04)';c.strokeStyle=f.col;c.lineWidth=1.5;c.setLineDash([4,3]);
+    rr(c,f.x,f.y,180,65,8,true,true);c.setLineDash([]);
+    c.fillStyle=f.col;c.font='bold 12px system-ui';c.fillText(f.text,f.x+10,f.y+25);
+    c.fillStyle='#8899b4';c.font='11px system-ui';c.fillText(f.sub,f.x+10,f.y+48);
+    // arrow up
+    c.setLineDash([3,3]);c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;
+    c.beginPath();c.moveTo(f.x+90,f.y);c.lineTo(boxes[j].x+boxes[j].w/2,boxes[j].y+boxes[j].h);c.stroke();
+    c.setLineDash([]);
+  }
+
+  // Bottom summary
+  c.fillStyle='#fbbf24';c.font='bold 14px system-ui';
+  c.fillText('Topology  \u27F7  Algebra',W/2-70,H-30);
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('Covering spaces of B  \u2194  Subgroups of \u03C0\u2081(B,b\u2080)',W/2-155,H-10);
+}
+
+// ---- Init ----
+window.addEventListener('load',function(){drawSC();});
+</script>
+</body>
+</html>

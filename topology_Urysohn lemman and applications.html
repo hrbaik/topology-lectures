@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urysohn's Lemma · Metrization Theorem · Tietze Extension Theorem</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']], tags: 'ams' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.min.js"></script>
+<style>
+:root{--bg:#0a0f1e;--surface:#131b2e;--surface2:#1c2640;--surface3:#243050;--accent:#38bdf8;--accent2:#a78bfa;--accent3:#34d399;--text:#e2e8f0;--dim:#8899b4;--border:#2a3a5c;--red:#f87171;--orange:#fb923c;--yellow:#fbbf24;--pink:#f472b6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.8}
+.hero{text-align:center;padding:50px 20px 35px;background:linear-gradient(135deg,#1a1040 0%,#0a0f1e 60%)}
+.hero h1{font-size:2.1rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.hero .sub{color:var(--dim);font-size:1rem;max-width:720px;margin:0 auto}
+nav.tabs{display:flex;justify-content:center;gap:6px;padding:14px 10px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+nav.tabs button{padding:9px 22px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--dim);font-size:.92rem;cursor:pointer;transition:.2s}
+nav.tabs button:hover{border-color:var(--accent);color:var(--text)}
+nav.tabs button.active{background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(167,139,250,.12));border-color:var(--accent);color:#fff;font-weight:600}
+.sec{display:none;max-width:1060px;margin:0 auto;padding:36px 22px 70px}
+.sec.active{display:block}
+h2{font-size:1.55rem;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--accent);display:inline-block}
+h3{font-size:1.15rem;color:var(--accent2);margin:30px 0 10px;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 26px;margin:18px 0}
+.card.thm{border-left:4px solid var(--accent);background:linear-gradient(120deg,rgba(56,189,248,.04),rgba(167,139,250,.04))}
+.card.prf{border-left:4px solid var(--accent3)}
+.card.rmk{border-left:4px solid var(--orange)}
+.card.int{border-left:4px solid var(--yellow)}
+.card.def{border-left:4px solid var(--pink)}
+.tag{font-size:.72rem;text-transform:uppercase;letter-spacing:1.6px;font-weight:700;margin-bottom:8px}
+.thm .tag{color:var(--accent)}.prf .tag{color:var(--accent3)}.rmk .tag{color:var(--orange)}.int .tag{color:var(--yellow)}.def .tag{color:var(--pink)}
+p{margin:8px 0}
+.step{display:flex;gap:14px;align-items:flex-start;margin:16px 0}
+.sn{min-width:30px;height:30px;border-radius:50%;background:var(--accent3);color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;flex-shrink:0;margin-top:3px}
+.viz{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin:20px 0;text-align:center}
+.viz canvas{border-radius:6px;max-width:100%}
+.viz-title{font-size:.9rem;color:var(--accent);font-weight:600;margin-bottom:10px}
+.viz-caption{font-size:.84rem;color:var(--dim);line-height:1.6;margin-top:12px;text-align:left;padding:0 8px;border-top:1px solid rgba(42,58,92,.5);padding-top:10px}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.ctrls button{padding:7px 16px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);cursor:pointer;font-size:.84rem;transition:.2s}
+.ctrls button:hover{border-color:var(--accent);background:rgba(56,189,248,.08)}
+.ctrls button.on{background:var(--accent);color:var(--bg);font-weight:600;border-color:var(--accent)}
+.srow{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:8px;font-size:.85rem;color:var(--dim)}
+.srow input[type=range]{width:180px;accent-color:var(--accent)}
+.leg{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px;font-size:.82rem;color:var(--dim)}
+.leg-i{display:flex;align-items:center;gap:5px}
+.leg-d{width:11px;height:11px;border-radius:50%}
+.qed{text-align:right;font-size:1.1rem;margin-top:6px}
+.hl{color:var(--accent);font-weight:600}
+.hl2{color:var(--accent2);font-weight:600}
+.hl3{color:var(--accent3);font-weight:600}
+.hlr{color:var(--red);font-weight:600}
+mjx-container{overflow-x:auto;overflow-y:hidden}
+.case{margin:8px 0 8px 20px;padding-left:14px;border-left:2px solid var(--surface3)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Urysohn's Lemma · Metrization Theorem · Tietze Extension</h1>
+  <p class="sub">Harry Hyungryul Baik (KAIST)</p>
+</div>
+
+<nav class="tabs">
+  <button class="active" onclick="showTab('s0',this)">0 &middot; Separation Axioms</button>
+  <button onclick="showTab('s1',this)">1 &middot; Urysohn's Lemma</button>
+  <button onclick="showTab('s2',this)">2 &middot; Metrization Theorem</button>
+  <button onclick="showTab('s3',this)">3 &middot; Tietze Extension</button>
+</nav>
+
+<!-- ============================== SECTION 0 ============================== -->
+<div id="s0" class="sec active">
+<h2>0. Separation Axioms</h2>
+
+<div class="card int">
+  <div class="tag">Motivation</div>
+  <p>Not every topological space behaves as nicely as $\mathbb{R}^n$. The <strong>separation axioms</strong> impose increasingly strong conditions on how well a topology can distinguish points and closed sets using open sets. The theorems in the remaining sections require normality ($T_4$) or regularity ($T_3$), so we begin by setting up these definitions precisely.</p>
+</div>
+
+<h3>0.1 &ensp; The Hierarchy: $T_1$ through $T_4$</h3>
+
+<div class="card def">
+  <div class="tag">Definition: $T_1$ (Fréchet)</div>
+  <p>A topological space $X$ is <span class="hl">$T_1$</span> if for every pair of distinct points $x\neq y$, there exists an open set $U$ with $x\in U$ and $y\notin U$.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Proposition: Equivalent characterization of $T_1$</div>
+  <p>$X$ is $T_1$ if and only if every singleton $\{x\}$ is a closed set.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>($\Rightarrow$)</strong> Fix $x\in X$. We show $X\setminus\{x\}$ is open. For any $y\neq x$, the $T_1$ axiom gives an open set $U_y$ with $y\in U_y$ and $x\notin U_y$, i.e.&ensp;$U_y\subseteq X\setminus\{x\}$. Then $X\setminus\{x\} = \bigcup_{y\neq x} U_y$ is a union of open sets, hence open.</p>
+  <p><strong>($\Leftarrow$)</strong> If every singleton is closed, then given $x\neq y$, the set $U = X\setminus\{y\}$ is open, contains $x$, and does not contain $y$. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Why $T_1$ alone is weak</div>
+  <p>$T_1$ guarantees that finite sets are closed, but it says nothing about separating a point from a larger closed set by <em>disjoint</em> neighborhoods. For instance, an infinite set with the cofinite topology is $T_1$ (complements of singletons are cofinite, hence open), but it is <strong>not</strong> $T_2$: any two nonempty open sets intersect, because their complements are finite while $X$ is infinite.</p>
+</div>
+
+<h3>0.2 &ensp; $T_2$: Hausdorff Spaces</h3>
+
+<div class="card def">
+  <div class="tag">Definition: $T_2$ (Hausdorff)</div>
+  <p>A topological space $X$ is <span class="hl2">$T_2$</span> (or <strong>Hausdorff</strong>) if for every pair of distinct points $x\neq y$, there exist <em>disjoint</em> open sets $U,V$ with $x\in U$ and $y\in V$.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Proposition: Uniqueness of limits</div>
+  <p>In a Hausdorff space, a net (or sequence) converges to <em>at most one</em> point.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Suppose a net $(x_\alpha)$ converges to both $p$ and $q$ with $p\neq q$. Choose disjoint open sets $U\ni p$ and $V\ni q$. By convergence, $(x_\alpha)$ is eventually in $U$ and eventually in $V$. But then it is eventually in $U\cap V = \varnothing$, a contradiction. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">$T_2$ implies $T_1$</div>
+  <p>If $x\neq y$, the Hausdorff condition gives disjoint open $U\ni x,\, V\ni y$. In particular, $U$ is an open set containing $x$ but not $y$ (since $U\cap V=\varnothing$). This is exactly the $T_1$ condition. But $T_1$ does not imply $T_2$, as the cofinite topology example above shows.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Key example</div>
+  <p><strong>Every metric space is Hausdorff.</strong> If $x\neq y$ in $(X,d)$, set $\varepsilon = d(x,y) \gt 0$. Then $U = B(x,\varepsilon/2)$ and $V = B(y,\varepsilon/2)$ are disjoint open sets separating $x$ and $y$. (If $z\in U\cap V$, the triangle inequality gives $d(x,y)\le d(x,z)+d(z,y) \lt \varepsilon$, a contradiction.)</p>
+</div>
+
+<h3>0.3 &ensp; $T_3$: Regular Spaces</h3>
+
+<div class="card def">
+  <div class="tag">Definition: $T_3$ (Regular)</div>
+  <p>A topological space $X$ is <span class="hl3">$T_3$</span> (or <strong>regular</strong>) if it is $T_1$ and: for every point $x\in X$ and every closed set $C$ with $x\notin C$, there exist disjoint open sets $U,V$ with $x\in U$ and $C\subseteq V$.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Proposition: Equivalent characterization of regularity</div>
+  <p>A $T_1$ space $X$ is regular if and only if: for every $x\in X$ and every open $W$ containing $x$, there exists an open $U$ with
+  $$x \;\in\; U \;\subseteq\; \overline{U} \;\subseteq\; W.$$</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>($\Rightarrow$)</strong> Let $x\in W$ with $W$ open. Then $C = X\setminus W$ is closed and $x\notin C$. By regularity, choose disjoint open sets $U\ni x$ and $V\supseteq C$. Since $U\cap V = \varnothing$ we have $U\subseteq X\setminus V$, and $X\setminus V$ is closed, so $\overline{U}\subseteq X\setminus V \subseteq X\setminus C = W$.</p>
+  <p><strong>($\Leftarrow$)</strong> Given $x\notin C$ with $C$ closed, set $W = X\setminus C$. By hypothesis, choose open $U$ with $x\in U\subseteq\overline{U}\subseteq W$. Then $U$ and $X\setminus\overline{U}$ are disjoint open sets with $x\in U$ and $C\subseteq X\setminus\overline{U}$. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">$T_3$ implies $T_2$</div>
+  <p>If $x\neq y$, then $\{y\}$ is closed (by $T_1$) and $x\notin\{y\}$. Regularity gives disjoint open $U\ni x$ and $V\ni y$. So $X$ is Hausdorff. The converse fails: there exist Hausdorff spaces that are not regular (though such examples are more exotic).</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Remark on terminology</div>
+  <p>Some authors define "regular" without requiring $T_1$, and then write "$T_3$" for "regular $+$ $T_1$." In this course we follow the convention that <strong>$T_3$ = regular = $T_1$ + point-closed separation</strong>. This is the convention used by Munkres.</p>
+</div>
+
+<h3>0.4 &ensp; $T_4$: Normal Spaces</h3>
+
+<div class="card def">
+  <div class="tag">Definition: $T_4$ (Normal)</div>
+  <p>A topological space $X$ is <span class="hlr">$T_4$</span> (or <strong>normal</strong>) if it is $T_1$ and: for every pair of disjoint closed sets $A,B$, there exist disjoint open sets $U,V$ with $A\subseteq U$ and $B\subseteq V$.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">$T_4$ implies $T_3$</div>
+  <p>Given a point $x$ and a closed set $C$ not containing $x$: since $X$ is $T_1$, $\{x\}$ is closed. Now $\{x\}$ and $C$ are disjoint closed sets, so normality gives disjoint open sets $U\supseteq\{x\}$ and $V\supseteq C$. This is exactly the regularity condition.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">The full chain</div>
+  <p>$$T_4 \;\Longrightarrow\; T_3 \;\Longrightarrow\; T_2 \;\Longrightarrow\; T_1$$</p>
+  <p>Each implication is strict. None reverses in general.</p>
+</div>
+
+<h3>0.5 &ensp; Sources of Normal Spaces</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem: Every metrizable space is normal</div>
+  <p>Let $(X,d)$ be a metric space and let $A,B\subseteq X$ be disjoint closed sets. Then there exist disjoint open sets separating $A$ and $B$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Define $f\colon X\to\mathbb{R}$ by
+  $$f(x) \;=\; \frac{d(x,A)}{d(x,A)+d(x,B)}.$$
+  This is well-defined since $A\cap B = \varnothing$ and both are closed, so for every $x$, at least one of $d(x,A)$, $d(x,B)$ is positive; in fact $d(x,A)+d(x,B) \gt 0$ for all $x$.</p>
+  <p>$f$ is continuous (as a ratio of continuous functions with positive denominator), and $f(A) = \{0\}$, $f(B) = \{1\}$.
+  Then $U = f^{-1}\bigl([0,\tfrac{1}{2})\bigr)$ and $V = f^{-1}\bigl((\tfrac{1}{2},1]\bigr)$ are disjoint open sets with $A\subseteq U$ and $B\subseteq V$. &square;</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Theorem: Every compact Hausdorff space is normal</div>
+  <p>Let $X$ be compact and Hausdorff, and let $A,B\subseteq X$ be disjoint closed sets. Then there exist disjoint open sets separating $A$ and $B$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>Lemma (point vs. compact closed set).</strong> Fix $x\notin B$ where $B$ is closed (hence compact, as a closed subset of a compact space). For each $b\in B$, the Hausdorff condition gives disjoint open sets $U_b\ni x$ and $V_b\ni b$. The collection $\{V_b\}_{b\in B}$ covers $B$; by compactness, finitely many suffice: $B\subseteq V_{b_1}\cup\cdots\cup V_{b_n}$. Set $U_x = U_{b_1}\cap\cdots\cap U_{b_n}$ (open, since it is a finite intersection) and $V_x = V_{b_1}\cup\cdots\cup V_{b_n}$. Then $x\in U_x$, $B\subseteq V_x$, and $U_x\cap V_x = \varnothing$.</p>
+  <p><strong>Main argument.</strong> For each $a\in A$, apply the lemma with $x = a$ to get $U_a\ni a$ and $V_a\supseteq B$ with $U_a\cap V_a = \varnothing$. The collection $\{U_a\}_{a\in A}$ covers $A$; by compactness (of $A$), finitely many suffice: $A\subseteq U_{a_1}\cup\cdots\cup U_{a_m}$. Set $U = U_{a_1}\cup\cdots\cup U_{a_m}$ and $V = V_{a_1}\cap\cdots\cap V_{a_m}$. Then $A\subseteq U$, $B\subseteq V$, and $U\cap V = \varnothing$. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Summary of key examples</div>
+  <p><strong>Normal:</strong> all metrizable spaces; all compact Hausdorff spaces; all second-countable regular spaces (proved in Section 2 as a step in the Metrization Theorem).</p>
+  <p><strong>Regular but not normal:</strong> the Sorgenfrey plane $\mathbb{R}_\ell\times\mathbb{R}_\ell$. The lower-limit topology on $\mathbb{R}$ is normal, but its product with itself is not.</p>
+  <p><strong>Hausdorff but not regular:</strong> $\mathbb{R}$ with the $K$-topology, where the open sets are generated by intervals $(a,b)$ together with sets $(a,b)\setminus K$ for $K = \{1/n : n\in\mathbb{N}\}$. The closed set $K$ cannot be separated from $0$ by disjoint open sets.</p>
+</div>
+
+<h3>0.6 &ensp; $T_{3\frac{1}{2}}$: Completely Regular (Tychonoff) Spaces</h3>
+
+<div class="card def">
+  <div class="tag">Definition: $T_{3\frac{1}{2}}$ (Completely Regular)</div>
+  <p>A topological space $X$ is <span class="hl2">$T_{3\frac{1}{2}}$</span> (or <strong>completely regular</strong>, or a <strong>Tychonoff space</strong>) if it is $T_1$ and: for every point $x\in X$ and every closed set $C$ with $x\notin C$, there exists a <em>continuous function</em> $f\colon X\to[0,1]$ with $f(x)=0$ and $f(C)=\{1\}$.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Where it fits</div>
+  <p>$$T_4 \;\Longrightarrow\; T_{3\frac{1}{2}} \;\Longrightarrow\; T_3 \;\Longrightarrow\; T_2 \;\Longrightarrow\; T_1$$</p>
+  <p>$T_{3\frac{1}{2}} \Rightarrow T_3$: given $f$ with $f(x)=0$ and $f(C)=\{1\}$, the sets $U = f^{-1}([0,\tfrac{1}{2}))$ and $V = f^{-1}((\tfrac{1}{2},1])$ are disjoint open sets separating $x$ from $C$.</p>
+  <p>$T_4 \Rightarrow T_{3\frac{1}{2}}$: given $x\notin C$ in a normal space, $\{x\}$ and $C$ are disjoint closed sets.
+  <strong>Urysohn's Lemma</strong> (Section 1) gives a continuous $f\colon X\to[0,1]$ with $f(x)=0$ and $f(C)=\{1\}$. This is one reason Urysohn's Lemma is so fundamental: it establishes that normality implies complete regularity.</p>
+  <p>The Sorgenfrey plane shows that $T_{3\frac{1}{2}}$ does not imply $T_4$ in general.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 0.1 — Separation Axioms Hierarchy</div>
+  <canvas id="c_sep" width="820" height="340"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setSepView(0,this)">$T_1$: Points closed</button>
+    <button onclick="setSepView(1,this)">$T_2$: Hausdorff</button>
+    <button onclick="setSepView(2,this)">$T_3$: Regular</button>
+    <button onclick="setSepView(3,this)">$T_4$: Normal</button>
+  </div>
+  <div class="viz-caption"><strong>Click the buttons</strong> to see each separation axiom illustrated. $T_1$: every singleton is closed. $T_2$ (Hausdorff): distinct points have disjoint open neighborhoods. $T_3$ (Regular): a point and a disjoint closed set can be separated by disjoint open sets. $T_4$ (Normal): two disjoint closed sets can be separated by disjoint open sets. ($T_{3\frac{1}{2}}$, not shown, uses a continuous function instead of open sets to separate a point from a closed set.) Each level strictly strengthens the previous one.</div>
+</div>
+
+<h3>0.7 &ensp; The Shrinking Characterization of Normality</h3>
+
+<div class="card thm">
+  <div class="tag">Proposition (Shrinking Lemma)</div>
+  <p>A $T_1$ space $X$ is normal if and only if: for every closed set $C$ and every open set $W$ with $C\subseteq W$, there exists an open set $V$ with
+  $$C \;\subseteq\; V \;\subseteq\; \overline{V} \;\subseteq\; W.$$</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>($\Rightarrow$)</strong> Assume $X$ is normal. Let $C$ be closed and $W$ open with $C\subseteq W$. Then $C$ and $X\setminus W$ are disjoint closed sets. By normality, there exist disjoint open sets $V,\,U'$ with
+  $$C \;\subseteq\; V, \qquad X\setminus W \;\subseteq\; U'.$$
+  Since $V\cap U'=\varnothing$, we have $V\subseteq X\setminus U'$, and $X\setminus U'$ is closed. Therefore
+  $$\overline{V} \;\subseteq\; X\setminus U'.$$
+  But $X\setminus W\subseteq U'$ means $X\setminus U'\subseteq W$. Combining:
+  $$C \;\subseteq\; V \;\subseteq\; \overline{V} \;\subseteq\; X\setminus U' \;\subseteq\; W.$$</p>
+
+  <p><strong>($\Leftarrow$)</strong> Let $A,B$ be disjoint closed sets. Set $W = X\setminus B$, which is open with $A\subseteq W$. By hypothesis, there exists an open $V$ with $A\subseteq V\subseteq\overline{V}\subseteq W = X\setminus B$.
+  Then $V$ and $X\setminus\overline{V}$ are disjoint open sets with $A\subseteq V$ and $B\subseteq X\setminus\overline{V}$. &square;</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 0.2 — The Shrinking Lemma in Action</div>
+  <canvas id="c_shrink" width="820" height="300"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setShrinkView(0,this)">Setup</button>
+    <button onclick="setShrinkView(1,this)">Apply normality</button>
+    <button onclick="setShrinkView(2,this)">Conclude $C\subseteq V\subseteq\overline{V}\subseteq W$</button>
+  </div>
+  <div class="viz-caption"><strong>Click the buttons</strong> to step through the proof. We start with closed $C$ inside open $W$. Normality separates $C$ from $X\setminus W$ by disjoint open sets $V$ and $U'$. Since $V\cap U'=\varnothing$ and $U'$ is open, we get $\overline{V}\subseteq X\setminus U'\subseteq W$, giving the desired chain $C\subseteq V\subseteq\overline{V}\subseteq W$.</div>
+</div>
+
+<div class="card int">
+  <div class="tag">Why This Matters</div>
+  <p>The shrinking characterization is the engine behind <strong>Urysohn's Lemma</strong> (Section 1). To build the continuous function separating two closed sets, we repeatedly "shrink" open sets to produce a nested family $\{U_r\}$ indexed by dyadic rationals. Every single application of normality in that proof goes through this shrinking form. It is also the key tool in the <strong>Tietze Extension Theorem</strong> (Section 3).</p>
+</div>
+
+</div>
+
+<!-- ============================== SECTION 1 ============================== -->
+<div id="s1" class="sec">
+<h2>1. Urysohn's Lemma</h2>
+
+<!-- Prerequisites -->
+<div class="card def">
+  <div class="tag">Recall: Normal Spaces</div>
+  <p>A topological space $X$ is <span class="hl">normal</span> if it is $T_1$ (points are closed) and for every pair of disjoint closed sets $A,B\subseteq X$, there exist disjoint open sets $U,V$ with $A\subseteq U$ and $B\subseteq V$.</p>
+  <p>Equivalently (and this is the form we use repeatedly), $X$ is normal if and only if: for every closed set $C$ and every open set $W$ with $C\subseteq W$, there exists an open set $V$ with
+  $$C \;\subseteq\; V \;\subseteq\; \overline{V} \;\subseteq\; W.$$
+  This "shrinking" characterization is the engine of the entire proof.</p>
+</div>
+
+<!-- Theorem -->
+<div class="card thm">
+  <div class="tag">Theorem 1.1 (Urysohn's Lemma, 1925)</div>
+  <p>Let $X$ be a normal space and let $A,B\subseteq X$ be disjoint closed sets. Then there exists a continuous function
+  $$f\colon X \to [0,1]$$
+  such that $f\!\mid_A \equiv 0$ and $f\!\mid_B \equiv 1$.</p>
+</div>
+
+<h3>1.1 &ensp; Why This Matters</h3>
+<p>Normal spaces are defined by a purely topological condition—the ability to separate closed sets by <em>open neighborhoods</em>. Urysohn's Lemma upgrades this dramatically: we can separate them by a <em>continuous real-valued function</em>. This passage from topology to analysis is what makes the Lemma the single most important tool in the theory of normal spaces. It underpins both the Metrization Theorem (§2) and the Tietze Extension Theorem (§3), and it is essential for constructing partitions of unity.</p>
+
+<h3>1.2 &ensp; Strategy of the Proof</h3>
+<div class="card int">
+  <div class="tag">Key Idea</div>
+  <p>We want to build $f\colon X\to[0,1]$ with $f^{-1}(0)\supseteq A$ and $f^{-1}(1)\supseteq B$. In a metric space, we could use $f(x) = \frac{d(x,A)}{d(x,A)+d(x,B)}$. But a general normal space has no metric.</p>
+  <p>Instead, we construct a family of open sets $\{U_r\}$ indexed by the <span class="hl2">dyadic rationals</span>
+  $$\mathbb{D} \;=\; \Bigl\{\frac{k}{2^n} : k,n\in\mathbb{Z}_{\ge 0}\Bigr\} \;\cap\; [0,1]$$
+  satisfying the <strong>nesting condition</strong>:
+  $$r < s \;\;\Longrightarrow\;\; A \;\subseteq\; U_r \;\subseteq\; \overline{U_r} \;\subseteq\; U_s \;\subseteq\; X\setminus B.$$
+  Then $f(x)=\inf\{r\in\mathbb{D}: x\in U_r\}$ will be the desired function. The <em>density</em> of $\mathbb{D}$ in $[0,1]$ is what makes $f$ continuous.</p>
+</div>
+
+<h3>1.3 &ensp; Proof — Step 1: Base Case</h3>
+<p>We begin by constructing $U_0$ and $U_1$.</p>
+
+<div class="card prf">
+  <div class="tag">Step 1 — Base case</div>
+  <p>Set $U_1 = X\setminus B$. This is open (since $B$ is closed) and $A\subseteq U_1$ (since $A\cap B=\varnothing$).</p>
+  <p>Now $A$ is closed and $U_1$ is open with $A\subseteq U_1$. By the shrinking characterization of normality, there exists an open set $U_0$ with
+  $$A \;\subseteq\; U_0 \;\subseteq\; \overline{U_0} \;\subseteq\; U_1 = X\setminus B.$$</p>
+  <p>We now have the chain: $\;A\subseteq U_0 \subseteq \overline{U_0}\subseteq U_1 \subseteq X\setminus B.\;$ In particular $\overline{U_0}\subseteq U_1$, which is the nesting condition for the pair $(r,s)=(0,1)$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.1 — Base Case: $A\subseteq U_0\subseteq\overline{U_0}\subseteq U_1 = X\setminus B$</div>
+  <canvas id="c_base" width="820" height="260"></canvas>
+  <div class="viz-caption">The first application of normality. We start with $U_1 = X\setminus B$ (the largest open set avoiding $B$), then use normality to "shrink" it: there exists $U_0$ with $A\subseteq U_0\subseteq\overline{U_0}\subseteq U_1$. The diagram shows the nesting as concentric regions — $A$ (red) sits inside $U_0$ (green), whose closure (dashed yellow) is contained in $U_1$, which in turn avoids $B$ (blue). This chain is the foundation for the entire construction.</div>
+</div>
+
+<h3>1.4 &ensp; Proof — Step 2: Inductive Construction on Dyadic Rationals</h3>
+
+<div class="card prf">
+  <div class="tag">Step 2 — Induction on dyadic level</div>
+  <p><strong>Induction hypothesis.</strong> Suppose for some $n\ge 0$ we have constructed open sets $U_r$ for every dyadic rational $r = k/2^n \in [0,1]$ such that
+  $$r < s \;\;\Longrightarrow\;\; \overline{U_r}\subseteq U_s. \tag{$\star$}$$</p>
+
+  <p><strong>Inductive step.</strong> We need to define $U_t$ for each <em>new</em> dyadic $t = (2m+1)/2^{n+1}$, $\;0\le m < 2^n$. Each such $t$ sits between two consecutive old dyadics: $r = m/2^n$ and $s = (m+1)/2^n$, with $t = (r+s)/2$.</p>
+
+  <p>By $(\star)$, we have $\overline{U_r}\subseteq U_s$. Since $\overline{U_r}$ is closed and $X\setminus U_s$ is closed, and these are disjoint, normality gives an open set $U_t$ with
+  $$\overline{U_r} \;\subseteq\; U_t \;\subseteq\; \overline{U_t} \;\subseteq\; U_s.$$</p>
+
+  <p><strong>Verification.</strong> We must check $(\star)$ holds at level $n+1$, i.e., for all dyadics $r' < s'$ at level $\le n+1$, we have $\overline{U_{r'}}\subseteq U_{s'}$. There are three cases:</p>
+  <div class="case">
+    <p>(a) <em>Both $r',s'$ are old (level $\le n$):</em> $(\star)$ holds by induction.</p>
+    <p>(b) <em>$r'$ is old, $s' = t$ is new</em> (or $r'$ is new, $s'$ is old): follows from the chain $\overline{U_r}\subseteq U_t\subseteq\overline{U_t}\subseteq U_s$ and transitivity.</p>
+    <p>(c) <em>Both new:</em> cannot be adjacent at level $n+1$ without an old dyadic between them, so it reduces to (b) by transitivity.</p>
+  </div>
+  <p>By induction, $U_r$ is defined for all $r\in\mathbb{D}\cap[0,1]$, and $(\star)$ holds globally.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.2 — Inductive Construction: click each level to see new $U_r$ inserted</div>
+  <canvas id="c_induct" width="820" height="380"></canvas>
+  <div class="ctrls" id="ctrls_induct">
+    <button class="on" onclick="setLevel(0,this)">Level 0: &thinsp;$U_0,\,U_1$</button>
+    <button onclick="setLevel(1,this)">Level 1: &thinsp;$+\,U_{1/2}$</button>
+    <button onclick="setLevel(2,this)">Level 2: &thinsp;$+\,U_{1/4},\,U_{3/4}$</button>
+    <button onclick="setLevel(3,this)">Level 3: &thinsp;eighths</button>
+    <button onclick="setLevel(4,this)">Level 4: &thinsp;sixteenths</button>
+  </div>
+  <div class="leg">
+    <div class="leg-i"><div class="leg-d" style="background:#f87171"></div>$A$ (closed, $f=0$)</div>
+    <div class="leg-i"><div class="leg-d" style="background:#38bdf8"></div>$B$ (closed, $f=1$)</div>
+    <div class="leg-i"><div class="leg-d" style="background:rgba(52,211,153,.5)"></div>Open sets $U_r$ (nested)</div>
+  </div>
+  <div class="viz-caption"><strong>Click each level</strong> to see the inductive construction unfold. At Level 0 we have only $U_0$ and $U_1$. At Level 1, normality is applied to the pair $(\overline{U_0}, X\setminus U_1)$ to insert $U_{1/2}$ between them. At each subsequent level, new open sets are inserted at dyadic midpoints: $\overline{U_r}\subseteq U_t\subseteq\overline{U_t}\subseteq U_s$ where $t=(r+s)/2$. Notice how the nested regions grow denser, filling the space between $A$ and $B$ with finer and finer "layers." The nesting $r \lt s \Rightarrow \overline{U_r}\subseteq U_s$ is always maintained.</div>
+</div>
+
+<h3>1.5 &ensp; Proof — Step 3: Defining the Function</h3>
+
+<div class="card prf">
+  <div class="tag">Step 3 — Definition of $f$</div>
+  <p>For each $x\in X$, define
+  $$f(x) \;=\; \inf\bigl\{r\in\mathbb{D}\cap[0,1] : x\in U_r\bigr\}.$$
+  We adopt the convention $\inf\varnothing = 1$. (But in fact the set is never empty since $U_1 = X\setminus B$ contains every $x\notin B$, and for $x\in B$ we will have $f(x)=1$ by direct verification.)</p>
+
+  <p><strong>Claim 1:</strong> $f(x)=0$ for all $x\in A$.</p>
+  <p><em>Proof.</em> $A\subseteq U_0$, so $0\in\{r: x\in U_r\}$, hence $f(x)\le 0$. Since $f(x)\ge 0$ trivially, $f(x)=0$.</p>
+
+  <p><strong>Claim 2:</strong> $f(x)=1$ for all $x\in B$.</p>
+  <p><em>Proof.</em> For $r < 1$, we have $U_r\subseteq\overline{U_r}\subseteq U_1 = X\setminus B$, so $x\notin U_r$ for any $r < 1$. Thus $\{r: x\in U_r\}\subseteq\{1\}$ (since $x\notin U_1$ either for $x\in B$), actually $x\in B$ means $x\notin U_1$, so $\{r: x\in U_r\} = \varnothing$ and $f(x)=1$.</p>
+
+  <p><strong>Claim 3:</strong> $0\le f(x)\le 1$ for all $x\in X$.</p>
+  <p><em>Proof.</em> The infimum of a subset of $[0,1]$ (or the empty set with convention 1) lies in $[0,1]$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.3 — The Urysohn Function $f(x) = \inf\{r : x\in U_r\}$</div>
+  <canvas id="c_func" width="820" height="280"></canvas>
+  <div class="srow">
+    <label>Dyadic level $n$ (finer $\Rightarrow$ smoother):</label>
+    <input type="range" id="sl_smooth" min="1" max="10" value="2" oninput="drawFunc()">
+    <span id="lb_smooth">3</span>
+  </div>
+  <div class="viz-caption"><strong>Drag the slider</strong> to change the dyadic level $n$. At level $n$, the function takes $2^n+1$ distinct values $\{0, \frac{1}{2^n}, \frac{2}{2^n}, \ldots, 1\}$, producing a monotone non-decreasing staircase with $2^n$ plateaus between $A$ and $B$. As $n$ increases, the step size $1/2^n$ shrinks and the staircase refines — this is exactly the Urysohn function being built by induction on dyadic level. The horizontal dashed lines mark the dyadic values $k/2^n$. At high levels ($n=10$ gives $1024$ plateaus), the staircase becomes visually indistinguishable from a continuous function — illustrating how the limit $f(x)=\inf\{r: x\in U_r\}$ is continuous. There is no ad-hoc smoothing: the same staircase construction is used at every level.</div>
+</div>
+
+<h3>1.6 &ensp; Proof — Step 4: Continuity of $f$</h3>
+
+<div class="card prf">
+  <div class="tag">Step 4 — Continuity</div>
+  <p>We show $f$ is continuous by proving that the preimage of every subbasic open set is open. The standard subbasis for $[0,1]$ consists of sets $[0,a)$ and $(a,1]$ for $a\in(0,1)$.</p>
+
+  <p><strong>Claim 4:</strong> For every $a\in(0,1)$,
+  $$f^{-1}\bigl([0,a)\bigr) \;=\; \bigcup_{\substack{r\in\mathbb{D}\\[2pt] r \lt a}} U_r.$$</p>
+  <p><em>Proof.</em></p>
+  <div class="case">
+    <p>"$\subseteq$": If $f(x) < a$, then by definition of infimum there exists $r\in\mathbb{D}$ with $r < a$ and $x\in U_r$.</p>
+    <p>"$\supseteq$": If $x\in U_r$ for some $r < a$, then $f(x)\le r < a$, so $f(x)\in[0,a)$.</p>
+  </div>
+  <p>The right side is a union of open sets, hence open. ✓</p>
+
+  <p style="margin-top:16px"><strong>Claim 5:</strong> For every $a\in(0,1)$,
+  $$f^{-1}\bigl((a,1]\bigr) \;=\; \bigcup_{\substack{s\in\mathbb{D}\\[2pt] s \gt a}} \bigl(X\setminus\overline{U_s}\bigr).$$</p>
+  <p><em>Proof.</em></p>
+  <div class="case">
+    <p>"$\supseteq$": If $x\in X\setminus\overline{U_s}$ for some $s > a$, then $x\notin U_s$, so $x\notin U_r$ for any $r\le s$ (by nesting: $U_r\subseteq\overline{U_r}\subseteq U_s$). Hence $f(x)\ge s > a$.</p>
+    <p>"$\subseteq$": Suppose $f(x) > a$. Pick dyadics $s_1, s_2$ with $a < s_1 < s_2 < f(x)$. Since $f(x) > s_2$, we have $x\notin U_{s_2}$. By nesting, $\overline{U_{s_1}}\subseteq U_{s_2}$, so $x\notin\overline{U_{s_1}}$, i.e., $x\in X\setminus\overline{U_{s_1}}$ with $s_1 > a$.</p>
+  </div>
+  <p>Again the right side is a union of open sets (each $X\setminus\overline{U_s}$ is open), hence open. ✓</p>
+
+  <p style="margin-top:16px">Since $f^{-1}(W)$ is open for every subbasic $W$, and the subbasis generates the topology on $[0,1]$, we conclude $f$ is continuous.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.4 — Continuity: preimages of $[0,a)$ and $(a,1]$ are open</div>
+  <canvas id="c_cont" width="820" height="300"></canvas>
+  <div class="srow">
+    <label>Choose $a$:</label>
+    <input type="range" id="sl_a" min="5" max="95" value="40" oninput="drawCont()">
+    <span id="lb_a">0.40</span>
+  </div>
+  <div class="leg">
+    <div class="leg-i"><div class="leg-d" style="background:rgba(167,139,250,.5)"></div>$f^{-1}([0,a))=\bigcup_{r \lt a}U_r$ (open)</div>
+    <div class="leg-i"><div class="leg-d" style="background:rgba(251,146,60,.5)"></div>$f^{-1}((a,1])=\bigcup_{s \gt a}(X\setminus\overline{U_s})$ (open)</div>
+  </div>
+  <div class="viz-caption"><strong>Drag the slider</strong> to move the threshold $a\in(0,1)$. The yellow dashed horizontal line shows $a$, and the two shaded regions show the preimages: the purple region on the left is $f^{-1}([0,a))$ — where $f$ takes values below $a$ — and the orange region on the right is $f^{-1}((a,1])$ — where $f$ takes values above $a$. The key point is that both regions are <em>open</em>, because they are unions of open sets ($U_r$'s and complements of closures $X\setminus\overline{U_s}$). Since these form a subbasis for $[0,1]$, this proves continuity of $f$.</div>
+</div>
+
+<div class="qed">$\blacksquare$</div>
+
+<h3>1.7 &ensp; Remarks</h3>
+<div class="card rmk">
+  <div class="tag">Remarks</div>
+  <p><strong>1. Converse — characterizing normality.</strong> Urysohn's Lemma has a converse: if for every pair of disjoint closed sets in $X$ there exists a continuous $f\colon X\to[0,1]$ separating them, then $X$ is normal. <em>Proof:</em> the sets $f^{-1}([0,1/2))$ and $f^{-1}((1/2,1])$ are disjoint open neighborhoods.</p>
+
+  <p><strong>2. Completely regular spaces.</strong> A $T_1$ space where points and closed sets can be separated by continuous functions is called <em>completely regular</em> ($T_{3\frac12}$, or Tychonoff). Urysohn's Lemma shows: $T_4 \Rightarrow T_{3\frac12}$. The converse fails (Sorgenfrey plane is $T_{3\frac12}$ but not $T_4$).</p>
+
+  <p><strong>3. Why dyadic rationals?</strong> The dyadics $\mathbb{D}$ have two crucial properties: (a) density in $[0,1]$, ensuring $f$ is continuous; (b) each new point is the <em>midpoint</em> of two existing points, so only one application of normality is needed per new point. Using all rationals $\mathbb{Q}\cap[0,1]$ would also work (enumerate them and proceed), but dyadics make the induction cleaner.</p>
+
+  <p><strong>4. The function is not unique.</strong> There are uncountably many Urysohn functions for a given pair $(A,B)$. Different choices of the intermediate open sets yield different functions.</p>
+</div>
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div id="s2" class="sec">
+<h2>2. Urysohn Metrization Theorem</h2>
+
+<div class="card def">
+  <div class="tag">Recall</div>
+  <p>A space $X$ is <span class="hl">second-countable</span> if it has a countable basis $\mathcal{B}=\{B_n\}_{n=1}^\infty$. It is <span class="hl2">regular</span> ($T_3$) if it is $T_1$ and for every closed $C$ and $x\notin C$, there exist disjoint open sets separating them.</p>
+  <p><strong>Fact:</strong> Regular + second-countable $\Rightarrow$ normal. (Proof uses the Lindelöf property.)</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Theorem 2.1 (Urysohn Metrization Theorem, 1925)</div>
+  <p>Every regular, second-countable ($T_3$, second-countable) space is metrizable. More precisely, it embeds homeomorphically into the <strong>Hilbert cube</strong>
+  $$H \;=\; [0,1]^\omega \;=\; \prod_{n=1}^\infty [0,1]$$
+  equipped with the metric $\;\displaystyle d(\mathbf{x},\mathbf{y}) = \sqrt{\sum_{n=1}^\infty \frac{(x_n-y_n)^2}{n^2}}$.</p>
+</div>
+
+<h3>2.1 &ensp; Significance</h3>
+<p>This answers the <em>metrization problem</em> for second-countable spaces: the purely topological conditions of regularity and a countable basis suffice to guarantee a compatible metric. The result covers all second-countable manifolds, all separable Banach spaces (in the norm topology), and all Polish spaces.</p>
+
+<h3>2.2 &ensp; Proof Overview</h3>
+<div class="card int">
+  <div class="tag">Strategy</div>
+  <p>The proof has three main components:</p>
+  <p>(A) Use the countable basis to produce a <strong>countable</strong> family of Urysohn functions $\{g_k\}_{k=1}^\infty$ that collectively <strong>separate points from closed sets</strong>.</p>
+  <p>(B) Define the embedding $F(x) = (g_1(x), g_2(x), \ldots)$ into $[0,1]^\omega$.</p>
+  <p>(C) Verify that $F$ is a homeomorphism onto its image. Since $[0,1]^\omega$ is metrizable, so is $F(X)\cong X$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 2.1 — Eligible Basis Pairs and Urysohn Functions</div>
+  <canvas id="c_basis" width="820" height="320"></canvas>
+  <div class="ctrls" id="ctrls_basis">
+    <button class="on" onclick="setBasisView(0,this)">Basis pairs $(B_n,B_m)$</button>
+    <button onclick="setBasisView(1,this)">Urysohn function $g_k$</button>
+  </div>
+  <div class="viz-caption"><strong>Click the buttons</strong> to switch views. <em>Left view:</em> Three example eligible pairs $(B_n, B_m)$ from the countable basis, where $\overline{B_n}\subseteq B_m$ (inner circle's closure is contained in the outer circle). These are the pairs that generate our Urysohn functions. Since the basis is countable, there are only countably many such pairs. <em>Right view:</em> For each eligible pair, Urysohn's Lemma produces a function $g_k\colon X\to[0,1]$ equal to 0 on $\overline{B_n}$ and 1 on $X\setminus B_m$. Collectively, these functions separate every point from every closed set not containing it.</div>
+</div>
+
+<h3>2.3 &ensp; Proof — Step 1: Constructing the Separating Family</h3>
+
+<div class="card prf">
+  <div class="tag">Step 1 — Countable Urysohn functions</div>
+  <p>Let $\mathcal{B} = \{B_n\}_{n=1}^\infty$ be a countable basis for $X$. Define the <strong>eligible pairs</strong>:
+  $$\mathcal{P} \;=\; \bigl\{(n,m)\in\mathbb{N}\times\mathbb{N} : \overline{B_n}\subseteq B_m\bigr\}.$$
+  Since $\mathcal{P}\subseteq\mathbb{N}\times\mathbb{N}$, it is countable. Enumerate it as $(n_1,m_1),(n_2,m_2),\ldots$</p>
+
+  <p>For each $(n_k,m_k)\in\mathcal{P}$: $\overline{B_{n_k}}$ is closed, $X\setminus B_{m_k}$ is closed, and they are disjoint. By Urysohn's Lemma (Theorem 1.1), there exists a continuous function
+  $$g_k\colon X\to[0,1], \quad g_k\big|_{\overline{B_{n_k}}}\equiv 0, \quad g_k\big|_{X\setminus B_{m_k}}\equiv 1.$$</p>
+
+  <p><strong>Key property.</strong> The family $\{g_k\}$ <em>separates points from closed sets</em>: for any $x\in X$ and any closed $C$ with $x\notin C$, there exists $k$ with $g_k(x)=0$ and $g_k(C)\subseteq\{1\}$.</p>
+
+  <p><em>Why?</em> We apply regularity twice. Since $X\setminus C$ is open and contains $x$:</p>
+  <p><strong>(i)</strong> By regularity, there exists an open set $V$ with $x\in V \subseteq \overline{V}\subseteq X\setminus C$.
+  Since $\mathcal{B}$ is a basis, pick $B_m\in\mathcal{B}$ with $x\in B_m\subseteq V$.</p>
+  <p><strong>(ii)</strong> Now $B_m$ is open and contains $x$. By regularity again, there exists an open set $W$ with $x\in W\subseteq\overline{W}\subseteq B_m$.
+  Pick $B_n\in\mathcal{B}$ with $x\in B_n\subseteq W$. Then
+  $$x \;\in\; B_n \;\subseteq\; \overline{B_n} \;\subseteq\; \overline{W} \;\subseteq\; B_m \;\subseteq\; V \;\subseteq\; X\setminus C.$$
+  So $(n,m)\in\mathcal{P}$, and the corresponding $g_k$ satisfies $g_k(x)=0$ (since $x\in\overline{B_n}$) and $g_k(c)=1$ for all $c\in C$ (since $C\subseteq X\setminus B_m$).</p>
+</div>
+
+<h3>2.4 &ensp; Proof — Step 2: The Embedding</h3>
+
+<div class="card prf">
+  <div class="tag">Step 2 — Defining $F$ and proving it is injective and continuous</div>
+  <p>Define $F\colon X\to [0,1]^\omega$ by
+  $$F(x) \;=\; \bigl(g_1(x),\; g_2(x),\; g_3(x),\;\ldots\bigr).$$</p>
+
+  <p><strong>$F$ is injective.</strong> If $x\neq y$, then $\{y\}$ is closed (by $T_1$) and $x\notin\{y\}$. By the key property, there exists $k$ with $g_k(x)=0$ and $g_k(y)=1$. Hence $F(x)\neq F(y)$.</p>
+
+  <p><strong>$F$ is continuous.</strong> The product topology on $[0,1]^\omega$ is generated by projections $\pi_k\colon [0,1]^\omega\to[0,1]$. Each composition $\pi_k\circ F = g_k$ is continuous.
+  We claim this implies $F$ is continuous:</p>
+
+  <div class="card rmk" style="margin:12px 0">
+    <div class="tag">Fact: Continuity into a product</div>
+    <p>Let $Y = \prod_{\alpha} Y_\alpha$ carry the product topology and let $\pi_\alpha\colon Y\to Y_\alpha$ be the projection maps. A map $F\colon X\to Y$ is continuous if and only if $\pi_\alpha\circ F$ is continuous for every $\alpha$.</p>
+    <p><em>Proof.</em> ($\Rightarrow$) Each $\pi_\alpha$ is continuous, so compositions are continuous.</p>
+    <p>($\Leftarrow$) It suffices to check that $F^{-1}(S)$ is open for every subbasis element $S$ of $Y$. The product topology has subbasis $\{\pi_\alpha^{-1}(V) : V\subseteq Y_\alpha \text{ open}\}$. But
+    $$F^{-1}\bigl(\pi_\alpha^{-1}(V)\bigr) \;=\; (\pi_\alpha\circ F)^{-1}(V),$$
+    which is open in $X$ since $\pi_\alpha\circ F$ is continuous by hypothesis. &square;</p>
+  </div>
+
+  <p>Applying this to our $F = (g_1,g_2,\ldots)$: each $\pi_k\circ F = g_k$ is continuous, so $F$ is continuous.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 2.2 — The Embedding $F\colon X\hookrightarrow [0,1]^\omega$</div>
+  <canvas id="c_embed" width="820" height="380"></canvas>
+  <div class="srow">
+    <label>Coordinate functions shown:</label>
+    <input type="range" id="sl_dim" min="2" max="15" value="4" oninput="drawEmbed()">
+    <span id="lb_dim">4</span>
+  </div>
+  <div class="viz-caption"><strong>Drag the slider</strong> to vary the number of coordinate functions shown. On the left, the abstract space $X$ contains five sample points $x_1,\ldots,x_5$. The map $F=(g_1,g_2,g_3,\ldots)$ sends each point to its sequence of Urysohn function values, landing in the Hilbert cube $[0,1]^\omega$ (right). The dashed ellipse marks $F(X)$, a homeomorphic copy of $X$ inside $[0,1]^\omega$. The radial lines in the Hilbert cube represent the coordinate axes $g_k$. Adding more coordinates (increasing the slider) gives a "higher resolution" embedding that better separates points.</div>
+</div>
+
+<h3>2.5 &ensp; Proof — Step 3: $F$ is an Open Map onto $F(X)$</h3>
+
+<div class="card prf">
+  <div class="tag">Step 3 — $F$ maps open sets to relatively open sets</div>
+  <p>It remains to show $F\colon X\to F(X)$ is an open map, which together with continuity and injectivity makes it a homeomorphism.</p>
+
+  <p>Let $U\subseteq X$ be open and let $x\in U$. We need to find a neighborhood of $F(x)$ in $F(X)$ contained in $F(U)$.</p>
+
+  <p>Since $X\setminus U$ is closed and $x\notin X\setminus U$, the key property gives a $k$ with $g_k(x) = 0$ and $g_k(X\setminus U)\subseteq\{1\}$. Define
+  $$W = \bigl\{z\in F(X) : \pi_k(z) < \tfrac12\bigr\} = F(X)\cap \pi_k^{-1}\bigl([0,\tfrac12)\bigr).$$
+  This is open in $F(X)$, contains $F(x)$ (since $\pi_k(F(x)) = g_k(x) = 0$), and $W\subseteq F(U)$: if $z = F(y)\in W$, then $g_k(y) < 1/2$, which forces $y\in U$ (since $g_k = 1$ on $X\setminus U$).</p>
+
+  <p>Hence $F(U)$ is a neighborhood of each of its points in $F(X)$, so $F(U)$ is open in $F(X)$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 2.3 — Open Map Property: $g_k$ separates $x$ from $X\setminus U$</div>
+  <canvas id="c_open" width="820" height="280"></canvas>
+  <div class="viz-caption">The key argument for showing $F$ is an open map. Given an open set $U\ni x$ in $X$, we find an eligible pair giving a function $g_k$ with $g_k(x)=0$ and $g_k=1$ on $X\setminus U$ (left). In the Hilbert cube, the set $\{\mathbf{z}: \pi_k(\mathbf{z}) \lt 1/2\}$ is an open neighborhood of $F(x)$ contained in $F(U)$ (right, shown by the range bar). This works because any $y$ with $g_k(y) \lt 1/2$ must lie in $U$. Hence $F(U)$ is open in $F(X)$.</div>
+</div>
+
+<h3>2.6 &ensp; Proof — Conclusion</h3>
+
+<div class="card prf">
+  <div class="tag">Step 4 — Conclusion</div>
+  <p>$F\colon X\to F(X)\subseteq [0,1]^\omega$ is:</p>
+  <p>&bull; injective (Step 2), &ensp;&bull; continuous (Step 2), &ensp;&bull; open onto image (Step 3).</p>
+  <p>Therefore $F$ is a <strong>homeomorphism</strong> onto its image. Since $[0,1]^\omega$ is metrizable (by the metric $d$), its subspace $F(X)$ is metrizable, and therefore $X\cong F(X)$ is metrizable.</p>
+</div>
+<div class="qed">$\blacksquare$</div>
+
+<div class="card rmk">
+  <div class="tag">Remarks</div>
+  <p><strong>1. Universality of the Hilbert cube.</strong> The theorem shows that $[0,1]^\omega$ is a <em>universal space</em> for the class of separable metrizable spaces: every such space embeds into it. This is a strong structural result.</p>
+  <p><strong>2. More general metrization.</strong> Without second-countability, one needs the <strong>Nagata–Smirnov Theorem</strong>: $X$ is metrizable $\iff$ $X$ is $T_3$ and has a $\sigma$-locally finite basis. Equivalently, by <strong>Bing's Theorem</strong>, $X$ is metrizable $\iff$ $X$ is $T_3$ and has a $\sigma$-discrete basis.</p>
+  <p><strong>3. Manifolds.</strong> Every topological manifold (Hausdorff, second-countable, locally Euclidean) is metrizable by this theorem, since local Euclideanness implies regularity.</p>
+  <p><strong>4. Converse direction.</strong> Every metrizable space is $T_3$, and every <em>separable</em> metrizable space is second-countable. So the theorem is essentially sharp for separable spaces.</p>
+</div>
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div id="s3" class="sec">
+<h2>3. Tietze Extension Theorem</h2>
+
+<div class="card thm">
+  <div class="tag">Theorem 3.1 (Tietze Extension Theorem)</div>
+  <p>Let $X$ be a normal space and $A\subseteq X$ a closed subspace.</p>
+  <p><strong>(a)</strong> If $f\colon A\to [a,b]$ is continuous, then there exists a continuous $F\colon X\to[a,b]$ with $F\big|_A = f$.</p>
+  <p><strong>(b)</strong> If $f\colon A\to\mathbb{R}$ is continuous, then there exists a continuous $F\colon X\to\mathbb{R}$ with $F\big|_A = f$.</p>
+</div>
+
+<h3>3.1 &ensp; Significance</h3>
+<p>The Tietze Extension Theorem is among the most widely applied results in all of topology. It tells us that continuous functions defined on closed subsets always extend, with no increase in range. This is essential for constructing partitions of unity, extending homotopies (the Homotopy Extension Property), building retractions, and in functional analysis for extending operators. The theorem also characterizes normality: $X$ is normal if and only if it has the Tietze extension property.</p>
+
+<h3>3.2 &ensp; Proof Strategy</h3>
+
+<div class="card int">
+  <div class="tag">Key Idea — The "Thirds Trick" Iterated</div>
+  <p>We prove part (a) for $f\colon A\to[-1,1]$ (the general bounded case $[a,b]$ follows by rescaling). The idea is to build $F = \sum_{n=1}^\infty g_n$ where each $g_n\colon X\to\mathbb{R}$ is constructed by Urysohn's Lemma. At each step, $g_n$ is designed to reduce the maximum error $\|f-\sum_{k=1}^n g_k\|_A$ by a factor of $2/3$.</p>
+  <p>Specifically, given a function $h\colon A\to[-M,M]$, we partition the range into three equal intervals and use Urysohn's Lemma on the two "extreme" preimages to construct $g\colon X\to[-M/3, M/3]$ that approximates $h$ to within $2M/3$ on $A$. This is the <strong>"thirds trick."</strong></p>
+</div>
+
+<h3>3.3 &ensp; Proof — The Core Lemma (Thirds Trick)</h3>
+
+<div class="card prf">
+  <div class="tag">Lemma 3.2 (Thirds Trick)</div>
+  <p>Let $X$ be normal, $A\subseteq X$ closed, and $h\colon A\to[-M,M]$ continuous. Then there exists a continuous $g\colon X\to[-M/3, M/3]$ such that
+  $$\bigl|h(x) - g(x)\bigr| \;\le\; \frac{2M}{3} \quad\text{for all } x\in A.$$</p>
+
+  <p><strong>Proof.</strong> Define
+  $$A^- = h^{-1}\!\bigl([-M, -M/3]\bigr), \qquad A^+ = h^{-1}\!\bigl([M/3, M]\bigr).$$
+  Both are closed in $A$ (preimages of closed sets under $h$), hence closed in $X$ (since $A$ is closed in $X$). They are disjoint.</p>
+
+  <p>By Urysohn's Lemma, there exists a continuous $g\colon X\to[-M/3, M/3]$ with $g(A^-)=\{-M/3\}$ and $g(A^+)=\{M/3\}$.</p>
+
+  <p><strong>Error estimate on $A$:</strong> For $x\in A$, there are three cases:</p>
+  <div class="case">
+    <p><strong>Case 1:</strong> $x\in A^-$, i.e., $h(x)\in[-M,-M/3]$. Then $g(x)=-M/3$, so $h(x)-g(x)\in[-M+M/3,\, 0]=[-2M/3,\, 0]$.</p>
+    <p><strong>Case 2:</strong> $x\in A^+$, i.e., $h(x)\in[M/3,M]$. Then $g(x)=M/3$, so $h(x)-g(x)\in[0,\, 2M/3]$.</p>
+    <p><strong>Case 3:</strong> $h(x)\in[-M/3,M/3]$ and $g(x)\in[-M/3,M/3]$. So $|h(x)-g(x)|\le 2M/3$.</p>
+  </div>
+  <p>In all cases, $|h(x)-g(x)|\le 2M/3$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.1 — The Thirds Trick: partitioning the range and applying Urysohn</div>
+  <canvas id="c_thirds" width="820" height="320"></canvas>
+  <div class="ctrls" id="ctrls_thirds">
+    <button class="on" onclick="setThirds(0,this)">Range partition</button>
+    <button onclick="setThirds(1,this)">Sets $A^-$ and $A^+$</button>
+    <button onclick="setThirds(2,this)">Urysohn function $g$</button>
+    <button onclick="setThirds(3,this)">Residual $h-g$</button>
+  </div>
+  <div class="viz-caption"><strong>Click through the four stages</strong> of the core lemma. <em>Step 1 (Range partition):</em> The range $[-M,M]$ is divided into three equal bands. <em>Step 2 ($A^-$ and $A^+$):</em> The preimages $A^-=h^{-1}([-M,-M/3])$ and $A^+=h^{-1}([M/3,M])$ are identified as disjoint closed sets (highlighted on the curve and on the domain axis). <em>Step 3 (Urysohn):</em> Urysohn's Lemma produces $g\colon X\to[-M/3,M/3]$ with $g(A^-)=-M/3$ and $g(A^+)=M/3$. <em>Step 4 (Residual):</em> The difference $h-g$ on $A$ lies in $[-2M/3,\, 2M/3]$ — the range has shrunk by factor $2/3$. This factor is the engine of convergence.</div>
+</div>
+
+<h3>3.4 &ensp; Proof — Iterating the Thirds Trick</h3>
+
+<div class="card prf">
+  <div class="tag">Step 1 — Building the series</div>
+  <p>Apply Lemma 3.2 iteratively. Start with $h_0 = f\colon A\to[-1,1]$ (so $M_0=1$).</p>
+
+  <p><strong>Step $n=1$:</strong> Apply Lemma 3.2 to $h_0$ with $M=1$. Get $g_1\colon X\to[-1/3,1/3]$ with $\|f-g_1\|_A\le 2/3$.</p>
+
+  <p><strong>Step $n=2$:</strong> Define $h_1 = f - g_1\big|_A\colon A\to[-2/3, 2/3]$. Apply Lemma 3.2 to $h_1$ with $M=2/3$. Get $g_2\colon X\to[-\frac{1}{3}\cdot\frac{2}{3},\, \frac{1}{3}\cdot\frac{2}{3}]$ with $\|h_1 - g_2\|_A \le (2/3)^2$, i.e., $\|f - g_1 - g_2\|_A\le(2/3)^2$.</p>
+
+  <p><strong>Step $n$ (general):</strong> We have $h_{n-1} = f - \sum_{k=1}^{n-1}g_k\big|_A\colon A\to[-(2/3)^{n-1},\, (2/3)^{n-1}]$. Apply Lemma 3.2 with $M = (2/3)^{n-1}$. Get
+  $$g_n\colon X\to\Bigl[-\frac{1}{3}\Bigl(\frac{2}{3}\Bigr)^{n-1},\; \frac{1}{3}\Bigl(\frac{2}{3}\Bigr)^{n-1}\Bigr]$$
+  with
+  $$\Bigl\|f - \sum_{k=1}^n g_k\Bigr\|_A \;\le\; \Bigl(\frac{2}{3}\Bigr)^n. \tag{$\dagger$}$$</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.2 — Successive Approximations: $\sum_{k=1}^n g_k$ converges to $f$ on $A$</div>
+  <canvas id="c_approx" width="820" height="370"></canvas>
+  <div class="ctrls" id="ctrls_approx">
+    <button class="on" onclick="setApprox(0,this)">$f$ only</button>
+    <button onclick="setApprox(1,this)">$n=1$</button>
+    <button onclick="setApprox(2,this)">$n=2$</button>
+    <button onclick="setApprox(3,this)">$n=3$</button>
+    <button onclick="setApprox(5,this)">$n=5$</button>
+    <button onclick="setApprox(8,this)">$n=8$ (converged)</button>
+  </div>
+  <div class="leg">
+    <div class="leg-i"><div class="leg-d" style="background:#f87171"></div>$f$ on $A$</div>
+    <div class="leg-i"><div class="leg-d" style="background:#38bdf8"></div>$F_n = \sum g_k$ on $X$</div>
+    <div class="leg-i"><div class="leg-d" style="background:rgba(251,191,36,.3)"></div>Closed set $A$</div>
+    <div class="leg-i"><div class="leg-d" style="background:rgba(248,113,113,.15)"></div>Error band $\pm(2/3)^n$</div>
+  </div>
+  <div class="viz-caption"><strong>Click the step buttons</strong> to watch the extension being built. The red curve is the original function $f$ defined only on the closed set $A$ (yellow band). At each step $n$, a new Urysohn-type function $g_n$ is added, and the blue curve (partial sum $F_n = \sum_{k=1}^n g_k$) extends over all of $X$ and gets closer to $f$ on $A$. The pink shaded band around $f$ shows the error bound $\pm(2/3)^n$ — notice how it shrinks dramatically with each step. By $n=8$ the blue curve is virtually indistinguishable from $f$ on $A$, while providing a continuous extension over all of $X$.</div>
+</div>
+
+<h3>3.5 &ensp; Proof — Convergence and Properties of $F$</h3>
+
+<div class="card prf">
+  <div class="tag">Step 2 — Uniform convergence of $\sum g_n$ on $X$</div>
+  <p>Write $S_n = \sum_{k=1}^n g_k$ for the partial sums and define $F(x) = \sum_{n=1}^\infty g_n(x)$.
+  Since $\|g_n\|_\infty \le \frac{1}{3}\bigl(\frac{2}{3}\bigr)^{n-1}$, the tail of the series satisfies: for every $x\in X$,
+  $$|F(x) - S_n(x)| \;=\; \Bigl|\sum_{k=n+1}^\infty g_k(x)\Bigr| \;\le\; \sum_{k=n+1}^\infty \frac{1}{3}\Bigl(\frac{2}{3}\Bigr)^{k-1} \;=\; \Bigl(\frac{2}{3}\Bigr)^n \;\xrightarrow{n\to\infty}\; 0.$$
+  This bound is <em>independent of $x$</em>, so $S_n\to F$ uniformly on $X$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Step 3 — $F$ is continuous and extends $f$</div>
+  <p><strong>Continuity.</strong> Each $g_n$ is continuous (constructed via Urysohn's Lemma). A uniform limit of continuous functions on a topological space is continuous. Hence $F$ is continuous.</p>
+
+  <p><strong>$F$ extends $f$.</strong> For $x\in A$, by ($\dagger$), $|f(x) - S_n(x)| \le (2/3)^n \to 0$, so $S_n(x) \to f(x)$. But $S_n \to F$ pointwise (in fact uniformly), so $F(x) = f(x)$ for all $x\in A$.</p>
+
+  <p><strong>$F$ maps into $[-1,1]$.</strong> For all $x\in X$:
+  $$|F(x)| \;\le\; \sum_{n=1}^\infty |g_n(x)| \;\le\; \sum_{n=1}^\infty \frac{1}{3}\Bigl(\frac{2}{3}\Bigr)^{n-1} = 1.$$</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.3 — Error Decay: $\|f - F_n\|_A \le (2/3)^n \to 0$</div>
+  <canvas id="c_error" width="820" height="280"></canvas>
+  <div class="viz-caption">The bars show the maximum error $\|f - F_n\|_A = (2/3)^n$ at each step (blue = completed steps for the currently selected approximation, gray = future steps). The red dashed curve traces the geometric decay. On the right, the small purple bars show the individual bounds $\|g_n\|_\infty \le \frac{1}{3}(\frac{2}{3})^{n-1}$, whose sum equals $1$, confirming $|F(x)|\le 1$ for all $x\in X$.</div>
+</div>
+
+<h3>3.6 &ensp; Proof — Extending to the Unbounded Case</h3>
+
+<div class="card prf">
+  <div class="tag">Step 4 — Part (b): $f\colon A\to\mathbb{R}$</div>
+  <p>Let $\varphi\colon\mathbb{R}\xrightarrow{\;\sim\;}(-1,1)$ be a homeomorphism, e.g., $\varphi(t) = t/(1+|t|)$. Then $\varphi\circ f\colon A\to (-1,1)\subseteq [-1,1]$ is continuous.</p>
+
+  <p>By part (a), extend to $G\colon X\to[-1,1]$ with $G\big|_A = \varphi\circ f$.</p>
+
+  <p><strong>Problem:</strong> $G$ might attain the values $\pm 1$, where $\varphi^{-1}$ is undefined. Define
+  $$C = G^{-1}\bigl(\{-1\}\cup\{1\}\bigr).$$
+  $C$ is closed in $X$ (preimage of a closed set). Moreover $C\cap A = \varnothing$, since $G(A) = \varphi(f(A))\subseteq(-1,1)$.</p>
+
+  <p>Since $A$ is closed and $C$ is closed with $A\cap C = \varnothing$, Urysohn's Lemma gives $\lambda\colon X\to[0,1]$ with $\lambda\big|_A\equiv 1$ and $\lambda\big|_C\equiv 0$.</p>
+
+  <p>Define $\widetilde{G}(x) = \lambda(x)\cdot G(x)$. Then:</p>
+  <div class="case">
+    <p>&bull; $\widetilde{G}$ is continuous (product of continuous functions).</p>
+    <p>&bull; $\widetilde{G}\big|_A = 1\cdot G\big|_A = \varphi\circ f$.</p>
+    <p>&bull; $\widetilde{G}(X)\subseteq (-1,1)$: if $G(x) = \pm1$ then $x\in C$ so $\lambda(x) = 0$ and $\widetilde{G}(x) = 0$. Otherwise $|G(x)| < 1$ so $|\widetilde{G}(x)|\le|G(x)| < 1$.</p>
+  </div>
+  <p>Finally, $F = \varphi^{-1}\circ\widetilde{G}\colon X\to\mathbb{R}$ is continuous and $F\big|_A = \varphi^{-1}\circ\varphi\circ f = f$.</p>
+</div>
+
+<div class="qed">$\blacksquare$</div>
+
+<div class="card rmk">
+  <div class="tag">Remarks</div>
+  <p><strong>1. Converse — characterization of normality.</strong> If $X$ has the Tietze extension property (every continuous $f\colon A\to[0,1]$ on every closed $A$ extends to $X$), then $X$ is normal. <em>Proof:</em> for disjoint closed $A,B$, the function $f(x) = 0$ on $A$, $f(x) = 1$ on $B$ is continuous on the closed set $A\cup B$; any extension is a Urysohn function.</p>
+
+  <p><strong>2. Necessity of closedness.</strong> If $A$ is not closed, extension may fail. Example: $f(x) = \sin(1/x)$ on $(0,1]\subseteq\mathbb{R}$ has no continuous extension to $[0,1]$.</p>
+
+  <p><strong>3. The Dugundji Extension Theorem (1951).</strong> For metric spaces, a much stronger result holds: if $A$ is closed in a metric space $X$ and $E$ is a locally convex TVS, then every continuous $f\colon A\to E$ extends to $F\colon X\to E$ with $F(X)\subseteq\operatorname{conv}(f(A))$. The extension is even a <em>linear</em> operator $C(A,E)\to C(X,E)$.</p>
+
+  <p><strong>4. Applications.</strong></p>
+  <p>&bull; <em>Partitions of unity</em> on paracompact Hausdorff spaces use Tietze/Urysohn type extensions.</p>
+  <p>&bull; <em>CW-complex theory:</em> the Homotopy Extension Property for CW-pairs relies on Tietze-type arguments.</p>
+  <p>&bull; <em>Dimension theory:</em> Lebesgue covering dimension can be characterized using extension properties (Eilenberg–Otto).</p>
+</div>
+
+<h3>3.7 &ensp; Summary: Logical Dependencies</h3>
+<div class="viz">
+  <div class="viz-title">Figure 3.4 — How the Three Theorems Relate</div>
+  <canvas id="c_rel" width="820" height="280"></canvas>
+  <div class="viz-caption">The logical dependency between the three theorems. Urysohn's Lemma is the foundation: it provides the Urysohn functions $g_k$ that serve as coordinate maps in the Metrization Theorem's embedding, and it is invoked at every iteration step of the Tietze Extension Theorem's series construction. The Metrization Theorem and Tietze Extension Theorem are independent of each other, but both depend critically on Urysohn's Lemma.</div>
+</div>
+</div>
+
+<!-- ============================== JAVASCRIPT ============================== -->
+<script>
+// ---- Tabs ----
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  requestAnimationFrame(()=>{
+    if(id==='s0'){drawSep();drawShrink();}
+    if(id==='s1'){drawBase();drawInduct();drawFunc();drawCont();}
+    if(id==='s2'){drawBasis();drawEmbed();drawOpen();}
+    if(id==='s3'){drawThirds();drawApprox();drawError();drawRel();}
+  });
+}
+
+// ---- Helpers ----
+function rr(c,x,y,w,h,r,f,s){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();if(f)c.fill();if(s)c.stroke();}
+function arr(c,x1,y1,x2,y2,col,lw){c.save();c.strokeStyle=col;c.fillStyle=col;c.lineWidth=lw||2;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();const a=Math.atan2(y2-y1,x2-x1);c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-10*Math.cos(a-.35),y2-10*Math.sin(a-.35));c.lineTo(x2-10*Math.cos(a+.35),y2-10*Math.sin(a+.35));c.closePath();c.fill();c.restore();}
+function bg(c,w,h){c.fillStyle='#131b2e';c.fillRect(0,0,w,h);}
+
+// ==== S0: Separation Axioms ====
+let sepView=0;
+function setSepView(v,btn){sepView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');drawSep();}
+
+function drawSep(){
+  const c=document.getElementById('c_sep').getContext('2d'),W=820,H=340;bg(c,W,H);
+  // Top: implication chain
+  const labels=['T\u2081','T\u2082','T\u2083','T\u2084'];
+  const colors=['#38bdf8','#a78bfa','#34d399','#f87171'];
+  const chainY=22;
+  const positions=[650,480,310,140];
+  for(let i=0;i<4;i++){
+    const x=positions[i],active=(i===(3-sepView));
+    c.fillStyle=active?colors[3-i]:'rgba(136,153,180,.4)';
+    c.font=active?'bold 16px system-ui':'14px system-ui';
+    c.fillText(labels[3-i],x,chainY);
+    if(i<3){arr(c,x-8,chainY-5,positions[i+1]+35,chainY-5,active||((3-i-1)<=sepView)?'rgba(136,153,180,.5)':'rgba(136,153,180,.2)',1.5);}
+  }
+
+  // Diagram area
+  const mx=40,my=48,dw=480,dh=H-70;
+  c.strokeStyle='#2a3a5c';c.lineWidth=2;rr(c,mx,my,dw,dh,14,false,true);
+  c.fillStyle='#8899b4';c.font='14px system-ui';c.fillText('X',mx+dw/2-5,my-8);
+
+  // Right panel
+  const rx=550,ry=60;
+
+  if(sepView===0){
+    const px=mx+dw/2,py=my+dh/2;
+    c.fillStyle='rgba(56,189,248,.06)';rr(c,mx+2,my+2,dw-4,dh-4,14,true,false);
+    c.fillStyle='rgba(56,189,248,.7)';c.font='12px system-ui';c.fillText('X \\ {x}  (open)',mx+20,my+25);
+    c.beginPath();c.arc(px,py,6,0,Math.PI*2);c.fillStyle='#f87171';c.fill();
+    c.fillStyle='#f87171';c.font='bold 14px system-ui';c.fillText('x',px+10,py+5);
+    // Right text
+    c.fillStyle='#38bdf8';c.font='bold 14px system-ui';c.fillText('T\u2081 : Frech\u0301et',rx,ry);
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('\u2200 x \u2260 y, \u2203 open U :',rx,ry+30);
+    c.fillText('x \u2208 U,  y \u2209 U',rx,ry+52);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Equivalent:',rx,ry+85);
+    c.fillText('  Every singleton {x} is closed.',rx,ry+105);
+    c.fillText('Key consequence:',rx,ry+138);
+    c.fillText('  Finite sets are closed.',rx,ry+158);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('Example:  cofinite topology is T\u2081',rx,ry+195);
+    c.fillText('but NOT T\u2082.',rx,ry+215);
+  }
+  if(sepView===1){
+    const x1=mx+dw*0.33,x2=mx+dw*0.67,cy=my+dh/2,r=60;
+    c.fillStyle='rgba(248,113,113,.1)';c.strokeStyle='rgba(248,113,113,.6)';c.lineWidth=2;
+    c.beginPath();c.arc(x1,cy,r,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='rgba(56,189,248,.1)';c.strokeStyle='rgba(56,189,248,.6)';
+    c.beginPath();c.arc(x2,cy,r,0,Math.PI*2);c.fill();c.stroke();
+    c.beginPath();c.arc(x1,cy,5,0,Math.PI*2);c.fillStyle='#f87171';c.fill();
+    c.beginPath();c.arc(x2,cy,5,0,Math.PI*2);c.fillStyle='#38bdf8';c.fill();
+    c.fillStyle='#f87171';c.font='bold 14px system-ui';c.fillText('x',x1-15,cy-10);
+    c.fillStyle='#38bdf8';c.fillText('y',x2+10,cy-10);
+    c.fillStyle='rgba(248,113,113,.7)';c.font='12px system-ui';c.fillText('U',x1-r+15,cy-r+20);
+    c.fillStyle='rgba(56,189,248,.7)';c.fillText('V',x2+r-25,cy-r+20);
+    // Right text
+    c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('T\u2082 : Hausdorff',rx,ry);
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('\u2200 x \u2260 y, \u2203 disjoint open U, V:',rx,ry+30);
+    c.fillText('x \u2208 U,  y \u2208 V,  U \u2229 V = \u2205',rx,ry+52);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Key consequence:',rx,ry+85);
+    c.fillText('  Limits of nets are unique.',rx,ry+105);
+    c.fillText('  Compact sets are closed.',rx,ry+125);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('Every metric space is T\u2082.',rx,ry+162);
+    c.fillText('T\u2082 \u21d2 T\u2081 (take U from the pair).',rx,ry+185);
+  }
+  if(sepView===2){
+    const cx1=mx+dw*0.58,cy1=my+dh*0.28,cw=120,ch=dh*0.45;
+    c.fillStyle='rgba(167,139,250,.15)';c.strokeStyle='#a78bfa';c.lineWidth=2;
+    rr(c,cx1,cy1,cw,ch,10,true,true);
+    c.fillStyle='#a78bfa';c.font='bold 13px system-ui';c.fillText('C (closed)',cx1+15,cy1+ch/2+5);
+    const px=mx+dw*0.22,py=my+dh/2;
+    c.beginPath();c.arc(px,py,5,0,Math.PI*2);c.fillStyle='#f87171';c.fill();
+    c.fillStyle='#f87171';c.font='bold 14px system-ui';c.fillText('x',px-15,py+5);
+    c.fillStyle='rgba(248,113,113,.08)';c.strokeStyle='rgba(248,113,113,.5)';c.lineWidth=1.5;c.setLineDash([5,3]);
+    c.beginPath();c.arc(px,py,50,0,Math.PI*2);c.fill();c.stroke();c.setLineDash([]);
+    c.fillStyle='rgba(248,113,113,.6)';c.font='12px system-ui';c.fillText('U',px+38,py-35);
+    c.fillStyle='rgba(56,189,248,.06)';c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=1.5;c.setLineDash([5,3]);
+    rr(c,cx1-12,cy1-12,cw+24,ch+24,14,true,true);c.setLineDash([]);
+    c.fillStyle='rgba(56,189,248,.6)';c.font='12px system-ui';c.fillText('V',cx1+cw+5,cy1-5);
+    // Right text
+    c.fillStyle='#34d399';c.font='bold 14px system-ui';c.fillText('T\u2083 : Regular',rx,ry);
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('T\u2081 + \u2200 x \u2209 C (closed):',rx,ry+30);
+    c.fillText('\u2203 disjoint open U, V with',rx,ry+52);
+    c.fillText('x \u2208 U,  C \u2286 V',rx,ry+74);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Equivalent:',rx,ry+107);
+    c.fillText('  \u2200 x \u2208 W (open), \u2203 open U:',rx,ry+127);
+    c.fillText('  x \u2208 U \u2286 cl(U) \u2286 W',rx,ry+147);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('T\u2083 \u21d2 T\u2082  ({y} is closed, apply).',rx,ry+184);
+    c.fillText('Used in Metrization Thm (Sec. 2).',rx,ry+207);
+  }
+  if(sepView===3){
+    const ax=mx+40,ay=my+dh*0.22,aw=110,ah=dh*0.5;
+    const bx=mx+dw-160,by=my+dh*0.18,bw=110,bh=dh*0.58;
+    c.fillStyle='rgba(248,113,113,.15)';c.strokeStyle='#f87171';c.lineWidth=2;
+    rr(c,ax,ay,aw,ah,10,true,true);
+    c.fillStyle='#f87171';c.font='bold 14px system-ui';c.fillText('A',ax+aw/2-6,ay+ah/2+5);
+    c.fillStyle='rgba(56,189,248,.15)';c.strokeStyle='#38bdf8';c.lineWidth=2;
+    rr(c,bx,by,bw,bh,10,true,true);
+    c.fillStyle='#38bdf8';c.font='bold 14px system-ui';c.fillText('B',bx+bw/2-6,by+bh/2+5);
+    c.fillStyle='rgba(248,113,113,.05)';c.strokeStyle='rgba(248,113,113,.4)';c.lineWidth=1.5;c.setLineDash([5,3]);
+    rr(c,ax-22,ay-18,aw+44,ah+36,14,true,true);c.setLineDash([]);
+    c.fillStyle='rgba(248,113,113,.5)';c.font='12px system-ui';c.fillText('U',ax+aw+12,ay-8);
+    c.fillStyle='rgba(56,189,248,.05)';c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=1.5;c.setLineDash([5,3]);
+    rr(c,bx-22,by-18,bw+44,bh+36,14,true,true);c.setLineDash([]);
+    c.fillStyle='rgba(56,189,248,.5)';c.font='12px system-ui';c.fillText('V',bx-30,by-8);
+    // Right text
+    c.fillStyle='#f87171';c.font='bold 14px system-ui';c.fillText('T\u2084 : Normal',rx,ry);
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('T\u2081 + \u2200 disjoint closed A, B:',rx,ry+30);
+    c.fillText('\u2203 disjoint open U, V with',rx,ry+52);
+    c.fillText('A \u2286 U,  B \u2286 V',rx,ry+74);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Equivalent (Shrinking):',rx,ry+107);
+    c.fillText('  C closed \u2286 W open \u21d2',rx,ry+127);
+    c.fillText('  \u2203 V: C \u2286 V \u2286 cl(V) \u2286 W',rx,ry+147);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('T\u2084 \u21d2 T\u2083  ({x} is closed, apply).',rx,ry+184);
+    c.fillText('Used in Urysohn + Tietze (Sec. 1,3).',rx,ry+207);
+  }
+}
+
+let shrinkView=0;
+function setShrinkView(v,btn){shrinkView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');drawShrink();}
+
+function drawShrink(){
+  const c=document.getElementById('c_shrink').getContext('2d'),W=820,H=300;bg(c,W,H);
+  const mx=60,my=40,w=700,h=H-90;
+  // X
+  c.strokeStyle='#2a3a5c';c.lineWidth=2;rr(c,mx,my,w,h,14,false,true);
+  c.fillStyle='#8899b4';c.font='14px system-ui';c.fillText('X',mx+w/2-5,my-10);
+  // W (open)
+  const wx=mx+30,wy=my+15,ww=400,wh=h-30;
+  c.fillStyle='rgba(52,211,153,.06)';c.strokeStyle='rgba(52,211,153,.5)';c.lineWidth=2;
+  rr(c,wx,wy,ww,wh,12,true,true);
+  c.fillStyle='rgba(52,211,153,.8)';c.font='bold 13px system-ui';c.fillText('W (open)',wx+ww-80,wy+18);
+  // C (closed) inside W
+  const cx=wx+30,cy2=wy+40,cw=140,ch=wh-80;
+  c.fillStyle='rgba(248,113,113,.15)';c.strokeStyle='#f87171';c.lineWidth=2;
+  rr(c,cx,cy2,cw,ch,10,true,true);
+  c.fillStyle='#f87171';c.font='bold 14px system-ui';c.fillText('C',cx+cw/2-6,cy2+ch/2+5);
+  // X\W (closed)
+  c.fillStyle='rgba(167,139,250,.1)';c.strokeStyle='rgba(167,139,250,.5)';c.lineWidth=1.5;
+  rr(c,mx+w-180,my+20,160,h-40,10,true,true);
+  c.fillStyle='rgba(167,139,250,.7)';c.font='12px system-ui';c.fillText('X \\ W (closed)',mx+w-165,my+40);
+
+  if(shrinkView>=1){
+    // V around C
+    const vx=cx-18,vy=cy2-18,vw=cw+36,vh=ch+36;
+    c.fillStyle='rgba(251,191,36,.08)';c.strokeStyle='rgba(251,191,36,.6)';c.lineWidth=2;
+    rr(c,vx,vy,vw,vh,12,true,true);
+    c.fillStyle='rgba(251,191,36,.8)';c.font='bold 13px system-ui';c.fillText('V',vx+vw-15,vy+18);
+    // U' around X\W
+    c.fillStyle='rgba(56,189,248,.06)';c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=1.5;c.setLineDash([5,3]);
+    rr(c,mx+w-200,my+8,180,h-16,12,true,true);c.setLineDash([]);
+    c.fillStyle='rgba(56,189,248,.6)';c.font='12px system-ui';c.fillText("U'",mx+w-195,my+h-15);
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';c.fillText("V \u2229 U' = \u2205",mx+w/2-30,my+h+30);
+  }
+  if(shrinkView>=2){
+    // cl(V) shown
+    const clx=cx-28,cly=cy2-28,clw=cw+56,clh=ch+56;
+    c.fillStyle='rgba(251,191,36,.04)';c.strokeStyle='rgba(251,191,36,.35)';c.lineWidth=1.5;c.setLineDash([3,3]);
+    rr(c,clx,cly,clw,clh,14,true,true);c.setLineDash([]);
+    c.fillStyle='rgba(251,191,36,.6)';c.font='12px system-ui';c.fillText('cl(V)',clx+clw-35,cly+12);
+    // chain
+    c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
+    c.fillText('C  \u2286  V  \u2286  cl(V)  \u2286  W',mx+w/2-90,my+h+30);
+  }
+}
+
+// ==== S1: Urysohn ====
+
+// Fig 1.1 Base case
+function drawBase(){
+  const c=document.getElementById('c_base').getContext('2d'),W=820,H=260;bg(c,W,H);
+  const mx=50,my=30,w=W-100,h=H-60;
+  c.strokeStyle='#2a3a5c';c.lineWidth=2;c.strokeRect(mx,my,w,h);
+  c.fillStyle='#8899b4';c.font='14px system-ui';c.fillText('X',mx+w/2-5,my-8);
+  // B = X \ U1
+  c.fillStyle='rgba(56,189,248,.12)';c.strokeStyle='#38bdf8';c.lineWidth=2;
+  rr(c,mx+w-100,my+15,85,h-30,10,true,true);
+  c.fillStyle='#38bdf8';c.font='bold 14px system-ui';c.fillText('B',mx+w-65,my+h/2+5);
+  // U1 = X\B
+  c.fillStyle='rgba(52,211,153,.06)';c.strokeStyle='rgba(52,211,153,.5)';c.setLineDash([5,4]);c.lineWidth=1.5;
+  rr(c,mx+5,my+5,w-110,h-10,10,true,true);c.setLineDash([]);
+  c.fillStyle='rgba(52,211,153,.8)';c.font='13px system-ui';c.fillText('U₁ = X \\ B',mx+w-220,my+20);
+  // closure U0
+  c.fillStyle='rgba(251,191,36,.06)';c.strokeStyle='rgba(251,191,36,.4)';c.setLineDash([3,3]);c.lineWidth=1.5;
+  rr(c,mx+10,my+25,280,h-50,10,true,true);c.setLineDash([]);
+  c.fillStyle='rgba(251,191,36,.7)';c.font='12px system-ui';c.fillText('cl(U₀)',mx+230,my+h-35);
+  // U0
+  c.fillStyle='rgba(52,211,153,.1)';c.strokeStyle='rgba(52,211,153,.7)';c.lineWidth=2;
+  rr(c,mx+15,my+40,230,h-80,10,true,true);
+  c.fillStyle='rgba(52,211,153,.9)';c.font='13px system-ui';c.fillText('U₀',mx+200,my+55);
+  // A
+  c.fillStyle='rgba(248,113,113,.2)';c.strokeStyle='#f87171';c.lineWidth=2;
+  rr(c,mx+30,my+55,120,h-110,10,true,true);
+  c.fillStyle='#f87171';c.font='bold 14px system-ui';c.fillText('A',mx+80,my+h/2+5);
+  // chain
+  c.fillStyle='#e2e8f0';c.font='13px system-ui';c.textAlign='center';
+  c.fillText('A  ⊆  U₀  ⊆  cl(U₀)  ⊆  U₁  =  X \\ B',W/2,H-10);
+  c.textAlign='start';
+}
+
+// Fig 1.2 Inductive construction
+let curLevel=0;
+function setLevel(l,btn){curLevel=l;btn.closest('.ctrls').querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');drawInduct();}
+function getDy(lv){const s=new Set([0,1]);for(let l=1;l<=lv;l++){const a=[...s].sort((a,b)=>a-b);for(let i=0;i<a.length-1;i++)s.add((a[i]+a[i+1])/2);}return[...s].sort((a,b)=>a-b);}
+function drawInduct(){
+  const c=document.getElementById('c_induct').getContext('2d'),W=820,H=380;bg(c,W,H);
+  const mx=50,my=30,w=W-100,h=H-80;
+  c.strokeStyle='#2a3a5c';c.lineWidth=2;c.strokeRect(mx,my,w,h);
+  c.fillStyle='#8899b4';c.font='14px system-ui';c.fillText('X',mx+w/2-5,my-8);
+  // A
+  const ax=mx+25,ay=my+h*.15,aw=75,ah=h*.7;
+  c.fillStyle='rgba(248,113,113,.2)';c.strokeStyle='#f87171';c.lineWidth=2;rr(c,ax,ay,aw,ah,10,true,true);
+  c.fillStyle='#f87171';c.font='bold 15px system-ui';c.fillText('A',ax+aw/2-6,ay+ah/2+5);
+  // B
+  const bx=mx+w-100,by=my+h*.1,bw=75,bh=h*.8;
+  c.fillStyle='rgba(56,189,248,.15)';c.strokeStyle='#38bdf8';c.lineWidth=2;rr(c,bx,by,bw,bh,10,true,true);
+  c.fillStyle='#38bdf8';c.font='bold 15px system-ui';c.fillText('B',bx+bw/2-6,by+bh/2+5);
+  // Nested U_r
+  const dy=getDy(curLevel);
+  for(let i=dy.length-1;i>=0;i--){
+    const r=dy[i];
+    const hue=130+r*90, alpha=.07+.05*(1-r);
+    c.fillStyle=`hsla(${hue},55%,55%,${alpha})`;c.strokeStyle=`hsla(${hue},55%,55%,.45)`;
+    c.lineWidth=1.5;c.setLineDash([4,3]);
+    const lx=ax-8*(1-r*.4), ly=ay-12*(1-r*.25);
+    const ext=ax+aw+(bx-ax-aw)*r*.92+15;
+    const rw=ext-lx, rh=ah+24*(1-r*.25);
+    rr(c,lx,ly,rw,rh,14,true,true);c.setLineDash([]);
+    c.fillStyle=`hsla(${hue},55%,72%,.85)`;c.font='12px system-ui';
+    const lbl=r===0?'U₀':r===1?'U₁':'U('+frac(r)+')';
+    c.fillText(lbl,lx+rw-35,ly-4);
+  }
+  // Nesting label
+  c.fillStyle='#8899b4';c.font='13px system-ui';c.textAlign='center';
+  c.fillText(`Level ${curLevel}: ${dy.length} open sets — r < s  ⟹  cl(Uᵣ) ⊆ Uₛ`,W/2,H-20);
+  c.textAlign='start';
+}
+function frac(r){for(let d=2;d<=32;d*=2){const n=r*d;if(Math.abs(n-Math.round(n))<.001)return Math.round(n)+'/'+d;}return r.toFixed(3);}
+
+// Fig 1.3 — Monotone dyadic staircase approximation of Urysohn function
+// At level n, the function takes 2^n + 1 values {0, 1/2^n, 2/2^n, ..., 1}
+// and is piecewise constant on 2^n + 1 equal subintervals of the transition zone.
+// As n → ∞ the staircase converges uniformly to a continuous monotone function.
+// No sigmoid or other ad-hoc limit: we always use the same staircase formula.
+function urysohnApprox(s, n) {
+  // s in [0,1] parameterizes the transition zone between A and B.
+  // At level n: 2^n + 1 plateaus at values k/2^n, k = 0,...,2^n.
+  const N = Math.pow(2, n);
+  const nPlateaus = N + 1;
+  const plateauW = 1 / nPlateaus;
+  // At high levels (n>=10), plateaus are so narrow that the ramp between them
+  // makes the function look continuous — which is exactly the point.
+  const rampFrac = 0.35;
+  const rampW = plateauW * rampFrac;
+  const idx = Math.min(Math.floor(s / plateauW), nPlateaus - 1);
+  const localS = s - idx * plateauW;
+  const v0 = idx / N;
+  const v1 = Math.min((idx + 1) / N, 1);
+  const flatEnd = plateauW - rampW;
+  if (localS <= flatEnd) return v0;
+  const t = (localS - flatEnd) / rampW;
+  const smooth = t * t * (3 - 2 * t);
+  return v0 + (v1 - v0) * smooth;
+}
+
+function drawFunc(){
+  const c=document.getElementById('c_func').getContext('2d'),W=820,H=280;bg(c,W,H);
+  const mx=65,my=25,w=W-95,h=H-65;
+  const level=parseInt(document.getElementById('sl_smooth').value);document.getElementById('lb_smooth').textContent=level;
+  // Axes
+  c.strokeStyle='#2a3a5c';c.lineWidth=1;c.beginPath();c.moveTo(mx,my);c.lineTo(mx,my+h);c.lineTo(mx+w,my+h);c.stroke();
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('1',mx-16,my+8);c.fillText('0',mx-16,my+h+4);c.fillText('X',mx+w/2,my+h+30);
+  c.fillText('f(x)',mx-45,my+h/2);
+  // Background grid at 0.25 increments
+  c.strokeStyle='#1c2640';c.lineWidth=.5;c.beginPath();for(let i=1;i<=3;i++){const yy=my+h*i/4;c.moveTo(mx,yy);c.lineTo(mx+w,yy);}c.stroke();
+  const aE=.12,bS=.88;
+  // A and B regions
+  c.fillStyle='rgba(248,113,113,.08)';c.fillRect(mx,my,w*aE,h);
+  c.fillStyle='rgba(56,189,248,.08)';c.fillRect(mx+w*bS,my,w*(1-bS),h);
+  c.fillStyle='#f87171';c.font='bold 12px system-ui';c.fillText('A',mx+w*aE/2-4,my+h+18);
+  c.fillStyle='#38bdf8';c.fillText('B',mx+w*(.5+bS/2)-4,my+h+18);
+  // Dyadic value grid lines (horizontal)
+  if(level<=7){
+    const N=Math.pow(2,level);
+    c.strokeStyle='rgba(167,139,250,.18)';c.lineWidth=.7;c.setLineDash([3,4]);
+    for(let k=1;k<N;k++){
+      const v=k/N, yy=my+h*(1-v);
+      c.beginPath();c.moveTo(mx,yy);c.lineTo(mx+w,yy);c.stroke();
+      // Label
+      c.fillStyle='rgba(167,139,250,.5)';c.font='10px system-ui';c.fillText(k+'/'+N,mx+w+4,yy+3);
+    }
+    c.setLineDash([]);
+  }
+  // Draw the monotone staircase curve
+  c.beginPath();c.strokeStyle='#a78bfa';c.lineWidth=3;
+  for(let px=0;px<=w;px++){
+    const t=px/w;
+    let val;
+    if(t<=aE) val=0;
+    else if(t>=bS) val=1;
+    else {
+      const s=(t-aE)/(bS-aE); // normalized position in transition zone
+      val = urysohnApprox(s, level);
+    }
+    const x=mx+px, y=my+h*(1-val);
+    if(px===0)c.moveTo(x,y); else c.lineTo(x,y);
+  }
+  c.stroke();
+  // Info label
+  const N=Math.pow(2,level);
+  c.fillStyle='#a78bfa';c.font='bold 12px system-ui';
+  c.fillText('Level '+level+':  '+(N+1)+' dyadic values,  '+N+' plateaus',mx+10,my+15);
+  c.fillStyle='#8899b4';c.font='11px system-ui';
+  c.fillText('Values: k/'+N+' for k = 0, 1, ..., '+N+'    (step size = 1/'+N+')',mx+10,my+30);
+}
+
+// Fig 1.4 Continuity
+function drawCont(){
+  const c=document.getElementById('c_cont').getContext('2d'),W=820,H=300;bg(c,W,H);
+  const mx=65,my=25,w=W-95,h=H-70;
+  const a=parseInt(document.getElementById('sl_a').value)/100;document.getElementById('lb_a').textContent=a.toFixed(2);
+  c.strokeStyle='#2a3a5c';c.lineWidth=1;c.beginPath();c.moveTo(mx,my);c.lineTo(mx,my+h);c.lineTo(mx+w,my+h);c.stroke();
+  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('1',mx-16,my+8);c.fillText('0',mx-16,my+h+4);
+  // Shaded preimage regions
+  const aE=.12,bS=.88;
+  // Use a high-level staircase (level 10 = 1024 plateaus) as the "limit" Urysohn function
+  // This is the same construction as Fig 1.3, just at a fine enough level to look continuous.
+  const contLevel = 10;
+  function fVal(t) {
+    if(t<=aE) return 0;
+    if(t>=bS) return 1;
+    return urysohnApprox((t-aE)/(bS-aE), contLevel);
+  }
+  // f^{-1}([0,a)) and f^{-1}((a,1])
+  for(let px=0;px<=w;px++){const t=px/w; const val=fVal(t);
+  if(val<a){c.fillStyle='rgba(167,139,250,.12)';c.fillRect(mx+px,my,1,h);}
+  if(val>a){c.fillStyle='rgba(251,146,60,.12)';c.fillRect(mx+px,my,1,h);}}
+  // Horizontal line at a
+  const ya=my+h*(1-a);
+  c.strokeStyle='#fbbf24';c.lineWidth=1.5;c.setLineDash([6,4]);c.beginPath();c.moveTo(mx,ya);c.lineTo(mx+w,ya);c.stroke();c.setLineDash([]);
+  c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText('a = '+a.toFixed(2),mx+w+5,ya+4);
+  // Function curve (same staircase, no sigmoid)
+  c.beginPath();c.strokeStyle='#a78bfa';c.lineWidth=3;
+  for(let px=0;px<=w;px++){const t=px/w; const val=fVal(t);
+  const x=mx+px,y=my+h*(1-val);if(px===0)c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();
+  // Labels
+  c.fillStyle='#a78bfa';c.font='13px system-ui';c.textAlign='center';
+  c.fillText('f⁻¹([0, a))  — open',mx+w*.2,my+h+22);
+  c.fillStyle='#fb923c';c.fillText('f⁻¹((a, 1])  — open',mx+w*.8,my+h+22);
+  c.textAlign='start';
+}
+
+// ==== S2: Metrization ====
+let basisView=0;
+function setBasisView(v,btn){basisView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');drawBasis();}
+function drawBasis(){
+  const c=document.getElementById('c_basis').getContext('2d'),W=820,H=320;bg(c,W,H);
+  const cx=200,cy=H/2;
+  // Space outline
+  c.fillStyle='rgba(167,139,250,.06)';c.strokeStyle='#a78bfa';c.lineWidth=2;
+  c.beginPath();c.ellipse(cx,cy,160,130,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 15px system-ui';c.fillText('X',cx-5,cy-140);
+
+  if(basisView===0){
+    // Draw nested basis elements
+    const pairs=[[70,120,'B₁','B₃'],[0,-50,'B₂','B₅'],[-60,40,'B₄','B₇']];
+    pairs.forEach(([dx,dy,inner,outer],i)=>{
+      const hue=[180,280,130][i];
+      c.fillStyle=`hsla(${hue},50%,50%,.08)`;c.strokeStyle=`hsla(${hue},50%,55%,.5)`;c.lineWidth=1.5;
+      c.beginPath();c.ellipse(cx+dx,cy+dy,80,55,0,0,Math.PI*2);c.fill();c.stroke();
+      c.fillStyle=`hsla(${hue},50%,65%,.8)`;c.font='12px system-ui';c.fillText(outer,cx+dx+50,cy+dy-40);
+      c.fillStyle=`hsla(${hue},50%,50%,.15)`;c.strokeStyle=`hsla(${hue},50%,55%,.7)`;c.lineWidth=2;
+      c.beginPath();c.ellipse(cx+dx,cy+dy,40,28,0,0,Math.PI*2);c.fill();c.stroke();
+      c.fillStyle=`hsla(${hue},50%,65%,.9)`;c.font='bold 12px system-ui';c.fillText(inner,cx+dx-10,cy+dy+5);
+      c.fillStyle=`hsla(${hue},50%,55%,.6)`;c.font='11px system-ui';c.fillText('cl('+inner+') ⊆ '+outer,cx+dx+50,cy+dy-25);
+    });
+    // Right side explanation
+    c.fillStyle='#e2e8f0';c.font='14px system-ui';
+    const tx=440,ty=50;
+    c.fillText('Eligible pairs:',tx,ty);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('𝒫 = { (n,m) ∈ ℕ×ℕ : cl(Bₙ) ⊆ Bₘ }',tx,ty+28);
+    c.fillText('Since 𝒫 ⊆ ℕ×ℕ, it is countable.',tx,ty+56);
+    c.fillText('Enumerate as (n₁,m₁), (n₂,m₂), …',tx,ty+84);
+    c.fillStyle='#fbbf24';c.font='13px system-ui';
+    c.fillText('For each pair → one Urysohn function gₖ',tx,ty+120);
+    c.fillText('gₖ|cl(Bₙ) ≡ 0,   gₖ|X\\Bₘ ≡ 1',tx,ty+148);
+  } else {
+    // Show a single Urysohn function
+    c.fillStyle='rgba(56,189,248,.1)';c.strokeStyle='#38bdf8';c.lineWidth=2;
+    c.beginPath();c.ellipse(cx+30,cy,90,65,0,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='#38bdf8';c.font='12px system-ui';c.fillText('Bₘ',cx+90,cy-50);
+    c.fillStyle='rgba(248,113,113,.15)';c.strokeStyle='#f87171';c.lineWidth=2;
+    c.beginPath();c.ellipse(cx+30,cy,45,32,0,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='#f87171';c.font='bold 12px system-ui';c.fillText('cl(Bₙ)',cx+10,cy+5);
+    c.fillStyle='#8899b4';c.font='11px system-ui';c.fillText('gₖ = 0',cx+10,cy+20);c.fillText('gₖ = 1',cx+130,cy+5);
+    // Arrow
+    arr(c,380,cy,480,cy,'#fbbf24');
+    c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('gₖ',420,cy-15);
+    // Target [0,1]
+    c.strokeStyle='#38bdf8';c.lineWidth=2;c.beginPath();c.moveTo(500,cy-80);c.lineTo(500,cy+80);c.stroke();
+    c.fillStyle='#f87171';c.beginPath();c.arc(500,cy-80,6,0,Math.PI*2);c.fill();c.fillText('0',510,cy-76);
+    c.fillStyle='#38bdf8';c.beginPath();c.arc(500,cy+80,6,0,Math.PI*2);c.fill();c.fillText('1',510,cy+84);
+    c.fillStyle='#8899b4';c.font='14px system-ui';c.fillText('[0, 1]',510,cy+5);
+    // Explanation
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('Urysohn function for the pair (Bₙ, Bₘ):',550,50);
+    c.fillStyle='#8899b4';c.fillText('gₖ : X → [0, 1]',550,78);c.fillText('gₖ = 0 on cl(Bₙ)',550,106);c.fillText('gₖ = 1 on X \\ Bₘ',550,134);
+    c.fillStyle='#fbbf24';c.fillText('These collectively separate',550,175);c.fillText('points from closed sets.',550,200);
+  }
+}
+
+function drawEmbed(){
+  const c=document.getElementById('c_embed').getContext('2d'),W=820,H=380;bg(c,W,H);
+  const dim=parseInt(document.getElementById('sl_dim').value);document.getElementById('lb_dim').textContent=dim;
+  const cy=H/2;
+  // X
+  c.fillStyle='rgba(167,139,250,.08)';c.strokeStyle='#a78bfa';c.lineWidth=2;
+  c.beginPath();c.ellipse(150,cy,110,130,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 15px system-ui';c.fillText('X',145,cy-140);
+  const pts=[{x:120,y:cy-55},{x:165,y:cy-15},{x:130,y:cy+30},{x:175,y:cy+65},{x:140,y:cy+95}];
+  pts.forEach((p,i)=>{c.beginPath();c.arc(p.x,p.y,4,0,Math.PI*2);c.fillStyle='#a78bfa';c.fill();c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('x'+'₁₂₃₄₅'[i],p.x+8,p.y+4);});
+  // Arrow
+  c.strokeStyle='#fbbf24';c.lineWidth=2;c.setLineDash([6,4]);c.beginPath();c.moveTo(275,cy-8);c.lineTo(410,cy-8);c.stroke();c.setLineDash([]);
+  c.beginPath();c.moveTo(410,cy-8);c.lineTo(400,cy-16);c.lineTo(400,cy);c.closePath();c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='bold 14px system-ui';c.fillText('F = (g₁, g₂, …)',300,cy-25);
+  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('homeomorphism',315,cy+15);c.fillText('onto image',325,cy+32);
+  // Hilbert cube
+  const rx=600,ry=cy,sz=120;
+  c.strokeStyle='#38bdf8';c.lineWidth=2;c.beginPath();
+  for(let i=0;i<=40;i++){const a=(i/40)*Math.PI*2,r=sz*(.8+.2*Math.cos(a*3));c.lineTo(rx+Math.cos(a)*r,ry+Math.sin(a)*r*.7);}
+  c.closePath();c.fillStyle='rgba(56,189,248,.05)';c.fill();c.stroke();
+  // Axes
+  for(let i=0;i<Math.min(dim,8);i++){const a=i*Math.PI/Math.min(dim,8)-Math.PI/2;c.strokeStyle='rgba(56,189,248,.2)';c.lineWidth=1;c.beginPath();c.moveTo(rx,ry);c.lineTo(rx+Math.cos(a)*sz,ry+Math.sin(a)*sz*.7);c.stroke();
+  if(i<6){c.fillStyle='#5a7daa';c.font='11px system-ui';c.fillText('g'+(i+1),rx+Math.cos(a)*(sz+15),ry+Math.sin(a)*(sz+15)*.7+4);}}
+  c.fillStyle='#38bdf8';c.font='bold 15px system-ui';c.fillText('[0,1]^ω',rx-22,ry-sz-15);
+  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Hilbert Cube',rx-35,ry-sz);
+  // F(X)
+  const ep=[{x:rx-30,y:ry-25},{x:rx+15,y:ry-5},{x:rx-15,y:ry+20},{x:rx+25,y:ry+40},{x:rx-5,y:ry+60}];
+  c.fillStyle='#a78bfa';ep.forEach(p=>{c.beginPath();c.arc(p.x,p.y,3.5,0,Math.PI*2);c.fill();});
+  c.strokeStyle='rgba(167,139,250,.4)';c.lineWidth=1.5;c.setLineDash([3,3]);c.beginPath();c.ellipse(rx,ry+15,50,60,.15,0,Math.PI*2);c.stroke();c.setLineDash([]);
+  c.fillStyle='#a78bfa';c.font='12px system-ui';c.fillText('F(X) ≅ X',rx+55,ry+15);
+}
+
+function drawOpen(){
+  const c=document.getElementById('c_open').getContext('2d'),W=820,H=280;bg(c,W,H);
+  const mx=50,cy=H/2;
+  // Space X with open set U
+  c.fillStyle='rgba(167,139,250,.06)';c.strokeStyle='#a78bfa';c.lineWidth=2;
+  c.beginPath();c.ellipse(200,cy,160,110,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('X',195,cy-118);
+  // U
+  c.fillStyle='rgba(52,211,153,.08)';c.strokeStyle='rgba(52,211,153,.6)';c.lineWidth=2;
+  c.beginPath();c.ellipse(170,cy+10,80,55,-.2,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#34d399';c.font='13px system-ui';c.fillText('U (open)',140,cy-50);
+  // x in U
+  c.beginPath();c.arc(160,cy+10,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText('x',150,cy);
+  // X\U
+  c.fillStyle='rgba(248,113,113,.3)';c.font='12px system-ui';c.fillText('X \\ U',280,cy+15);
+  c.fillText('gₖ = 1 here',270,cy+35);
+  c.fillStyle='rgba(52,211,153,.5)';c.fillText('gₖ(x) = 0',130,cy+35);
+  // Arrow to [0,1]
+  arr(c,380,cy,470,cy,'#fbbf24');c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('gₖ',415,cy-15);
+  // Range bar
+  c.strokeStyle='#475569';c.lineWidth=2;c.beginPath();c.moveTo(500,cy-90);c.lineTo(500,cy+90);c.stroke();
+  c.fillStyle='rgba(52,211,153,.15)';c.fillRect(490,cy-90,20,90);
+  c.fillStyle='rgba(248,113,113,.15)';c.fillRect(490,cy,20,90);
+  c.strokeStyle='#fbbf24';c.lineWidth=2;c.setLineDash([4,3]);c.beginPath();c.moveTo(485,cy);c.lineTo(515,cy);c.stroke();c.setLineDash([]);
+  c.fillStyle='#fbbf24';c.font='11px system-ui';c.fillText('½',517,cy+4);
+  c.fillStyle='#34d399';c.font='11px system-ui';c.fillText('0',517,cy-85);c.fillStyle='#f87171';c.fillText('1',517,cy+88);
+  // Explanation
+  c.fillStyle='#e2e8f0';c.font='13px system-ui';
+  c.fillText('The set { z ∈ F(X) : πₖ(z) < ½ }',560,60);
+  c.fillText('is open in F(X), contains F(x),',560,85);
+  c.fillText('and is contained in F(U).',560,110);
+  c.fillStyle='#8899b4';c.fillText('Because if gₖ(y) < ½ then y ∈ U',560,145);
+  c.fillText('(since gₖ = 1 on X \\ U).',560,170);
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('⟹  F is an open map onto F(X)',560,210);
+}
+
+// ==== S3: Tietze ====
+let thirdsView=0;
+function setThirds(v,btn){thirdsView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');drawThirds();}
+// Helper: compute h(s) for the Tietze example
+function thirdsH(s){ return .7*Math.sin(2.5*Math.PI*s)+.3*Math.cos(4*Math.PI*s)-.2*s; }
+// Helper: compute g(s) — Urysohn approximation.
+// g = -1/3 on A⁻ = {h ≤ -1/3}, g = 1/3 on A⁺ = {h ≥ 1/3},
+// and smoothly transitions in [-1/3, 1/3] elsewhere.
+function thirdsG(s){
+  const hv = thirdsH(s);
+  if(hv <= -1/3) return -1/3;
+  if(hv >= 1/3) return 1/3;
+  // In the middle band: g varies continuously in [-1/3, 1/3].
+  // Use a smooth interpolation tied to h's value (illustrative).
+  return hv;  // simplest: g tracks h in the middle band
+}
+
+function drawThirds(){
+  const c=document.getElementById('c_thirds').getContext('2d'),W=820,H=320;bg(c,W,H);
+  const mx=70,my=30,w=350,h=H-80,midY=my+h/2;
+  // Axes
+  c.strokeStyle='#2a3a5c';c.lineWidth=1;c.beginPath();c.moveTo(mx,my);c.lineTo(mx,my+h);c.lineTo(mx+w,my+h);c.stroke();
+  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('M',mx-20,my+5);c.fillText('0',mx-14,midY+4);c.fillText('-M',mx-24,my+h+4);c.fillText('A',mx+w/2,my+h+22);
+  // Range partition lines (always shown)
+  const y1=my+h/3, y2=my+2*h/3;
+  c.strokeStyle='rgba(251,191,36,.5)';c.setLineDash([4,3]);c.beginPath();c.moveTo(mx,y1);c.lineTo(mx+w,y1);c.moveTo(mx,y2);c.lineTo(mx+w,y2);c.stroke();c.setLineDash([]);
+  c.fillStyle='#fbbf24';c.font='11px system-ui';c.fillText('M/3',mx-30,y1+4);c.fillText('-M/3',mx-38,y2+4);
+  // Range bands
+  c.fillStyle='rgba(248,113,113,.06)';c.fillRect(mx,my,w,h/3);
+  c.fillStyle='rgba(52,211,153,.06)';c.fillRect(mx,my+h/3,w,h/3);
+  c.fillStyle='rgba(56,189,248,.06)';c.fillRect(mx,my+2*h/3,w,h/3);
+  if(thirdsView===0){
+    c.fillStyle='#f87171';c.font='11px system-ui';c.fillText('[M/3, M]',mx+w+8,my+h/6);
+    c.fillStyle='#34d399';c.fillText('[-M/3, M/3]',mx+w+8,midY+4);
+    c.fillStyle='#38bdf8';c.fillText('[-M, -M/3]',mx+w+8,my+5*h/6);
+  }
+
+  // Draw h curve (always)
+  if(thirdsView<3){
+    // Normal view: draw h
+    c.beginPath();c.strokeStyle='#a78bfa';c.lineWidth=2.5;
+    for(let px=0;px<=w;px++){const s=px/w,v=thirdsH(s);
+    const x=mx+px,y=midY-v*(h/2)*.9;if(px===0)c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();
+    c.fillStyle='#a78bfa';c.font='bold 12px system-ui';c.fillText('h',mx+w-20,my+15);
+  } else {
+    // Residual view: draw h faintly
+    c.beginPath();c.strokeStyle='rgba(167,139,250,.3)';c.lineWidth=1.5;
+    for(let px=0;px<=w;px++){const s=px/w,v=thirdsH(s);
+    const x=mx+px,y=midY-v*(h/2)*.9;if(px===0)c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();
+    c.fillStyle='rgba(167,139,250,.4)';c.font='11px system-ui';c.fillText('h (faded)',mx+w-55,my+12);
+  }
+
+  // thirdsView >= 1: highlight A⁻ and A⁺ on x-axis
+  if(thirdsView>=1){
+    for(let px=0;px<=w;px++){const s=px/w,v=thirdsH(s);
+    if(v>1/3){c.fillStyle='rgba(248,113,113,.5)';c.fillRect(mx+px,my+h-4,1,4);}
+    if(v<-1/3){c.fillStyle='rgba(56,189,248,.5)';c.fillRect(mx+px,my+h-4,1,4);}}
+  }
+
+  // thirdsView >= 2: draw g curve (green) on same axes
+  if(thirdsView>=2){
+    c.beginPath();c.strokeStyle='#34d399';c.lineWidth=2.5;
+    for(let px=0;px<=w;px++){const s=px/w,gv=thirdsG(s);
+    const x=mx+px,y=midY-gv*(h/2)*.9;if(px===0)c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();
+    c.fillStyle='#34d399';c.font='bold 12px system-ui';c.fillText('g',mx+10,my+15);
+    // Mark the ±M/3 range for g with subtle fill
+    c.fillStyle='rgba(52,211,153,.06)';c.fillRect(mx,my+h/3,w,h/3);
+  }
+
+  // thirdsView === 3: draw residual h - g (orange) on same axes
+  if(thirdsView>=3){
+    c.beginPath();c.strokeStyle='#fb923c';c.lineWidth=2.5;
+    for(let px=0;px<=w;px++){const s=px/w,rv=thirdsH(s)-thirdsG(s);
+    const x=mx+px,y=midY-rv*(h/2)*.9;if(px===0)c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();
+    c.fillStyle='#fb923c';c.font='bold 12px system-ui';c.fillText('h \u2212 g',mx+w-50,my+h-10);
+    // Draw the ±2M/3 bounds
+    const yTop=midY-(2/3)*(h/2)*.9, yBot=midY+(2/3)*(h/2)*.9;
+    c.strokeStyle='rgba(251,146,60,.4)';c.lineWidth=1;c.setLineDash([3,3]);
+    c.beginPath();c.moveTo(mx,yTop);c.lineTo(mx+w,yTop);c.stroke();
+    c.beginPath();c.moveTo(mx,yBot);c.lineTo(mx+w,yBot);c.stroke();c.setLineDash([]);
+    c.fillStyle='rgba(251,146,60,.6)';c.font='10px system-ui';c.fillText('2M/3',mx-32,yTop+3);c.fillText('-2M/3',mx-36,yBot+3);
+  }
+
+  // Right side: explanations
+  const rx=480,ry=40;
+  if(thirdsView===0){
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';
+    c.fillText('Partition the range [-M, M]',rx,ry);
+    c.fillText('into three equal bands:',rx,ry+24);
+    c.fillStyle='#f87171';c.font='12px system-ui';c.fillText('  Top:     [M/3, M]',rx,ry+58);
+    c.fillStyle='#34d399';c.fillText('  Middle:  [-M/3, M/3]',rx,ry+80);
+    c.fillStyle='#38bdf8';c.fillText('  Bottom:  [-M, -M/3]',rx,ry+102);
+    c.fillStyle='#8899b4';c.fillText('The curve h : A → [-M, M] passes',rx,ry+140);
+    c.fillText('through all three bands.',rx,ry+160);
+  }
+  if(thirdsView===1){
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';c.fillText('Define preimage sets:',rx,ry);
+    c.fillStyle='#38bdf8';c.font='12px system-ui';c.fillText('A⁻ = h⁻¹([-M, -M/3])',rx,ry+28);
+    c.fillStyle='#f87171';c.fillText('A⁺ = h⁻¹([M/3, M])',rx,ry+53);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Both are closed in A',rx,ry+88);
+    c.fillText('(preimages of closed sets under cts h),',rx,ry+108);
+    c.fillText('hence closed in X (A is closed in X).',rx,ry+128);
+    c.fillText('And A⁻ ∩ A⁺ = ∅.',rx,ry+158);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('→ Urysohn\'s Lemma applies to A⁻, A⁺.',rx,ry+190);
+  }
+  if(thirdsView===2){
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';c.fillText('Urysohn\'s Lemma gives:',rx,ry);
+    c.fillStyle='#34d399';c.font='bold 13px system-ui';c.fillText('g : X → [-M/3, M/3]',rx,ry+30);
+    c.fillStyle='#34d399';c.font='12px system-ui';
+    c.fillText('g(A⁻) = {-M/3}',rx,ry+58);
+    c.fillText('g(A⁺) = { M/3}',rx,ry+78);
+    c.fillStyle='#8899b4';
+    c.fillText('On the graph (left):',rx,ry+112);
+    c.fillText('  • Green curve = g',rx,ry+132);
+    c.fillText('  • g is flat at -M/3 where h ≤ -M/3',rx,ry+152);
+    c.fillText('  • g is flat at  M/3 where h ≥  M/3',rx,ry+172);
+    c.fillText('  • g stays within [-M/3, M/3]',rx,ry+192);
+    c.fillStyle='#fbbf24';c.font='12px system-ui';
+    c.fillText('In all cases: |h(x) - g(x)| ≤ 2M/3.',rx,ry+225);
+  }
+  if(thirdsView===3){
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';c.fillText('Residual h - g:',rx,ry);
+    c.fillStyle='#fb923c';c.font='bold 13px system-ui';c.fillText('h - g : A → [-2M/3, 2M/3]',rx,ry+30);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('On the graph (left):',rx,ry+65);
+    c.fillText('  • Purple (faded) = original h',rx,ry+85);
+    c.fillText('  • Green = g (Urysohn approx)',rx,ry+105);
+    c.fillText('  • Orange = residual h - g',rx,ry+125);
+    c.fillText('The orange dashed lines mark ±2M/3.',rx,ry+155);
+    c.fillText('The residual stays within this band.',rx,ry+175);
+    c.fillStyle='#fbbf24';c.font='bold 16px system-ui';c.fillText('Range reduced by factor 2/3!',rx,ry+215);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Now repeat the trick on h - g ...',rx,ry+245);
+  }
+}
+
+let approxStep=0;
+function setApprox(s,btn){approxStep=s;btn.closest('.ctrls').querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');drawApprox();}
+function origF(s){return .7*Math.sin(2.5*Math.PI*s)+.3*Math.cos(4*Math.PI*s)-.2*s;}
+function approxVal(s,n){const tgt=origF(s);let ap=0,rem=tgt,sc=1;for(let k=0;k<n;k++){ap+=Math.max(-sc/3,Math.min(sc/3,rem));rem=tgt-ap;sc*=2/3;}return ap;}
+function extVal(t,aL,aR,n){let v=0,sc=1;for(let k=0;k<n;k++){let b=t<aL?origF(0):origF(1),g=Math.max(-sc/3,Math.min(sc/3,b-v));const d=t<aL?(aL-t)/aL:(t-aR)/(1-aR);v+=g*Math.exp(-3*d);sc*=2/3;}return v;}
+
+function drawApprox(){
+  const c=document.getElementById('c_approx').getContext('2d'),W=820,H=370;bg(c,W,H);
+  const mx=70,my=40,w=W-100,h=H-100,midY=my+h/2,aL=.22,aR=.68;
+  // A region
+  c.fillStyle='rgba(251,191,36,.05)';c.fillRect(mx+w*aL,my,w*(aR-aL),h);
+  c.strokeStyle='rgba(251,191,36,.3)';c.lineWidth=1.5;c.setLineDash([5,4]);
+  c.beginPath();c.moveTo(mx+w*aL,my);c.lineTo(mx+w*aL,my+h);c.stroke();
+  c.beginPath();c.moveTo(mx+w*aR,my);c.lineTo(mx+w*aR,my+h);c.stroke();c.setLineDash([]);
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('A (closed)',mx+w*(aL+aR)/2-30,my+h+35);
+  // Axes
+  c.strokeStyle='#2a3a5c';c.lineWidth=1;c.beginPath();c.moveTo(mx,my);c.lineTo(mx,my+h);c.lineTo(mx+w,my+h);c.stroke();
+  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('1',mx-16,my+5);c.fillText('0',mx-16,midY+4);c.fillText('-1',mx-22,my+h+4);
+  c.strokeStyle='#1c2640';c.beginPath();c.moveTo(mx,midY);c.lineTo(mx+w,midY);c.stroke();
+
+  // Error band on A
+  if(approxStep>0){
+    const eb=Math.pow(2/3,approxStep);
+    c.fillStyle='rgba(248,113,113,.1)';
+    for(let px=Math.floor(w*aL);px<=Math.ceil(w*aR);px++){
+      const s=(px/w-aL)/(aR-aL),v=origF(s);
+      const yT=midY-(v+eb)*(h/2)*.9,yB=midY-(v-eb)*(h/2)*.9;
+      c.fillRect(mx+px,yT,1,yB-yT);
+    }
+  }
+
+  // f on A
+  c.beginPath();c.strokeStyle='#f87171';c.lineWidth=3;
+  for(let px=Math.floor(w*aL);px<=Math.ceil(w*aR);px++){
+    const s=(px/w-aL)/(aR-aL),v=origF(s),x=mx+px,y=midY-v*(h/2)*.9;
+    if(px===Math.floor(w*aL))c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();
+
+  // Extension
+  if(approxStep>0){
+    c.beginPath();c.strokeStyle='#38bdf8';c.lineWidth=2.5;
+    for(let px=0;px<=w;px++){const t=px/w;let v;
+    if(t>=aL&&t<=aR){v=approxVal((t-aL)/(aR-aL),approxStep);}
+    else v=extVal(t,aL,aR,approxStep);
+    const x=mx+px,y=midY-v*(h/2)*.9;if(px===0)c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();
+  }
+
+  // Label
+  c.fillStyle='#e2e8f0';c.font='14px system-ui';
+  if(approxStep===0)c.fillText('Original f : A → [-1, 1]',mx+10,my+18);
+  else{const e=Math.pow(2/3,approxStep).toFixed(5);c.fillText(`Step ${approxStep}:  ‖f − Σgₖ‖_A  ≤  (2/3)^${approxStep}  =  ${e}`,mx+10,my+18);}
+  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('X',mx+w/2,my+h+22);
+}
+
+function drawError(){
+  const c=document.getElementById('c_error').getContext('2d'),W=820,H=280;bg(c,W,H);
+  const mx=65,my=25,w=W-130,h=H-75;
+  // Title
+  c.fillStyle='#e2e8f0';c.font='bold 13px system-ui';c.fillText('Error Decay',mx,my-5);
+  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Σ ‖gₙ‖ ≤ Σ ⅓·(⅔)ⁿ⁻¹ = 1   ⟹   uniform convergence on X',mx+120,my-5);
+  // Axes
+  c.strokeStyle='#2a3a5c';c.lineWidth=1;c.beginPath();c.moveTo(mx,my+10);c.lineTo(mx,my+h);c.lineTo(mx+w,my+h);c.stroke();
+  c.fillStyle='#8899b4';c.font='11px system-ui';c.fillText('max error',mx-10,my+h+20);c.fillText('step n',mx+w/2,my+h+25);
+  const N=10,bw=w/(N+1);
+  // Bars
+  for(let n=0;n<=N;n++){
+    const err=Math.pow(2/3,n),bh=err*(h-15)*.95,x=mx+(n+.5)*bw-bw*.3;
+    const act=n<=approxStep;
+    c.fillStyle=act?'rgba(56,189,248,.65)':'rgba(42,58,92,.5)';
+    c.fillRect(x,my+h-bh,bw*.6,bh);
+    c.fillStyle=act?'#38bdf8':'#5a7090';c.font='10px system-ui';c.textAlign='center';
+    c.fillText(n+'',x+bw*.3,my+h+14);
+    if(n<=6)c.fillText(err.toFixed(3),x+bw*.3,my+h-bh-5);
+    c.textAlign='start';
+  }
+  // Mₙ bars on right side
+  const rx=mx+w+15;
+  c.fillStyle='#e2e8f0';c.font='bold 11px system-ui';c.fillText('Mₙ bounds',rx,my+15);
+  for(let n=0;n<6;n++){
+    const mn=(1/3)*Math.pow(2/3,n),bh=mn*(h-15)*.95;
+    c.fillStyle='rgba(167,139,250,.5)';c.fillRect(rx+n*12,my+h-bh,10,bh);
+  }
+  c.fillStyle='#a78bfa';c.font='10px system-ui';c.fillText('Σ=1',rx+5,my+h+14);
+  // Decay curve
+  c.beginPath();c.strokeStyle='#f87171';c.lineWidth=2;c.setLineDash([4,3]);
+  for(let n=0;n<=N;n++){const x=mx+(n+.5)*bw,y=my+h-Math.pow(2/3,n)*(h-15)*.95;if(n===0)c.moveTo(x,y);else c.lineTo(x,y);}
+  c.stroke();c.setLineDash([]);
+  c.fillStyle='#f87171';c.font='12px system-ui';c.fillText('(2/3)ⁿ → 0',mx+w-70,my+25);
+}
+
+function drawRel(){
+  const c=document.getElementById('c_rel').getContext('2d'),W=820,H=280;bg(c,W,H);
+  const cy=H/2-10;
+  const boxes=[{x:60,l1:"Urysohn's",l2:"Lemma",c:'#a78bfa',s:'Normal ⟹ ∃ continuous separator'},{x:320,l1:"Metrization",l2:"Theorem",c:'#38bdf8',s:'2nd-countable T₃ ⟹ metrizable'},{x:580,l1:"Tietze",l2:"Extension",c:'#34d399',s:'Normal, A closed ⟹ extend f'}];
+  boxes.forEach(b=>{
+    const bw=180,bh=75;
+    c.fillStyle=b.c+'10';c.strokeStyle=b.c;c.lineWidth=2;rr(c,b.x,cy-bh/2,bw,bh,10,true,true);
+    c.fillStyle=b.c;c.font='bold 14px system-ui';c.textAlign='center';c.fillText(b.l1,b.x+bw/2,cy-6);c.fillText(b.l2,b.x+bw/2,cy+14);
+    c.fillStyle='#8899b4';c.font='11px system-ui';c.fillText(b.s,b.x+bw/2,cy+bh/2+22);c.textAlign='start';
+  });
+  // Arrows
+  c.save();
+  arr(c,240,cy-12,320,cy-12,'#fbbf24');c.fillStyle='#fbbf24';c.font='11px system-ui';c.textAlign='center';c.fillText('provides coordinate',280,cy-28);c.fillText('functions gₖ',280,cy-15);
+  arr(c,240,cy+12,580,cy+12,'#fb923c');c.fillStyle='#fb923c';c.fillText('invoked at each',400,cy+30);c.fillText('iteration step',400,cy+44);
+  c.textAlign='start';c.restore();
+  // Bottom note
+  c.fillStyle='#8899b4';c.font='13px system-ui';c.textAlign='center';
+  c.fillText("Urysohn's Lemma is the foundational tool; the other two are its most important applications.",W/2,H-15);
+  c.textAlign='start';
+}
+
+// ---- Init ----
+window.addEventListener('load',()=>{drawSep();drawShrink();});
+</script>
+</body>
+</html>

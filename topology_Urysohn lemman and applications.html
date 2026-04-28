@@ -1038,23 +1038,15 @@ function frac(r){for(let d=2;d<=32;d*=2){const n=r*d;if(Math.abs(n-Math.round(n)
 // No sigmoid or other ad-hoc limit: we always use the same staircase formula.
 function urysohnApprox(s, n) {
   // s in [0,1] parameterizes the transition zone between A and B.
-  // At level n: 2^n + 1 plateaus at values k/2^n, k = 0,...,2^n.
+  // At level n, f_n = inf{r in D_n : x in U_r} takes values in {k/2^n : k=0,...,2^n}.
+  // This is a genuine step function (piecewise constant, discontinuous).
+  // The transition zone is divided into 2^n + 1 equal subintervals,
+  // and f_n is constant (= k/2^n) on the k-th subinterval.
   const N = Math.pow(2, n);
-  const nPlateaus = N + 1;
-  const plateauW = 1 / nPlateaus;
-  // At high levels (n>=10), plateaus are so narrow that the ramp between them
-  // makes the function look continuous — which is exactly the point.
-  const rampFrac = 0.35;
-  const rampW = plateauW * rampFrac;
-  const idx = Math.min(Math.floor(s / plateauW), nPlateaus - 1);
-  const localS = s - idx * plateauW;
-  const v0 = idx / N;
-  const v1 = Math.min((idx + 1) / N, 1);
-  const flatEnd = plateauW - rampW;
-  if (localS <= flatEnd) return v0;
-  const t = (localS - flatEnd) / rampW;
-  const smooth = t * t * (3 - 2 * t);
-  return v0 + (v1 - v0) * smooth;
+  const nSteps = N + 1;
+  const stepW = 1 / nSteps;
+  const idx = Math.min(Math.floor(s / stepW), nSteps - 1);
+  return idx / N;
 }
 
 function drawFunc(){
@@ -1118,8 +1110,8 @@ function drawCont(){
   c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('1',mx-16,my+8);c.fillText('0',mx-16,my+h+4);
   // Shaded preimage regions
   const aE=.12,bS=.88;
-  // Use a high-level staircase (level 10 = 1024 plateaus) as the "limit" Urysohn function
-  // This is the same construction as Fig 1.3, just at a fine enough level to look continuous.
+  // The limit function f = lim f_n is continuous (proved in the text).
+  // We approximate it with f_10, which has 1025 steps — indistinguishable from the true limit at screen resolution.
   const contLevel = 10;
   function fVal(t) {
     if(t<=aE) return 0;
@@ -1157,84 +1149,144 @@ function drawBasis(){
   c.fillStyle='#a78bfa';c.font='bold 15px system-ui';c.fillText('X',cx-5,cy-140);
 
   if(basisView===0){
-    // Draw nested basis elements
-    const pairs=[[70,120,'B₁','B₃'],[0,-50,'B₂','B₅'],[-60,40,'B₄','B₇']];
-    pairs.forEach(([dx,dy,inner,outer],i)=>{
-      const hue=[180,280,130][i];
-      c.fillStyle=`hsla(${hue},50%,50%,.08)`;c.strokeStyle=`hsla(${hue},50%,55%,.5)`;c.lineWidth=1.5;
-      c.beginPath();c.ellipse(cx+dx,cy+dy,80,55,0,0,Math.PI*2);c.fill();c.stroke();
-      c.fillStyle=`hsla(${hue},50%,65%,.8)`;c.font='12px system-ui';c.fillText(outer,cx+dx+50,cy+dy-40);
-      c.fillStyle=`hsla(${hue},50%,50%,.15)`;c.strokeStyle=`hsla(${hue},50%,55%,.7)`;c.lineWidth=2;
-      c.beginPath();c.ellipse(cx+dx,cy+dy,40,28,0,0,Math.PI*2);c.fill();c.stroke();
-      c.fillStyle=`hsla(${hue},50%,65%,.9)`;c.font='bold 12px system-ui';c.fillText(inner,cx+dx-10,cy+dy+5);
-      c.fillStyle=`hsla(${hue},50%,55%,.6)`;c.font='11px system-ui';c.fillText('cl('+inner+') ⊆ '+outer,cx+dx+50,cy+dy-25);
+    // Three eligible pairs, all comfortably inside X
+    const pairs=[
+      {dx:-50,dy:-40,ri:30,ro:60,inner:'B\u2081',outer:'B\u2083',hue:180},
+      {dx:40,dy:-20,ri:25,ro:55,inner:'B\u2082',outer:'B\u2085',hue:280},
+      {dx:-10,dy:50,ri:28,ro:58,inner:'B\u2084',outer:'B\u2087',hue:130}
+    ];
+    pairs.forEach(function(p){
+      // Outer Bm
+      c.fillStyle='hsla('+p.hue+',50%,50%,.08)';c.strokeStyle='hsla('+p.hue+',50%,55%,.5)';c.lineWidth=1.5;
+      c.beginPath();c.ellipse(cx+p.dx,cy+p.dy,p.ro,p.ro*0.7,0,0,Math.PI*2);c.fill();c.stroke();
+      c.fillStyle='hsla('+p.hue+',50%,65%,.8)';c.font='12px system-ui';
+      c.fillText(p.outer,cx+p.dx+p.ro*0.5,cy+p.dy-p.ro*0.55);
+      // cl(Bn) dashed
+      c.fillStyle='hsla('+p.hue+',50%,50%,.05)';c.strokeStyle='hsla('+p.hue+',50%,55%,.35)';c.lineWidth=1;c.setLineDash([3,3]);
+      c.beginPath();c.ellipse(cx+p.dx,cy+p.dy,p.ri+8,p.ri*0.7+6,0,0,Math.PI*2);c.fill();c.stroke();c.setLineDash([]);
+      // Inner Bn
+      c.fillStyle='hsla('+p.hue+',50%,50%,.15)';c.strokeStyle='hsla('+p.hue+',50%,55%,.7)';c.lineWidth=2;
+      c.beginPath();c.ellipse(cx+p.dx,cy+p.dy,p.ri,p.ri*0.7,0,0,Math.PI*2);c.fill();c.stroke();
+      c.fillStyle='hsla('+p.hue+',50%,65%,.9)';c.font='bold 12px system-ui';
+      c.fillText(p.inner,cx+p.dx-12,cy+p.dy+5);
     });
     // Right side explanation
-    c.fillStyle='#e2e8f0';c.font='14px system-ui';
-    const tx=440,ty=50;
-    c.fillText('Eligible pairs:',tx,ty);
+    var tx=440,ty=40;
+    c.fillStyle='#e2e8f0';c.font='14px system-ui';c.fillText('Eligible pairs:',tx,ty);
     c.fillStyle='#8899b4';c.font='13px system-ui';
-    c.fillText('𝒫 = { (n,m) ∈ ℕ×ℕ : cl(Bₙ) ⊆ Bₘ }',tx,ty+28);
-    c.fillText('Since 𝒫 ⊆ ℕ×ℕ, it is countable.',tx,ty+56);
-    c.fillText('Enumerate as (n₁,m₁), (n₂,m₂), …',tx,ty+84);
+    c.fillText('\uD835\uDCAB = { (n,m) \u2208 \u2124\u00D7\u2124 : cl(B\u2099) \u2286 B\u2098 }',tx,ty+28);
+    c.fillText('Since \uD835\uDCAB \u2286 \u2124\u00D7\u2124, it is countable.',tx,ty+56);
+    c.fillText('Enumerate as (n\u2081,m\u2081), (n\u2082,m\u2082), \u2026',tx,ty+84);
     c.fillStyle='#fbbf24';c.font='13px system-ui';
-    c.fillText('For each pair → one Urysohn function gₖ',tx,ty+120);
-    c.fillText('gₖ|cl(Bₙ) ≡ 0,   gₖ|X\\Bₘ ≡ 1',tx,ty+148);
+    c.fillText('For each pair \u2192 one Urysohn function g\u2096',tx,ty+120);
+    c.fillText('g\u2096|cl(B\u2099) \u2261 0,   g\u2096|X\\B\u2098 \u2261 1',tx,ty+148);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Dashed outlines = cl(B\u2099)',tx,ty+185);
+    c.fillText('Each cl(B\u2099) \u2286 B\u2098 (pair is eligible)',tx,ty+205);
   } else {
-    // Show a single Urysohn function
-    c.fillStyle='rgba(56,189,248,.1)';c.strokeStyle='#38bdf8';c.lineWidth=2;
-    c.beginPath();c.ellipse(cx+30,cy,90,65,0,0,Math.PI*2);c.fill();c.stroke();
-    c.fillStyle='#38bdf8';c.font='12px system-ui';c.fillText('Bₘ',cx+90,cy-50);
-    c.fillStyle='rgba(248,113,113,.15)';c.strokeStyle='#f87171';c.lineWidth=2;
-    c.beginPath();c.ellipse(cx+30,cy,45,32,0,0,Math.PI*2);c.fill();c.stroke();
-    c.fillStyle='#f87171';c.font='bold 12px system-ui';c.fillText('cl(Bₙ)',cx+10,cy+5);
-    c.fillStyle='#8899b4';c.font='11px system-ui';c.fillText('gₖ = 0',cx+10,cy+20);c.fillText('gₖ = 1',cx+130,cy+5);
-    // Arrow
-    arr(c,380,cy,480,cy,'#fbbf24');
-    c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('gₖ',420,cy-15);
-    // Target [0,1]
-    c.strokeStyle='#38bdf8';c.lineWidth=2;c.beginPath();c.moveTo(500,cy-80);c.lineTo(500,cy+80);c.stroke();
-    c.fillStyle='#f87171';c.beginPath();c.arc(500,cy-80,6,0,Math.PI*2);c.fill();c.fillText('0',510,cy-76);
-    c.fillStyle='#38bdf8';c.beginPath();c.arc(500,cy+80,6,0,Math.PI*2);c.fill();c.fillText('1',510,cy+84);
-    c.fillStyle='#8899b4';c.font='14px system-ui';c.fillText('[0, 1]',510,cy+5);
-    // Explanation
-    c.fillStyle='#e2e8f0';c.font='13px system-ui';
-    c.fillText('Urysohn function for the pair (Bₙ, Bₘ):',550,50);
-    c.fillStyle='#8899b4';c.fillText('gₖ : X → [0, 1]',550,78);c.fillText('gₖ = 0 on cl(Bₙ)',550,106);c.fillText('gₖ = 1 on X \\ Bₘ',550,134);
-    c.fillStyle='#fbbf24';c.fillText('These collectively separate',550,175);c.fillText('points from closed sets.',550,200);
+    // Show separating property: point x, closed set C, eligible pair separating them
+    // C on the right
+    c.fillStyle='rgba(248,113,113,.12)';c.strokeStyle='#f87171';c.lineWidth=2;
+    c.beginPath();c.ellipse(cx+80,cy+10,55,50,0.2,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='#f87171';c.font='bold 13px system-ui';c.fillText('C',cx+75,cy+15);
+    // Point x away from C
+    c.beginPath();c.arc(cx-60,cy-10,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+    c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('x',cx-75,cy-15);
+    // Bm around x, disjoint from C
+    c.fillStyle='rgba(56,189,248,.08)';c.strokeStyle='rgba(56,189,248,.5)';c.lineWidth=1.5;
+    c.beginPath();c.ellipse(cx-60,cy-10,65,50,0,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='rgba(56,189,248,.7)';c.font='12px system-ui';c.fillText('B\u2098',cx-100,cy-55);
+    // cl(Bn) around x inside Bm
+    c.fillStyle='rgba(52,211,153,.05)';c.strokeStyle='rgba(52,211,153,.4)';c.lineWidth=1;c.setLineDash([3,3]);
+    c.beginPath();c.ellipse(cx-60,cy-10,45,33,0,0,Math.PI*2);c.fill();c.stroke();c.setLineDash([]);
+    c.fillStyle='rgba(52,211,153,.6)';c.font='11px system-ui';c.fillText('cl(B\u2099)',cx-45,cy-38);
+    // Bn around x inside cl(Bn)
+    c.fillStyle='rgba(52,211,153,.1)';c.strokeStyle='rgba(52,211,153,.7)';c.lineWidth=2;
+    c.beginPath();c.ellipse(cx-60,cy-10,30,22,0,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='#34d399';c.font='bold 12px system-ui';c.fillText('B\u2099',cx-70,cy-5);
+    // Labels: gk values
+    c.fillStyle='#34d399';c.font='12px system-ui';c.fillText('g\u2096 = 0',cx-90,cy+25);
+    c.fillStyle='#f87171';c.font='12px system-ui';c.fillText('g\u2096 = 1',cx+65,cy+50);
+    // Arrow and explanation
+    var tx=440,ty=40;
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Separating points from closed sets',tx,ty);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Given x \u2209 C (closed):',tx,ty+35);
+    c.fillText('1. Regularity \u21D2 open V with',tx,ty+65);
+    c.fillText('   x \u2208 V \u2286 cl(V) \u2286 X\\C',tx,ty+88);
+    c.fillText('2. Pick B\u2098 \u2208 \uD835\uDCB1 with x \u2208 B\u2098 \u2286 V',tx,ty+118);
+    c.fillText('3. Regularity again inside B\u2098:',tx,ty+148);
+    c.fillText('   x \u2208 B\u2099 \u2286 cl(B\u2099) \u2286 B\u2098',tx,ty+171);
+    c.fillStyle='#fbbf24';c.font='13px system-ui';
+    c.fillText('\u21D2 g\u2096(x) = 0,  g\u2096(C) = {1}',tx,ty+210);
+    c.fillText('(n,m) \u2208 \uD835\uDCAB separates x from C',tx,ty+235);
   }
 }
 
 function drawEmbed(){
   const c=document.getElementById('c_embed').getContext('2d'),W=820,H=380;bg(c,W,H);
   const dim=parseInt(document.getElementById('sl_dim').value);document.getElementById('lb_dim').textContent=dim;
-  const cy=H/2;
-  // X
-  c.fillStyle='rgba(167,139,250,.08)';c.strokeStyle='#a78bfa';c.lineWidth=2;
-  c.beginPath();c.ellipse(150,cy,110,130,0,0,Math.PI*2);c.fill();c.stroke();
-  c.fillStyle='#a78bfa';c.font='bold 15px system-ui';c.fillText('X',145,cy-140);
-  const pts=[{x:120,y:cy-55},{x:165,y:cy-15},{x:130,y:cy+30},{x:175,y:cy+65},{x:140,y:cy+95}];
-  pts.forEach((p,i)=>{c.beginPath();c.arc(p.x,p.y,4,0,Math.PI*2);c.fillStyle='#a78bfa';c.fill();c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('x'+'₁₂₃₄₅'[i],p.x+8,p.y+4);});
-  // Arrow
-  c.strokeStyle='#fbbf24';c.lineWidth=2;c.setLineDash([6,4]);c.beginPath();c.moveTo(275,cy-8);c.lineTo(410,cy-8);c.stroke();c.setLineDash([]);
-  c.beginPath();c.moveTo(410,cy-8);c.lineTo(400,cy-16);c.lineTo(400,cy);c.closePath();c.fillStyle='#fbbf24';c.fill();
-  c.fillStyle='#fbbf24';c.font='bold 14px system-ui';c.fillText('F = (g₁, g₂, …)',300,cy-25);
-  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('homeomorphism',315,cy+15);c.fillText('onto image',325,cy+32);
-  // Hilbert cube
-  const rx=600,ry=cy,sz=120;
-  c.strokeStyle='#38bdf8';c.lineWidth=2;c.beginPath();
-  for(let i=0;i<=40;i++){const a=(i/40)*Math.PI*2,r=sz*(.8+.2*Math.cos(a*3));c.lineTo(rx+Math.cos(a)*r,ry+Math.sin(a)*r*.7);}
-  c.closePath();c.fillStyle='rgba(56,189,248,.05)';c.fill();c.stroke();
+  // Show F(x) = (g1(x), g2(x), ...) as a concrete table/bar chart
+  // Three sample points with different "fingerprints"
+  var ptNames=['x','y','z'];
+  var ptCols=['#f87171','#34d399','#38bdf8'];
+  // Generate reproducible gk values for each point
+  function gVal(pt,k){
+    // deterministic pseudo-values that show separation
+    var seeds=[[0.9,0.1,0.7,0.3,0.8,0.2,0.6,0.5,0.4,0.85,0.15,0.65,0.35,0.75,0.55],
+               [0.1,0.8,0.3,0.9,0.2,0.7,0.4,0.6,0.85,0.15,0.95,0.05,0.5,0.45,0.75],
+               [0.5,0.5,0.1,0.6,0.9,0.4,0.8,0.15,0.7,0.3,0.55,0.85,0.2,0.65,0.45]];
+    return seeds[pt][k%15];
+  }
+  // Left: X with three points
+  var lx=60,ly=50,lw=140,lh=260;
+  c.fillStyle='rgba(167,139,250,.06)';c.strokeStyle='#a78bfa';c.lineWidth=2;
+  c.beginPath();c.ellipse(lx+lw/2,ly+lh/2,lw/2+10,lh/2+10,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('X',lx+lw/2-5,ly-15);
+  var ptYs=[ly+60,ly+lh/2,ly+lh-60];
+  for(var i=0;i<3;i++){
+    c.beginPath();c.arc(lx+lw/2,ptYs[i],6,0,Math.PI*2);c.fillStyle=ptCols[i];c.fill();
+    c.fillStyle=ptCols[i];c.font='bold 13px system-ui';c.fillText(ptNames[i],lx+lw/2+12,ptYs[i]+5);
+  }
+  // Arrow F
+  arr(c,lx+lw+20,ly+lh/2,lx+lw+80,ly+lh/2,'#fbbf24',2);
+  c.fillStyle='#fbbf24';c.font='bold 14px system-ui';c.fillText('F',lx+lw+42,ly+lh/2-12);
+  // Right: bar chart showing (g1, g2, ..., g_dim) for each point
+  var rx=300,ry=40,rw=480,rh=300;
+  var barGroupW=rw/dim, barW=barGroupW*0.22, gap=barGroupW*0.06;
   // Axes
-  for(let i=0;i<Math.min(dim,8);i++){const a=i*Math.PI/Math.min(dim,8)-Math.PI/2;c.strokeStyle='rgba(56,189,248,.2)';c.lineWidth=1;c.beginPath();c.moveTo(rx,ry);c.lineTo(rx+Math.cos(a)*sz,ry+Math.sin(a)*sz*.7);c.stroke();
-  if(i<6){c.fillStyle='#5a7daa';c.font='11px system-ui';c.fillText('g'+(i+1),rx+Math.cos(a)*(sz+15),ry+Math.sin(a)*(sz+15)*.7+4);}}
-  c.fillStyle='#38bdf8';c.font='bold 15px system-ui';c.fillText('[0,1]^ω',rx-22,ry-sz-15);
-  c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Hilbert Cube',rx-35,ry-sz);
-  // F(X)
-  const ep=[{x:rx-30,y:ry-25},{x:rx+15,y:ry-5},{x:rx-15,y:ry+20},{x:rx+25,y:ry+40},{x:rx-5,y:ry+60}];
-  c.fillStyle='#a78bfa';ep.forEach(p=>{c.beginPath();c.arc(p.x,p.y,3.5,0,Math.PI*2);c.fill();});
-  c.strokeStyle='rgba(167,139,250,.4)';c.lineWidth=1.5;c.setLineDash([3,3]);c.beginPath();c.ellipse(rx,ry+15,50,60,.15,0,Math.PI*2);c.stroke();c.setLineDash([]);
-  c.fillStyle='#a78bfa';c.font='12px system-ui';c.fillText('F(X) ≅ X',rx+55,ry+15);
+  c.strokeStyle='#2a3a5c';c.lineWidth=1;
+  c.beginPath();c.moveTo(rx,ry);c.lineTo(rx,ry+rh);c.lineTo(rx+rw,ry+rh);c.stroke();
+  c.fillStyle='#8899b4';c.font='11px system-ui';
+  c.fillText('1',rx-14,ry+8);c.fillText('0',rx-14,ry+rh+4);
+  // Grid lines
+  c.strokeStyle='rgba(136,153,180,.15)';c.lineWidth=0.5;
+  for(var g=1;g<=4;g++){var gy=ry+rh*g/5;c.beginPath();c.moveTo(rx,gy);c.lineTo(rx+rw,gy);c.stroke();}
+  // Bars
+  for(var k=0;k<dim;k++){
+    var groupX=rx+k*barGroupW+barGroupW*0.12;
+    for(var p=0;p<3;p++){
+      var val=gVal(p,k);
+      var bx=groupX+p*(barW+gap);
+      var bh=val*rh;
+      c.fillStyle=ptCols[p];c.globalAlpha=0.7;
+      c.fillRect(bx,ry+rh-bh,barW,bh);c.globalAlpha=1;
+    }
+    // axis label
+    c.fillStyle='#8899b4';c.font='10px system-ui';
+    c.fillText('g'+(k+1),groupX+barW,ry+rh+15);
+  }
+  // Legend
+  for(var j=0;j<3;j++){
+    var legX=rx+10+j*80,legY=ry-15;
+    c.fillStyle=ptCols[j];c.fillRect(legX,legY-8,12,12);
+    c.font='12px system-ui';c.fillText('F('+ptNames[j]+')',legX+16,legY+2);
+  }
+  // Highlight separation
+  c.fillStyle='#e2e8f0';c.font='12px system-ui';
+  c.fillText('Each coordinate g\u2096 measures how far a point is from the pair (B\u2099, B\u2098).',rx,ry+rh+35);
+  c.fillStyle='#fbbf24';c.font='12px system-ui';
+  c.fillText('Different points \u2192 different bar patterns \u21D2 F is injective. More coordinates \u2192 better separation.',rx,ry+rh+55);
 }
 
 function drawOpen(){

@@ -555,17 +555,14 @@ function drawSC(){
     c.beginPath();c.strokeStyle='#f87171';c.lineWidth=3;
     c.ellipse(cx,cy,90,55,0,0,Math.PI*2);c.stroke();
     c.fillStyle='#f87171';c.font='bold 12px system-ui';c.fillText('\u03B3',cx+92,cy-10);
-    // Another loop (meridian)
+    // Meridian loop: wraps around the tube cross-section
+    // At the right side of the torus, outer edge is at cx+140, inner at cx+50
+    // Meridian center is midway: cx+95, radius spans the tube width
     c.beginPath();c.strokeStyle='#34d399';c.lineWidth=2.5;
-    var mx2=cx+90,my2=cy;
-    for(var i=0;i<=100;i++){
-      var t=i/100*Math.PI*2;
-      var px=mx2+20*Math.cos(t);
-      var py=my2+30*Math.sin(t);
-      if(i===0)c.moveTo(px,py);else c.lineTo(px,py);
-    }
+    var merCx=cx+95,merCy=cy,merRx=45,merRy=28;
+    c.ellipse(merCx,merCy,merRx,merRy,0,0,Math.PI*2);
     c.stroke();
-    c.fillStyle='#34d399';c.font='bold 12px system-ui';c.fillText('\u03B4',mx2+22,my2-20);
+    c.fillStyle='#34d399';c.font='bold 12px system-ui';c.fillText('\u03B4',merCx,merCy-merRy-6);
     // Right side
     var rx=480,ry=60;
     c.fillStyle='#a78bfa';c.font='bold 15px system-ui';c.fillText('T\u00B2 is NOT simply connected',rx,ry);
@@ -667,7 +664,7 @@ function drawHelix(){
       var cosA=Math.cos(angle),sinA=Math.sin(angle);
       if(pass===0&&sinA>0)continue;
       if(pass===1&&sinA<0)continue;
-      var px=cx+cr*cosA*0.7;
+      var px=cx+cr*cosA;
       var py=helixBot-t*helixH;
       if(!started){c.moveTo(px,py);started=true;}else c.lineTo(px,py);
     }
@@ -676,7 +673,7 @@ function drawHelix(){
   // Integer points on helix
   for(var n=0;n<=turns;n++){
     var t2=n/turns;
-    var px2=cx+cr*0.7;
+    var px2=cx+cr;
     var py2=helixBot-t2*helixH;
     c.beginPath();c.arc(px2,py2,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
     c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText(String(n),px2+10,py2+4);

@@ -122,7 +122,7 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 
 <div class="card rmk">
   <div class="tag">$\mathbb{R} \to S^1$</div>
-  <p>The map $p\colon\mathbb{R}\to S^1$ given by $p(t) = e^{2\pi i t}$ is the ur-example. $\mathbb{R}$ is the universal cover of $S^1$; it is simply connected. The fundamental group $\pi_1(S^1)\cong\mathbb{Z}$ acts on $\mathbb{R}$ by integer translations: $n\cdot t = t+n$. The quotient $\mathbb{R}/\mathbb{Z}$ recovers $S^1$.</p>
+  <p>The map $p\colon\mathbb{R}\to S^1$ given by $p(t) = e^{2\pi i t}$ is the prototypical example. $\mathbb{R}$ is the universal cover of $S^1$; it is simply connected. The fundamental group $\pi_1(S^1)\cong\mathbb{Z}$ acts on $\mathbb{R}$ by integer translations: $n\cdot t = t+n$. The quotient $\mathbb{R}/\mathbb{Z}$ recovers $S^1$.</p>
   <p>The intermediate covers are $S^1\xrightarrow{z\mapsto z^n} S^1$, corresponding to the subgroups $n\mathbb{Z}\le\mathbb{Z}$. The larger the subgroup, the "smaller" the covering space.</p>
 </div>
 
@@ -348,11 +348,49 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 </div>
 
 <div class="card prf">
-  <div class="tag">Proof sketch</div>
-  <p><strong>($\Rightarrow$)</strong> If $\tilde{f}$ exists, then $f_* = (p\circ\tilde{f})_* = p_*\circ\tilde{f}_*$, so $\mathrm{Im}(f_*)\subseteq\mathrm{Im}(p_*)$.</p>
-  <p><strong>($\Leftarrow$, Construction)</strong> For $y\in Y$, choose a path $\alpha$ from $y_0$ to $y$. Then $f\circ\alpha$ is a path in $B$ from $b_0$ to $f(y)$. Lift it to $\widetilde{f\circ\alpha}$ starting at $e_0$. Define $\tilde{f}(y) = \widetilde{f\circ\alpha}(1)$.</p>
-  <p><strong>Well-definedness.</strong> If $\beta$ is another path from $y_0$ to $y$, then $\alpha*\bar\beta$ is a loop at $y_0$, and $f\circ(\alpha*\bar\beta)$ is a loop at $b_0$. The class $[f\circ(\alpha*\bar\beta)]$ lies in $f_*(\pi_1(Y))\subseteq p_*(\pi_1(E))$, so this loop lifts to a loop at $e_0$. This means the lifts of $f\circ\alpha$ and $f\circ\beta$ end at the same point.</p>
-  <p><strong>Continuity.</strong> Uses local path-connectedness of $Y$ and the evenly covered neighborhoods in $B$. &square;</p>
+  <div class="tag">Proof</div>
+  <p><strong>Uniqueness.</strong> This is the Unique Lifting Property: $Y$ is connected, and any two lifts agree at $y_0$, so they agree everywhere.</p>
+  <p><strong>($\Rightarrow$)</strong> If $\tilde{f}$ exists, then $f = p\circ\tilde{f}$, so $f_* = p_*\circ\tilde{f}_*$, hence $\mathrm{Im}(f_*)\subseteq\mathrm{Im}(p_*)$.</p>
+  <p><strong>($\Leftarrow$, Construction)</strong> For $y\in Y$, choose a path $\alpha$ in $Y$ from $y_0$ to $y$. Then $f\circ\alpha$ is a path in $B$ from $b_0$ to $f(y)$. By the Path Lifting Property, lift it to $\widetilde{f\circ\alpha}$ starting at $e_0$. Define
+  $$\tilde{f}(y) \;=\; \widetilde{f\circ\alpha}(1).$$</p>
+  <p><strong>Well-definedness.</strong> Suppose $\beta$ is another path in $Y$ from $y_0$ to $y$. We must show the lifts of $f\circ\alpha$ and $f\circ\beta$ end at the same point. Consider the loop $\alpha*\bar{\beta}$ at $y_0$. Its image $f\circ(\alpha*\bar{\beta})$ is a loop at $b_0$ whose class $[f\circ(\alpha*\bar{\beta})]$ lies in $f_*(\pi_1(Y,y_0)) \subseteq p_*(\pi_1(E,e_0))$ by hypothesis. So $[f\circ(\alpha*\bar{\beta})] = p_*([\tilde{\gamma}])$ for some loop $\tilde{\gamma}$ in $E$ at $e_0$. This means the loop $f\circ(\alpha*\bar{\beta})$ lifts to a <em>loop</em> at $e_0$. But the lift of $f\circ(\alpha*\bar{\beta})$ is the concatenation of the lift of $f\circ\alpha$ (ending at $\widetilde{f\circ\alpha}(1)$) followed by the lift of $f\circ\bar{\beta}$ (which, run backwards, starts at $\widetilde{f\circ\beta}(1)$). Since the whole lift is a loop, it returns to $e_0$, forcing $\widetilde{f\circ\alpha}(1) = \widetilde{f\circ\beta}(1)$.</p>
+  <p><strong>Continuity.</strong> Let $y\in Y$. Let $U$ be an evenly covered neighborhood of $f(y)$ in $B$, and let $V$ be the sheet of $p^{-1}(U)$ containing $\tilde{f}(y)$, so that $p|_V\colon V\to U$ is a homeomorphism. Since $Y$ is locally path-connected, there exists a path-connected open neighborhood $W$ of $y$ with $f(W)\subseteq U$.</p>
+  <p>For any $y'\in W$: choose a path $\alpha$ from $y_0$ to $y$ (used to define $\tilde{f}(y)$), and let $\delta$ be a path from $y$ to $y'$ inside $W$. Then $\alpha*\delta$ is a path from $y_0$ to $y'$, and
+  $$\tilde{f}(y') = \widetilde{f\circ(\alpha*\delta)}(1).$$
+  The lift of $f\circ(\alpha*\delta)$ is: first the lift of $f\circ\alpha$ (ending at $\tilde{f}(y)\in V$), then the lift of $f\circ\delta$ starting at $\tilde{f}(y)$. Since $f(\delta)$ lies entirely in $U$ and the lift starts in the sheet $V$, the lift of $f\circ\delta$ stays in $V$ (because $p|_V$ is a homeomorphism onto $U$). Therefore $\tilde{f}(y') \in V$, and in fact
+  $$\tilde{f}(y') = (p|_V)^{-1}\bigl(f(y')\bigr) \quad\text{for all } y'\in W.$$
+  Thus $\tilde{f}|_W = (p|_V)^{-1}\circ f|_W$, which is a composition of continuous maps, hence continuous. Since $y$ was arbitrary, $\tilde{f}$ is continuous. &square;</p>
+</div>
+
+<h3>2.6 &ensp; Application: $\pi_1(S^1)\cong\mathbb{Z}$</h3>
+
+<div class="card rmk">
+  <div class="tag">Setup</div>
+  <p>We apply the lifting theorems to the covering map $p\colon\mathbb{R}\to S^1$, $p(t)=e^{2\pi it}$, with basepoints $\tilde{x}_0 = 0\in\mathbb{R}$ and $x_0 = 1\in S^1$. The fiber $p^{-1}(x_0) = \mathbb{Z}\subset\mathbb{R}$.</p>
+</div>
+
+<div class="card def">
+  <div class="tag">The Lifting Correspondence</div>
+  <p>Define a map $\phi\colon\pi_1(S^1,x_0)\to\mathbb{Z}$ as follows. Given a loop $\gamma$ in $S^1$ at $x_0$, lift it to a path $\tilde{\gamma}$ in $\mathbb{R}$ starting at $0$. The endpoint $\tilde{\gamma}(1)$ lies in $p^{-1}(x_0) = \mathbb{Z}$. Set
+  $$\phi([\gamma]) = \tilde{\gamma}(1).$$</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Theorem</div>
+  <p>$\phi\colon\pi_1(S^1,x_0)\to\mathbb{Z}$ is an isomorphism of groups.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>Well-definedness.</strong> If $\gamma\simeq\gamma'$ rel endpoints, the Homotopy Lifting Property lifts the homotopy to a homotopy $\widetilde{H}$ in $\mathbb{R}$ with $\widetilde{H}(0,t)=0$ for all $t$. By the Unique Lifting Property applied to the paths $s\mapsto\widetilde{H}(1,s)$ (each a lift of the constant path at $x_0$, starting at $\tilde{\gamma}(1)$ when $s=0$ and at $\tilde{\gamma}'(1)$ when $s=1$), we get $\tilde{\gamma}(1)=\tilde{\gamma}'(1)$. Alternatively: $\widetilde{H}(\cdot,0)=\tilde{\gamma}$ and $\widetilde{H}(\cdot,1)=\tilde{\gamma}'$ are both lifts starting at $0$; the map $t\mapsto\widetilde{H}(1,t)$ is a continuous map $[0,1]\to\mathbb{Z}$ (discrete), hence constant, so $\tilde{\gamma}(1)=\tilde{\gamma}'(1)$.</p>
+  <p><strong>Homomorphism.</strong> Let $\gamma,\delta$ be loops at $x_0$. Lift $\gamma$ to $\tilde{\gamma}$ starting at $0$, with $\tilde{\gamma}(1)=m$. Lift $\delta$ to $\tilde{\delta}$ starting at $0$, with $\tilde{\delta}(1)=n$. Now consider the concatenation $\gamma*\delta$: its lift starts at $0$, follows $\tilde{\gamma}$ to $m$, then continues with a translate of $\tilde{\delta}$. Precisely, $t\mapsto\tilde{\delta}(t)+m$ is a lift of $\delta$ starting at $m$ (since $p(s+m)=p(s)$ for any integer $m$). So the lift of $\gamma*\delta$ ends at $m+n$. Hence $\phi([\gamma]*[\delta])=m+n=\phi([\gamma])+\phi([\delta])$.</p>
+  <p><strong>Surjectivity.</strong> For each $n\in\mathbb{Z}$, the path $\tilde{\omega}_n(t)=nt$ in $\mathbb{R}$ projects to a loop $\omega_n = p\circ\tilde{\omega}_n$ in $S^1$ at $x_0$, and $\phi([\omega_n])=\tilde{\omega}_n(1)=n$.</p>
+  <p><strong>Injectivity.</strong> Suppose $\phi([\gamma])=0$, i.e., the lift $\tilde{\gamma}$ starts and ends at $0$. Then $\tilde{\gamma}$ is a loop in $\mathbb{R}$ at $0$. Since $\mathbb{R}$ is simply connected, $\tilde{\gamma}\simeq c_0$ rel endpoints. Composing with $p$ gives $\gamma = p\circ\tilde{\gamma}\simeq p\circ c_0 = c_{x_0}$, so $[\gamma]$ is trivial. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">The Generator</div>
+  <p>The loop $\omega_1(t)=e^{2\pi it}$ (one counterclockwise traversal of $S^1$) generates $\pi_1(S^1)\cong\mathbb{Z}$. The loop $\omega_n$ that winds $n$ times represents the class $n\in\mathbb{Z}$. In particular, $\omega_1$ and $\omega_{-1}$ are <em>not</em> homotopic — the direction of traversal matters.</p>
 </div>
 
 </div>
@@ -711,18 +749,30 @@ function drawPathLift(){
   // Basepoint
   c.beginPath();c.arc(cx+cr,cy,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
   c.fillStyle='#fbbf24';c.font='12px system-ui';c.fillText('1',cx+cr+10,cy-8);
-  // Path gamma winding 'wind' times
-  c.beginPath();c.strokeStyle='#34d399';c.lineWidth=3;
-  var pts=Math.abs(wind)*100+1;if(pts<50)pts=50;
+  // Path gamma winding 'wind' times — spiral so each loop is visible
+  var pts=Math.abs(wind)*120+1;if(pts<80)pts=80;
   var dir=wind>=0?1:-1;
-  for(var i=0;i<=pts;i++){
-    var t=i/pts;
-    var angle=-dir*t*Math.abs(wind)*Math.PI*2;
-    var px=cx+(cr-3)*Math.cos(angle);
-    var py=cy+(cr-3)*Math.sin(angle);
-    if(i===0)c.moveTo(px,py);else c.lineTo(px,py);
+  var spiralShrink=6; // total radius shrink over all windings
+  for(var i=0;i<pts;i++){
+    var t0=i/pts,t1=(i+1)/pts;
+    var a0=-dir*t0*Math.abs(wind)*Math.PI*2;
+    var a1=-dir*t1*Math.abs(wind)*Math.PI*2;
+    var r0=cr-3-t0*spiralShrink;
+    var r1=cr-3-t1*spiralShrink;
+    // color gradient: green \u2192 orange
+    var rr=Math.round(52+(251-52)*t0);
+    var gg=Math.round(211+(146-211)*t0);
+    var bb=Math.round(153+(60-153)*t0);
+    c.beginPath();c.strokeStyle='rgb('+rr+','+gg+','+bb+')';c.lineWidth=3;
+    c.moveTo(cx+r0*Math.cos(a0),cy+r0*Math.sin(a0));
+    c.lineTo(cx+r1*Math.cos(a1),cy+r1*Math.sin(a1));
+    c.stroke();
   }
-  c.stroke();
+  // Start & end dots on spiral
+  c.beginPath();c.arc(cx+(cr-3),cy,4,0,Math.PI*2);c.fillStyle='#34d399';c.fill();
+  var endR=cr-3-spiralShrink;
+  var endA=-dir*Math.abs(wind)*Math.PI*2;
+  c.beginPath();c.arc(cx+endR*Math.cos(endA),cy+endR*Math.sin(endA),4,0,Math.PI*2);c.fillStyle='#fb923c';c.fill();
   c.fillStyle='#34d399';c.font='bold 13px system-ui';c.fillText('\u03B3 (winds '+wind+'x)',cx-50,cy+cr+35);
   // Right: R vertical with lift
   var rx=550,rtop=40,rbot=H-40;
@@ -768,91 +818,180 @@ function setHLView(v,btn){hlView=v;btn.closest('.ctrls').querySelectorAll('butto
 
 function drawHLift(){
   var c=document.getElementById('c_hlift').getContext('2d'),W=820,H=380;bg(c,W,H);
-  var sx=60,sy=50,sw=300,sh=260;
-  // [0,1]^2 domain
+  var M=4,N=4;
+  // ---- Left: [0,1]^2 domain ----
+  var sx=40,sy=50,sw=260,sh=260;
   c.strokeStyle='#2a3a5c';c.lineWidth=2;c.strokeRect(sx,sy,sw,sh);
-  c.fillStyle='#8899b4';c.font='13px system-ui';
-  c.fillText('[0,1]\u00B2',sx+sw/2-20,sy-10);
-  c.fillText('s \u2192',sx+sw/2-10,sy+sh+22);
-  c.save();c.translate(sx-15,sy+sh/2);c.rotate(-Math.PI/2);c.fillText('t \u2192',0,0);c.restore();
-  // Labels
-  c.fillStyle='#34d399';c.font='12px system-ui';
-  c.fillText('\u03B3\u2080 = H(\u00B7,0)',sx+sw/2-30,sy+sh+40);
-  c.fillStyle='#f87171';c.fillText('\u03B3\u2081 = H(\u00B7,1)',sx+sw/2-30,sy-25);
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('[0,1]²',sx+sw/2-18,sy-10);
+  c.fillText('s →',sx+sw/2-8,sy+sh+20);
+  c.save();c.translate(sx-14,sy+sh/2);c.rotate(-Math.PI/2);c.fillText('t →',0,0);c.restore();
+  c.fillStyle='#34d399';c.font='11px system-ui';
+  c.fillText('γ₀ = H(·,0)',sx+sw/2-30,sy+sh+36);
+  c.fillStyle='#f87171';c.fillText('γ₁ = H(·,1)',sx+sw/2-30,sy-22);
+
+  // ---- Right: covering space picture ----
+  var rx=480,ry=180,rr=90; // circle center for S^1
+  // Draw S^1
+  c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=2;
+  c.beginPath();c.arc(rx,ry,rr,0,Math.PI*2);c.stroke();
+  c.fillStyle='#38bdf8';c.font='bold 13px system-ui';c.fillText('B (= S¹)',rx+rr+8,ry+5);
+
+  // Arrow H from square to circle
+  arr(c,sx+sw+15,sy+sh/2,rx-rr-15,ry,'#8899b4',1.5);
+  c.fillStyle='#8899b4';c.font='italic 13px system-ui';c.fillText('H',sx+sw+30,sy+sh/2-20);
+
+  if(hlView===0){
+    // View 0: family of paths on [0,1]^2 + images on S^1
+    // Horizontal path lines in square
+    for(var tt=0;tt<=6;tt++){
+      var frac=tt/6;
+      var yy=sy+sh-frac*sh;
+      var gr=Math.round(52+(248-52)*frac);
+      var gg=Math.round(211+(113-211)*frac);
+      var gb=Math.round(153+(113-153)*frac);
+      c.strokeStyle='rgba('+gr+','+gg+','+gb+',0.6)';c.lineWidth=2;
+      c.beginPath();c.moveTo(sx,yy);c.lineTo(sx+sw,yy);c.stroke();
+    }
+    // Images on S^1: loops with different winding shown as colored arcs
+    for(var tt2=0;tt2<=6;tt2++){
+      var frac2=tt2/6;
+      var wind=1+frac2*0.6; // winding evolves slightly
+      var gr2=Math.round(52+(248-52)*frac2);
+      var gg2=Math.round(211+(113-211)*frac2);
+      var gb2=Math.round(153+(113-153)*frac2);
+      c.strokeStyle='rgba('+gr2+','+gg2+','+gb2+',0.5)';c.lineWidth=2;
+      var offset=frac2*3;
+      c.beginPath();
+      for(var k=0;k<=80;k++){
+        var s=k/80;
+        var ang=-s*wind*Math.PI*2;
+        var pr=rr-2-offset;
+        var px2=rx+pr*Math.cos(ang);var py2=ry+pr*Math.sin(ang);
+        if(k===0)c.moveTo(px2,py2);else c.lineTo(px2,py2);
+      }
+      c.stroke();
+    }
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';
+    c.fillText('Each horizontal line t = const',sx,sy+sh+52);
+    c.fillText('maps to a loop on S¹',sx,sy+sh+68);
+  }
 
   if(hlView>=1){
-    // Grid
-    var M=4,N=5;
-    c.strokeStyle='rgba(251,191,36,.3)';c.lineWidth=1;c.setLineDash([3,3]);
+    // Grid on [0,1]^2
+    c.strokeStyle='rgba(251,191,36,.35)';c.lineWidth=1;c.setLineDash([3,3]);
     for(var i=1;i<M;i++){var x=sx+i*sw/M;c.beginPath();c.moveTo(x,sy);c.lineTo(x,sy+sh);c.stroke();}
     for(var j=1;j<N;j++){var y=sy+j*sh/N;c.beginPath();c.moveTo(sx,y);c.lineTo(sx+sw,y);c.stroke();}
     c.setLineDash([]);
-    // Label rectangles
-    c.fillStyle='#fbbf24';c.font='11px system-ui';c.fillText('R\u2081\u2081',sx+sw/(2*M)-8,sy+sh-sh/(2*N)+4);
   }
-  if(hlView>=2){
-    // Color rectangles to show order
-    var M2=4,N2=5;
+
+  if(hlView===1){
+    // Highlight one rectangle and show its image in an evenly covered nbhd
+    var hi=1,hj=1; // highlight R_{1,1}
+    var hx=sx+hi*sw/M,hy=sy+(N-1-hj)*sh/N,hw=sw/M,hh=sh/N;
+    c.fillStyle='rgba(251,191,36,.25)';c.fillRect(hx,hy,hw,hh);
+    c.strokeStyle='#fbbf24';c.lineWidth=2;c.strokeRect(hx,hy,hw,hh);
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';
+    c.fillText('R₁₁',hx+hw/2-10,hy+hh/2+4);
+
+    // Arrow from highlighted rect to U on circle
+    var uAng=-0.8; // position of U on S^1
+    var ux=rx+rr*Math.cos(uAng),uy=ry+rr*Math.sin(uAng);
+    arr(c,hx+hw,hy+hh/2,ux-15,uy,'#fbbf24',1);
+
+    // Evenly covered neighborhood U (arc on S^1)
+    c.strokeStyle='#fbbf24';c.lineWidth=4;
+    c.beginPath();c.arc(rx,ry,rr,uAng-0.5,uAng+0.5);c.stroke();
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText('U',ux+10,uy-10);
+
+    // Sheets above U (three copies stacked)
+    var sheetX=rx-50,sheetY=30,sheetW=100,sheetH=12,sheetGap=22;
+    c.fillStyle='#e2e8f0';c.font='bold 12px system-ui';c.fillText('p⁻¹(U):',sheetX-60,sheetY+sheetH+sheetGap);
+    for(var ss=0;ss<3;ss++){
+      var sy2=sheetY+ss*sheetGap;
+      var alpha2=ss===1?0.6:0.2;
+      c.fillStyle='rgba(167,139,250,'+alpha2+')';
+      c.fillRect(sheetX,sy2,sheetW,sheetH);
+      c.strokeStyle=ss===1?'#a78bfa':'rgba(167,139,250,.3)';c.lineWidth=ss===1?2:1;
+      c.strokeRect(sheetX,sy2,sheetW,sheetH);
+      c.fillStyle=ss===1?'#a78bfa':'rgba(167,139,250,.4)';c.font='11px system-ui';
+      c.fillText('V₂',sheetX+sheetW+5,sy2+10);
+      // relabel
+      if(ss===0) c.fillText('V₁',sheetX+sheetW+5,sy2+10);
+      if(ss===2) c.fillText('V₃',sheetX+sheetW+5,sy2+10);
+    }
+    // Arrow p from sheets to U
+    arr(c,sheetX+sheetW/2,sheetY+3*sheetGap,rx+rr*Math.cos(uAng-0.1),ry+rr*Math.sin(uAng-0.1)-5,'#8899b4',1);
+    c.fillStyle='#8899b4';c.font='italic 12px system-ui';c.fillText('p',sheetX+sheetW/2+10,sheetY+3*sheetGap-5);
+
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';
+    c.fillText('H(R₁₁) ⊆ U (evenly covered)',sx,sy+sh+52);
+    c.fillText('δ from Lebesgue number lemma',sx,sy+sh+68);
+  }
+
+  if(hlView===2){
+    // Color rectangles in lifting order
     var count=0;
-    for(var j2=0;j2<N2;j2++){
-      for(var i2=0;i2<M2;i2++){
+    for(var j2=0;j2<N;j2++){
+      for(var i2=0;i2<M;i2++){
         count++;
-        var alpha=0.04+0.03*count/20;
-        var hue=130+count*15;
-        c.fillStyle='hsla('+hue+',60%,60%,'+alpha+')';
-        c.fillRect(sx+i2*sw/M2+1,sy+(N2-1-j2)*sh/N2+1,sw/M2-2,sh/N2-2);
-        c.fillStyle='hsla('+hue+',60%,70%,.7)';c.font='10px system-ui';
-        c.fillText(String(count),sx+i2*sw/M2+sw/(2*M2)-5,sy+(N2-1-j2)*sh/N2+sh/(2*N2)+3);
+        var frac3=count/(M*N);
+        var hue2=130+frac3*200;
+        var alpha3=0.1+0.2*frac3;
+        c.fillStyle='hsla('+hue2+',60%,55%,'+alpha3+')';
+        c.fillRect(sx+i2*sw/M+1,sy+(N-1-j2)*sh/N+1,sw/M-2,sh/N-2);
+        c.fillStyle='hsla('+hue2+',60%,70%,.8)';c.font='bold 11px system-ui';
+        c.fillText(String(count),sx+i2*sw/M+sw/(2*M)-5,sy+(N-1-j2)*sh/N+sh/(2*N)+4);
       }
     }
-    // Arrow showing order
-    c.fillStyle='#e2e8f0';c.font='12px system-ui';c.fillText('Lift order: row by row, left to right',sx,sy+sh+55);
-  }
-  // Right side: explanation
-  var rx=420,ry=60;
-  if(hlView===0){
-    // H family of paths
-    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Homotopy H : [0,1]\u00B2 \u2192 B',rx,ry);
-    c.fillStyle='#8899b4';c.font='13px system-ui';
-    c.fillText('A continuous family of paths:',rx,ry+35);
-    c.fillText('  t = 0 : path \u03B3\u2080',rx,ry+65);
-    c.fillText('  t = 1 : path \u03B3\u2081',rx,ry+90);
-    c.fillText('H deforms \u03B3\u2080 into \u03B3\u2081 continuously.',rx,ry+125);
-    c.fillStyle='#fbbf24';c.font='13px system-ui';
-    c.fillText('Goal: lift entire H to the',rx,ry+170);
-    c.fillText('covering space E.',rx,ry+195);
-    // Draw some horizontal paths in the square
-    c.strokeStyle='rgba(52,211,153,.4)';c.lineWidth=1.5;
-    for(var tt=0;tt<=5;tt++){
-      var y3=sy+tt*sh/5;
-      c.beginPath();c.moveTo(sx,y3);c.lineTo(sx+sw,y3);c.stroke();
+
+    // Right: show helix (covering space) with lift being built
+    // Draw partial helix above circle to show the lift
+    var helixTop=30,helixBot=ry-rr-15;
+    var nSheets=3;
+    // Helix coils (faint)
+    for(var ss2=0;ss2<nSheets;ss2++){
+      var yBase=helixBot-ss2*(helixBot-helixTop)/nSheets;
+      var yTop2=yBase-(helixBot-helixTop)/nSheets;
+      c.strokeStyle='rgba(167,139,250,.15)';c.lineWidth=1.5;
+      c.beginPath();
+      for(var k2=0;k2<=60;k2++){
+        var s2=k2/60;
+        var ang2=-s2*Math.PI*2;
+        var py3=yBase-(yBase-yTop2)*s2;
+        var px3=rx+rr*0.6*Math.cos(ang2);
+        if(k2===0)c.moveTo(px3,py3);else c.lineTo(px3,py3);
+      }
+      c.stroke();
     }
-  }
-  if(hlView===1){
-    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Step 1: Lebesgue Grid',rx,ry);
-    c.fillStyle='#8899b4';c.font='13px system-ui';
-    c.fillText('[0,1]\u00B2 is compact. For each (s,t),',rx,ry+35);
-    c.fillText('H(s,t) has an evenly covered nbhd.',rx,ry+60);
-    c.fillText('By the Lebesgue number lemma:',rx,ry+95);
-    c.fillStyle='#fbbf24';c.font='13px system-ui';
-    c.fillText('\u2203 \u03B4 > 0 : every \u03B4-square maps',rx,ry+130);
-    c.fillText('into an evenly covered set.',rx,ry+155);
-    c.fillStyle='#8899b4';c.font='13px system-ui';
-    c.fillText('Subdivide [0,1]\u00B2 accordingly.',rx,ry+195);
-  }
-  if(hlView===2){
-    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Step 2: Lift Square by Square',rx,ry);
-    c.fillStyle='#8899b4';c.font='13px system-ui';
-    c.fillText('Start from bottom-left (row 0).',rx,ry+35);
-    c.fillText('Bottom row: use \u0303H\u2080 (given lift of \u03B3\u2080).',rx,ry+60);
-    c.fillText('Each rectangle R\u1D62\u2C7C maps into',rx,ry+95);
-    c.fillText('an evenly covered U. The already-',rx,ry+120);
-    c.fillText('lifted boundary selects a sheet V.',rx,ry+145);
-    c.fillStyle='#fbbf24';c.font='13px system-ui';
-    c.fillText('Define \u0303H = (p|_V)\u207B\u00B9 \u2218 H on R\u1D62\u2C7C.',rx,ry+185);
-    c.fillStyle='#34d399';c.font='13px system-ui';
-    c.fillText('Unique Lifting \u21D2 consistency',rx,ry+220);
-    c.fillText('at shared edges. \u25A0',rx,ry+245);
+
+    // Bold portion of helix = how far lift is built (show ~60%)
+    var liftFrac=0.6;
+    c.strokeStyle='#fb923c';c.lineWidth=3;
+    c.beginPath();
+    var totalCoils=nSheets;
+    for(var k3=0;k3<=120;k3++){
+      var s3=k3/120;
+      if(s3>liftFrac)break;
+      var ang3=-s3*totalCoils*Math.PI*2;
+      var py4=helixBot-(helixBot-helixTop)*s3;
+      var px4=rx+rr*0.6*Math.cos(ang3);
+      if(k3===0)c.moveTo(px4,py4);else c.lineTo(px4,py4);
+    }
+    c.stroke();
+
+    // Start dot
+    c.beginPath();c.arc(rx+rr*0.6,helixBot,4,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+    // Labels
+    c.fillStyle='#a78bfa';c.font='bold 12px system-ui';c.fillText('E (≈ ℝ)',rx+rr*0.6+15,helixTop+10);
+    c.fillStyle='#fb923c';c.font='bold 12px system-ui';c.fillText('̃H (lift)',rx+rr*0.6+15,(helixTop+helixBot)/2);
+    // Arrow p from helix to circle
+    arr(c,rx-10,helixBot+5,rx-10,ry-rr-3,'#8899b4',1);
+    c.fillStyle='#8899b4';c.font='italic 12px system-ui';c.fillText('p',rx-25,ry-rr-5);
+
+    c.fillStyle='#34d399';c.font='bold 12px system-ui';
+    c.fillText('Lift row by row, left → right',sx,sy+sh+52);
+    c.fillText('Boundary selects sheet → unique lift',sx,sy+sh+68);
   }
 }
 
@@ -929,67 +1068,126 @@ function drawUniv(){
 
 function drawGalois(){
   var c=document.getElementById('c_galois').getContext('2d'),W=820,H=380;bg(c,W,H);
-  // Left: subgroup lattice
-  var lx=120,ly=50;
-  c.fillStyle='#e2e8f0';c.font='bold 15px system-ui';c.fillText('Subgroups of \u2124',lx-40,ly);
-  // Nodes
-  var nodes=[
-    {label:'{0}',x:lx+60,y:ly+40,col:'#f87171'},
-    {label:'2\u2124',x:lx,y:ly+110,col:'#fb923c'},
-    {label:'3\u2124',x:lx+60,y:ly+110,col:'#fbbf24'},
-    {label:'4\u2124',x:lx+120,y:ly+110,col:'#a78bfa'},
-    {label:'\u22EE',x:lx+60,y:ly+170,col:'#8899b4'},
-    {label:'\u2124',x:lx+60,y:ly+240,col:'#38bdf8'}
-  ];
-  for(var i=0;i<nodes.length;i++){
-    var nd=nodes[i];
-    if(nd.label==='\u22EE'){c.fillStyle=nd.col;c.font='18px system-ui';c.fillText(nd.label,nd.x,nd.y);continue;}
-    c.fillStyle='rgba(136,153,180,.1)';c.strokeStyle=nd.col;c.lineWidth=2;
-    c.beginPath();c.arc(nd.x,nd.y,22,0,Math.PI*2);c.fill();c.stroke();
-    c.fillStyle=nd.col;c.font='bold 12px system-ui';
-    c.fillText(nd.label,nd.x-c.measureText(nd.label).width/2,nd.y+5);
-  }
-  // Edges: {0} -> n*Z -> Z
-  c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;
-  for(var j=1;j<=3;j++){c.beginPath();c.moveTo(nodes[0].x,nodes[0].y+22);c.lineTo(nodes[j].x,nodes[j].y-22);c.stroke();}
-  for(var j2=1;j2<=3;j2++){c.beginPath();c.moveTo(nodes[j2].x,nodes[j2].y+22);c.lineTo(nodes[5].x,nodes[5].y-22);c.stroke();}
 
-  // Right: covering lattice
-  var rlx=520,rly=50;
-  c.fillStyle='#e2e8f0';c.font='bold 15px system-ui';c.fillText('Coverings of S\u00B9',rlx-20,rly);
-  var rnodes=[
-    {label:'\u211D \u2192 S\u00B9',x:rlx+60,y:rly+40,col:'#f87171',sub:'\u221E sheets'},
-    {label:'z\u00B2',x:rlx,y:rly+110,col:'#fb923c',sub:'2 sheets'},
-    {label:'z\u00B3',x:rlx+60,y:rly+110,col:'#fbbf24',sub:'3 sheets'},
-    {label:'z\u2074',x:rlx+120,y:rly+110,col:'#a78bfa',sub:'4 sheets'},
-    {label:'\u22EE',x:rlx+60,y:rly+170,col:'#8899b4',sub:''},
-    {label:'id',x:rlx+60,y:rly+240,col:'#38bdf8',sub:'1 sheet'}
+  // Layout: 4 rows = [{0}, 2Z, 3Z, Z] with mini pictures
+  var rows=[
+    {sub:'{0}',  cov:'\u211D \u2192 S\u00B9',  n:0, col:'#f87171', desc:'universal cover (\u221E sheets)'},
+    {sub:'2\u2124', cov:'z \u21A6 z\u00B2', n:2, col:'#fb923c', desc:'2-fold cover'},
+    {sub:'3\u2124', cov:'z \u21A6 z\u00B3', n:3, col:'#fbbf24', desc:'3-fold cover'},
+    {sub:'\u2124',  cov:'id',              n:1, col:'#38bdf8', desc:'trivial cover (1 sheet)'}
   ];
-  for(var i2=0;i2<rnodes.length;i2++){
-    var nd2=rnodes[i2];
-    if(nd2.label==='\u22EE'){c.fillStyle=nd2.col;c.font='18px system-ui';c.fillText(nd2.label,nd2.x,nd2.y);continue;}
-    c.fillStyle='rgba(136,153,180,.1)';c.strokeStyle=nd2.col;c.lineWidth=2;
-    c.beginPath();c.arc(nd2.x,nd2.y,22,0,Math.PI*2);c.fill();c.stroke();
-    c.fillStyle=nd2.col;c.font='bold 11px system-ui';
-    c.fillText(nd2.label,nd2.x-c.measureText(nd2.label).width/2,nd2.y+4);
-    if(nd2.sub){c.fillStyle='rgba(136,153,180,.6)';c.font='10px system-ui';c.fillText(nd2.sub,nd2.x+28,nd2.y+4);}
-  }
-  for(var j3=1;j3<=3;j3++){c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;c.beginPath();c.moveTo(rnodes[0].x,rnodes[0].y+22);c.lineTo(rnodes[j3].x,rnodes[j3].y-22);c.stroke();}
-  for(var j4=1;j4<=3;j4++){c.beginPath();c.moveTo(rnodes[j4].x,rnodes[j4].y+22);c.lineTo(rnodes[5].x,rnodes[5].y-22);c.stroke();}
 
-  // Correspondence arrows
-  c.setLineDash([6,4]);c.strokeStyle='rgba(251,191,36,.4)';c.lineWidth=1.5;
-  for(var k=0;k<6;k++){
-    if(nodes[k].label==='\u22EE')continue;
-    c.beginPath();c.moveTo(nodes[k].x+28,nodes[k].y);c.lineTo(rnodes[k].x-28,rnodes[k].y);c.stroke();
+  var colSub=80, colCov=280, colPic=480;
+  var topY=60, rowH=75;
+
+  // Titles
+  c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';
+  c.fillText('Subgroup H \u2264 \u2124',colSub-15,32);
+  c.fillText('Covering  p : E \u2192 S\u00B9',colCov-10,32);
+  c.fillText('Picture',colPic+40,32);
+
+  // Column dividers
+  c.strokeStyle='rgba(136,153,180,.12)';c.lineWidth=1;
+  c.beginPath();c.moveTo(colCov-30,40);c.lineTo(colCov-30,H-35);c.stroke();
+  c.beginPath();c.moveTo(colPic-15,40);c.lineTo(colPic-15,H-35);c.stroke();
+
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i], cy=topY+i*rowH;
+
+    // Subgroup node
+    c.fillStyle='rgba(136,153,180,.07)';c.strokeStyle=r.col;c.lineWidth=2;
+    c.beginPath();c.arc(colSub+40,cy,20,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle=r.col;c.font='bold 13px system-ui';
+    c.fillText(r.sub,colSub+40-c.measureText(r.sub).width/2,cy+5);
+
+    // Dashed correspondence arrow
+    c.setLineDash([5,3]);c.strokeStyle='rgba(251,191,36,.5)';c.lineWidth=1.5;
+    c.beginPath();c.moveTo(colSub+65,cy);c.lineTo(colCov-5,cy);c.stroke();
+    c.setLineDash([]);
+    c.fillStyle='rgba(251,191,36,.5)';
+    c.beginPath();c.moveTo(colCov-5,cy);c.lineTo(colCov-12,cy-4);c.lineTo(colCov-12,cy+4);c.fill();
+
+    // Covering label + description
+    c.fillStyle=r.col;c.font='bold 13px system-ui';
+    c.fillText(r.cov,colCov,cy+5);
+    c.fillStyle='rgba(136,153,180,.55)';c.font='11px system-ui';
+    c.fillText(r.desc,colCov,cy+20);
+
+    // --- Mini picture ---
+    var px=colPic+70, py=cy;
+    if(r.n===0){
+      // Universal cover: helix above circle
+      var cr2=20;
+      c.strokeStyle='rgba(56,189,248,.3)';c.lineWidth=1.5;
+      c.beginPath();c.arc(px,py+14,cr2,0,Math.PI*2);c.stroke();
+      c.fillStyle='rgba(56,189,248,.4)';c.font='10px system-ui';c.fillText('S\u00B9',px+cr2+4,py+18);
+      c.strokeStyle=r.col;c.lineWidth=2;c.beginPath();
+      for(var k=0;k<=90;k++){
+        var t=k/90;
+        var hx=px+cr2*0.75*Math.cos(-t*3*Math.PI*2);
+        var hy=py+14-t*55;
+        if(k===0)c.moveTo(hx,hy);else c.lineTo(hx,hy);
+      }
+      c.stroke();
+      c.fillStyle=r.col;c.font='10px system-ui';c.fillText('\u211D',px+cr2+4,py-28);
+    }
+    else if(r.n===1){
+      // Trivial: two circles with = arrow
+      var cr3=16;
+      c.strokeStyle=r.col;c.lineWidth=2;
+      c.beginPath();c.arc(px-22,py,cr3,0,Math.PI*2);c.stroke();
+      c.strokeStyle='#8899b4';c.lineWidth=1.5;
+      c.beginPath();c.moveTo(px,py);c.lineTo(px+28,py);c.stroke();
+      c.beginPath();c.moveTo(px+28,py);c.lineTo(px+22,py-4);c.moveTo(px+28,py);c.lineTo(px+22,py+4);c.stroke();
+      c.strokeStyle=r.col;c.lineWidth=2;
+      c.beginPath();c.arc(px+48,py,cr3,0,Math.PI*2);c.stroke();
+      c.fillStyle='#8899b4';c.font='10px system-ui';c.fillText('id',px+10,py-8);
+    }
+    else{
+      // n-fold: draw n evenly spaced preimage dots on top circle, 1 dot on bottom, arrows
+      var cr4=20;
+      // Bottom circle (base S^1)
+      c.strokeStyle='rgba(56,189,248,.3)';c.lineWidth=1.5;
+      c.beginPath();c.arc(px,py+14,cr4,0,Math.PI*2);c.stroke();
+      // Top circle (covering S^1)
+      c.strokeStyle=r.col;c.lineWidth=2;
+      c.beginPath();c.arc(px,py-16,cr4*0.85,0,Math.PI*2);c.stroke();
+      // Base point on bottom circle
+      c.beginPath();c.arc(px+cr4,py+14,3,0,Math.PI*2);c.fillStyle='#38bdf8';c.fill();
+      // n preimage points on top circle
+      for(var k2=0;k2<r.n;k2++){
+        var ang=-k2*Math.PI*2/r.n;
+        var dotx=px+cr4*0.85*Math.cos(ang);
+        var doty=py-16+cr4*0.85*Math.sin(ang);
+        c.beginPath();c.arc(dotx,doty,3,0,Math.PI*2);c.fillStyle=r.col;c.fill();
+      }
+      // Arrow p down
+      c.strokeStyle='#8899b4';c.lineWidth=1;
+      c.beginPath();c.moveTo(px+cr4*0.85+8,py-16);c.lineTo(px+cr4+8,py+14);c.stroke();
+      c.beginPath();c.moveTo(px+cr4+8,py+14);c.lineTo(px+cr4+4,py+8);c.moveTo(px+cr4+8,py+14);c.lineTo(px+cr4+12,py+8);c.stroke();
+      c.fillStyle='#8899b4';c.font='10px system-ui';c.fillText('p',px+cr4+12,py);
+      // n:1 label
+      c.fillStyle=r.col;c.font='bold 10px system-ui';c.fillText(r.n+' : 1',px-cr4-28,py);
+    }
   }
+
+  // Vertical ordering on subgroup side (dashed)
+  c.strokeStyle='rgba(136,153,180,.12)';c.lineWidth=1;c.setLineDash([3,3]);
+  c.beginPath();c.moveTo(colSub+40,topY+22);c.lineTo(colSub+40,topY+3*rowH-22);c.stroke();
   c.setLineDash([]);
 
-  // Bottom label
+  // Dots between 3Z and Z rows
+  c.fillStyle='#8899b4';c.font='15px system-ui';
+  var dotsY=topY+2.55*rowH;
+  c.fillText('\u22EE',colSub+36,dotsY);
+  c.fillText('\u22EE',colCov+15,dotsY);
+  c.fillText('\u22EE',colPic+66,dotsY);
+
+  // Bottom summary
   c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
-  c.fillText('H \u2264 \u2124   \u27F7   covering with [\u2124 : H] sheets',W/2-150,H-30);
+  c.fillText('H \u2264 \u2124   \u27F7   covering with [\u2124 : H] sheets',W/2-150,H-22);
   c.fillStyle='#8899b4';c.font='12px system-ui';
-  c.fillText('Larger subgroup  \u21D4  fewer sheets  \u21D4  smaller cover',W/2-170,H-10);
+  c.fillText('Larger subgroup  \u21D4  fewer sheets  \u21D4  smaller covering space',W/2-185,H-5);
 }
 
 function drawBigPic(){

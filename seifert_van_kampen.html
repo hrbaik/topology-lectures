@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Seifert–van Kampen Theorem</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']], tags: 'ams' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.min.js"></script>
+<style>
+:root{--bg:#0a0f1e;--surface:#131b2e;--surface2:#1c2640;--surface3:#243050;--accent:#38bdf8;--accent2:#a78bfa;--accent3:#34d399;--text:#e2e8f0;--dim:#8899b4;--border:#2a3a5c;--red:#f87171;--orange:#fb923c;--yellow:#fbbf24;--pink:#f472b6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.8}
+.hero{text-align:center;padding:50px 20px 35px;background:linear-gradient(135deg,#1a1040 0%,#0a0f1e 60%)}
+.hero h1{font-size:2.1rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.hero .sub{color:var(--dim);font-size:1rem;max-width:720px;margin:0 auto}
+nav.tabs{display:flex;justify-content:center;gap:6px;padding:14px 10px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+nav.tabs button{padding:9px 22px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--dim);font-size:.92rem;cursor:pointer;transition:.2s}
+nav.tabs button:hover{border-color:var(--accent);color:var(--text)}
+nav.tabs button.active{background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(167,139,250,.12));border-color:var(--accent);color:#fff;font-weight:600}
+.sec{display:none;max-width:1060px;margin:0 auto;padding:36px 22px 70px}
+.sec.active{display:block}
+h2{font-size:1.55rem;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--accent);display:inline-block}
+h3{font-size:1.15rem;color:var(--accent2);margin:30px 0 10px;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 26px;margin:18px 0}
+.card.thm{border-left:4px solid var(--accent);background:linear-gradient(120deg,rgba(56,189,248,.04),rgba(167,139,250,.04))}
+.card.prf{border-left:4px solid var(--accent3)}
+.card.rmk{border-left:4px solid var(--orange)}
+.card.int{border-left:4px solid var(--yellow)}
+.card.def{border-left:4px solid var(--pink)}
+.tag{font-size:.72rem;text-transform:uppercase;letter-spacing:1.6px;font-weight:700;margin-bottom:8px}
+.thm .tag{color:var(--accent)}.prf .tag{color:var(--accent3)}.rmk .tag{color:var(--orange)}.int .tag{color:var(--yellow)}.def .tag{color:var(--pink)}
+p{margin:8px 0}
+.viz{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin:20px 0;text-align:center}
+.viz canvas{border-radius:6px;max-width:100%}
+.viz-title{font-size:.9rem;color:var(--accent);font-weight:600;margin-bottom:10px}
+.viz-caption{font-size:.84rem;color:var(--dim);line-height:1.6;margin-top:12px;text-align:left;padding:0 8px;border-top:1px solid rgba(42,58,92,.5);padding-top:10px}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.ctrls button{padding:7px 16px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);cursor:pointer;font-size:.84rem;transition:.2s}
+.ctrls button:hover{border-color:var(--accent);background:rgba(56,189,248,.08)}
+.ctrls button.on{background:var(--accent);color:var(--bg);font-weight:600;border-color:var(--accent)}
+.srow{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:8px;font-size:.85rem;color:var(--dim)}
+.srow input[type=range]{width:200px;accent-color:var(--accent)}
+.hl{color:var(--accent);font-weight:600}
+.hl2{color:var(--accent2);font-weight:600}
+.hl3{color:var(--accent3);font-weight:600}
+.hlr{color:var(--red);font-weight:600}
+mjx-container{overflow-x:auto;overflow-y:hidden}
+.case{margin:8px 0 8px 20px;padding-left:14px;border-left:2px solid var(--surface3)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>The Seifert&ndash;van Kampen Theorem</h1>
+  <p class="sub">Harry Hyungryul Baik (KAIST)</p>
+</div>
+
+<nav class="tabs">
+  <button class="active" onclick="showTab('s0',this)">0 &middot; Free Products</button>
+  <button onclick="showTab('s1',this)">1 &middot; The Theorem</button>
+  <button onclick="showTab('s2',this)">2 &middot; Applications</button>
+  <button onclick="showTab('s3',this)">3 &middot; Classification of Surfaces</button>
+</nav>
+
+<!-- ============================== SECTION 0 ============================== -->
+<div id="s0" class="sec active">
+<h2>0. Algebraic Preliminaries: Free Products</h2>
+
+<h3>0.1 &ensp; The Free Product of Groups</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Free Product</div>
+  <p>Let $G$ and $H$ be groups. A <strong>word</strong> in $G$ and $H$ is a finite sequence
+  $$g_1 h_1 g_2 h_2 \cdots g_n h_n$$
+  where each $g_i\in G$ and $h_i\in H$ (allowing $g_i = e_G$ or $h_i = e_H$). A word is <strong>reduced</strong> if:</p>
+  <p>(i) No $g_i$ (except possibly $g_1$ or $g_n$ at the ends) is $e_G$, and similarly for $h_i$.</p>
+  <p>(ii) Elements from the same group are not adjacent (i.e., the letters alternate strictly between $G$ and $H$).</p>
+  <p>The <strong>free product</strong> $G * H$ is the set of all reduced words, with the group operation given by concatenation followed by reduction (combining adjacent letters from the same group, and cancelling identities).</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Universal Property</div>
+  <p>The free product $G*H$ satisfies the following universal property. There are natural inclusion homomorphisms $\iota_G\colon G\hookrightarrow G*H$ and $\iota_H\colon H\hookrightarrow G*H$. For any group $K$ and any homomorphisms $\varphi\colon G\to K$, $\psi\colon H\to K$, there exists a <strong>unique</strong> homomorphism $\Phi\colon G*H\to K$ such that $\Phi\circ\iota_G = \varphi$ and $\Phi\circ\iota_H = \psi$.</p>
+  <p>Concretely, $\Phi$ acts on a reduced word by applying $\varphi$ to each $G$-letter and $\psi$ to each $H$-letter, then multiplying in $K$:
+  $$\Phi(g_1 h_1 g_2 h_2\cdots) = \varphi(g_1)\,\psi(h_1)\,\varphi(g_2)\,\psi(h_2)\cdots$$</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Example</div>
+  <p>$\mathbb{Z}*\mathbb{Z}$ is the free group on two generators $F_2$. If we denote the generator of the first copy by $a$ and the second by $b$, then elements are reduced words in $a, a^{-1}, b, b^{-1}$, such as $a^2 b^{-1} a b^3$. This group is non-abelian: $ab\ne ba$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 0.1 &mdash; Reduced Words in a Free Product</div>
+  <canvas id="c_words" width="820" height="320"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setWordView(0,this)">Word reduction</button>
+    <button onclick="setWordView(1,this)">Concatenation</button>
+  </div>
+  <div class="viz-caption"><strong>Left:</strong> An unreduced word is simplified by combining adjacent letters from the same group and removing identities. <strong>Right:</strong> Multiplying two reduced words — concatenate, then reduce the junction.</div>
+</div>
+
+<h3>0.2 &ensp; The Free Product with Amalgamation</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Amalgamated Free Product</div>
+  <p>Let $G$, $H$ be groups, $C$ a group, and $i\colon C\to G$, $j\colon C\to H$ homomorphisms. The <strong>amalgamated free product</strong> (or <strong>pushout</strong>) is the quotient
+  $$G *_C H \;=\; (G * H)\, \big/\, N$$
+  where $N$ is the normal closure of $\bigl\{ i(c)\,j(c)^{-1} : c\in C \bigr\}$.</p>
+  <p>In other words, $G *_C H$ is the free product $G*H$ with the additional relations that identify $i(c)$ with $j(c)$ for every $c\in C$.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Universal Property of the Pushout</div>
+  <p>$G *_C H$ satisfies the following universal property. For any group $K$ and homomorphisms $\varphi\colon G\to K$, $\psi\colon H\to K$ such that $\varphi\circ i = \psi\circ j$ (i.e., they agree on the image of $C$), there exists a unique homomorphism $\Phi\colon G*_C H\to K$ with $\Phi|_G = \varphi$ and $\Phi|_H = \psi$.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 0.2 &mdash; Universal Property of the Amalgamated Free Product</div>
+  <canvas id="c_pushout" width="820" height="300"></canvas>
+  <div class="viz-caption">The amalgamated free product $G*_C H$ is the "most general" group that receives homomorphisms from both $G$ and $H$ agreeing on $C$. Every such pair of homomorphisms factors uniquely through $G*_C H$.</div>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Key Special Case</div>
+  <p>When $C = \{e\}$ is trivial (so $i$ and $j$ are the trivial homomorphisms), the amalgamated free product reduces to the ordinary free product: $G *_{\{e\}} H = G * H$. No identifications are imposed.</p>
+</div>
+
+</div>
+
+<!-- ============================== SECTION 1 ============================== -->
+<div id="s1" class="sec">
+<h2>1. The Seifert&ndash;van Kampen Theorem</h2>
+
+<h3>1.1 &ensp; Setup</h3>
+
+<div class="card int">
+  <div class="tag">The Situation</div>
+  <p>Let $X$ be a topological space, and suppose $X = A\cup B$ where $A$ and $B$ are open subsets with $A$, $B$, and $A\cap B$ all path-connected. Choose a basepoint $x_0\in A\cap B$.</p>
+  <p>The inclusions induce a commutative diagram of fundamental groups:</p>
+  <p style="text-align:center">$\pi_1(A\cap B,x_0) \xrightarrow{i_*} \pi_1(A,x_0)$, &emsp; $\pi_1(A\cap B,x_0) \xrightarrow{j_*} \pi_1(B,x_0)$</p>
+  <p>where $i\colon A\cap B\hookrightarrow A$ and $j\colon A\cap B\hookrightarrow B$ are the inclusion maps.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.1 &mdash; The Decomposition $X = A\cup B$</div>
+  <canvas id="c_decomp" width="820" height="380"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setDecompView(0,this)">$A$, $B$, $A\cap B$</button>
+    <button onclick="setDecompView(1,this)">Induced homomorphisms</button>
+  </div>
+  <div class="viz-caption">$X$ is decomposed as the union of two open sets $A$ and $B$. Their intersection $A\cap B$ must be path-connected. The inclusions $A\cap B\hookrightarrow A$ and $A\cap B\hookrightarrow B$ induce homomorphisms on fundamental groups.</div>
+</div>
+
+<h3>1.2 &ensp; Statement</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem (Seifert&ndash;van Kampen)</div>
+  <p>Let $X = A\cup B$ with $A$, $B$ open in $X$, and $A$, $B$, $A\cap B$ all path-connected. Fix a basepoint $x_0\in A\cap B$. Then the homomorphism
+  $$\Phi\colon \pi_1(A)*_{\pi_1(A\cap B)}\pi_1(B) \;\longrightarrow\; \pi_1(X)$$
+  induced by the inclusions $A\hookrightarrow X$ and $B\hookrightarrow X$ is an <strong>isomorphism</strong>.</p>
+  <p>Equivalently: $\pi_1(X,x_0)$ is the pushout of $\pi_1(A,x_0) \xleftarrow{i_*} \pi_1(A\cap B,x_0) \xrightarrow{j_*} \pi_1(B,x_0)$ in the category of groups.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Unpacking the Statement</div>
+  <p>Concretely, the theorem says two things:</p>
+  <p><strong>(1) Generation.</strong> Every loop in $X$ based at $x_0$ is homotopic to a product of loops, each lying entirely in $A$ or entirely in $B$. (Surjectivity of $\Phi$.)</p>
+  <p><strong>(2) Relations.</strong> The <em>only</em> relations among these generators, beyond those already holding in $\pi_1(A)$ and $\pi_1(B)$ individually, come from the intersection: if $\gamma$ is a loop in $A\cap B$, then its class viewed in $\pi_1(A)$ equals its class viewed in $\pi_1(B)$ inside $\pi_1(X)$. (Injectivity of $\Phi$, i.e., the kernel is exactly the amalgamation relations.)</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Important Special Case: Simply Connected Intersection</div>
+  <p>If $A\cap B$ is <strong>simply connected</strong>, then $\pi_1(A\cap B) = \{e\}$, and the amalgamated free product reduces to the ordinary free product:
+  $$\pi_1(X) \;\cong\; \pi_1(A) * \pi_1(B).$$
+  This is the simplest and most frequently used case.</p>
+</div>
+
+<h3>1.3 &ensp; Proof</h3>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+
+  <p><strong>Step 0 — Defining $\Phi$.</strong> By the universal property of the amalgamated free product, the inclusion-induced homomorphisms $\pi_1(A)\to\pi_1(X)$ and $\pi_1(B)\to\pi_1(X)$ (which agree on $\pi_1(A\cap B)$ since both composites equal the inclusion $A\cap B\hookrightarrow X$) give a unique homomorphism
+  $$\Phi\colon \pi_1(A)*_{\pi_1(A\cap B)}\pi_1(B) \;\longrightarrow\; \pi_1(X,x_0).$$
+  On a word $\alpha_1\beta_1\alpha_2\beta_2\cdots$ (with $\alpha_k\in\pi_1(A)$ and $\beta_k\in\pi_1(B)$), $\Phi$ sends it to $[\alpha_1*\beta_1*\alpha_2*\beta_2*\cdots]$ viewed as a loop in $X$. We must prove $\Phi$ is both surjective and injective.</p>
+
+  <p><strong>Step 1 — Surjectivity.</strong> Let $\gamma\colon [0,1]\to X$ be a loop at $x_0$. We must show that $[\gamma]$ lies in the image of $\Phi$, i.e., $\gamma$ is homotopic to a product of loops each in $A$ or $B$.</p>
+
+  <p>Since $\{A,B\}$ is an open cover of $X$ and $[0,1]$ is compact, the Lebesgue number lemma gives a partition
+  $$0 = t_0 \lt t_1 \lt \cdots \lt t_n = 1$$
+  such that each $\gamma([t_{k-1},t_k])$ lies entirely in $A$ or entirely in $B$.</p>
+
+  <p>Each subdivision point $\gamma(t_k)$ lies in $A$ or $B$ (or both). If $\gamma(t_k)\in A\cap B$, we can connect it to $x_0$ by a path in $A\cap B$ (using path-connectedness of $A\cap B$). If $\gamma(t_k)$ lies in only one of $A$ or $B$, then the two adjacent segments $\gamma|_{[t_{k-1},t_k]}$ and $\gamma|_{[t_k,t_{k+1}]}$ both lie in the same set (say $A$), so we can merge them into a single segment in $A$. After such merging, we may assume every subdivision point $\gamma(t_k)$ lies in $A\cap B$.</p>
+
+  <p>Now for each $k$, choose a path $\sigma_k$ in $A\cap B$ from $x_0$ to $\gamma(t_k)$ (with $\sigma_0=\sigma_n=$ constant at $x_0$ since $\gamma(0)=\gamma(1)=x_0$). Define
+  $$\lambda_k \;=\; \sigma_{k-1} * \gamma|_{[t_{k-1},t_k]} * \bar{\sigma}_k.$$
+  Each $\lambda_k$ is a loop at $x_0$ lying entirely in $A$ or entirely in $B$ (since $\gamma|_{[t_{k-1},t_k]}$ lies in one of them, and $\sigma_{k-1}$, $\sigma_k$ lie in $A\cap B\subseteq$ both). Furthermore,
+  $$\gamma \;\simeq\; \lambda_1 * \lambda_2 * \cdots * \lambda_n$$
+  because the connecting paths $\bar{\sigma}_k * \sigma_k$ are each homotopic to the constant path. So $[\gamma] = \Phi([\lambda_1][\lambda_2]\cdots[\lambda_n])$, proving surjectivity.</p>
+
+  <p><strong>Step 2 — Injectivity.</strong> This is the heart of the proof. We must show: if $\alpha_1\beta_1\cdots\alpha_m\beta_m$ is a word in $\pi_1(A)*\pi_1(B)$ with $\Phi(\alpha_1\beta_1\cdots\alpha_m\beta_m) = [c_{x_0}]$ in $\pi_1(X)$, then the word is trivial in $\pi_1(A)*_{\pi_1(A\cap B)}\pi_1(B)$.</p>
+
+  <p>Write each $\alpha_k$ and $\beta_k$ as homotopy classes of actual loops: $\alpha_k = [a_k]$ with $a_k$ a loop in $A$, and $\beta_k = [b_k]$ with $b_k$ a loop in $B$. The hypothesis says the concatenation
+  $$\gamma = a_1*b_1*a_2*b_2*\cdots*a_m*b_m$$
+  is null-homotopic in $X$. Let $H\colon[0,1]^2\to X$ be a null-homotopy, i.e., $H(s,0)=\gamma(s)$, $H(s,1)=x_0$, $H(0,t)=H(1,t)=x_0$ for all $s,t$.</p>
+
+  <p><strong>Step 2a (Grid).</strong> Since $\{A,B\}$ is an open cover of $X$ and $[0,1]^2$ is compact, the Lebesgue number lemma gives $\delta \gt 0$ such that every subsquare of side $\le\delta$ is mapped by $H$ into $A$ or $B$. Choose a grid on $[0,1]^2$ with mesh $\lt\delta$. We can further refine this grid so that the bottom edge $[0,1]\times\{0\}$ has vertical grid lines at each junction point $t_k$ where $\gamma$ transitions between $a_k$, $b_k$, etc.</p>
+
+  <p><strong>Step 2b (Vertex paths).</strong> Each vertex $v$ of the grid maps to a point $H(v)\in X$. If $H(v)\in A\cap B$, choose a path $\sigma_v$ in $A\cap B$ from $x_0$ to $H(v)$. If $H(v)$ lies in only one of $A$ or $B$, the two rectangles sharing $v$ must both map into the same set (by our choice of $\delta$), so we can handle this by a small refinement. After possible refinement, assume every vertex maps to $A\cap B$ (or use paths in whichever set contains the vertex).</p>
+
+  <p><strong>Step 2c (Edge loops).</strong> For each edge $e$ of the grid from vertex $v$ to vertex $w$, define the loop
+  $$\lambda_e = \sigma_v * H|_e * \bar{\sigma}_w,$$
+  which is a loop at $x_0$ lying entirely in $A$ or entirely in $B$ (since $H(e)$ lies in one of them).</p>
+
+  <p><strong>Step 2d (Rectangle relations).</strong> Consider any small rectangle $R$ of the grid. Its four edges $e_{\text{bot}}$, $e_{\text{right}}$, $e_{\text{top}}$, $e_{\text{left}}$ form a cycle. Since $H(R)$ lies in a single set ($A$ or $B$), the boundary loop is null-homotopic within that set. This gives:
+  $$[\lambda_{e_{\text{bot}}}]\,[\lambda_{e_{\text{right}}}]\,[\lambda_{\bar{e}_{\text{top}}}]\,[\lambda_{\bar{e}_{\text{left}}}] \;=\; e \quad\text{in } \pi_1(A) \text{ or } \pi_1(B).$$
+  In other words, each rectangle gives a relation that holds <em>within</em> $\pi_1(A)$ or $\pi_1(B)$.</p>
+
+  <p><strong>Step 2e (Telescoping).</strong> Now consider the product of all edge-loops along the bottom row of the grid: this represents $[\gamma] = [\alpha_1][\beta_1]\cdots[\alpha_m][\beta_m]$. The top, left, and right edges of the grid map to $x_0$ (since $H(s,1)=x_0$ and $H(0,t)=H(1,t)=x_0$), so their edge-loops are trivial.</p>
+
+  <p>Using the rectangle relations from Step 2d, we can "push" the bottom row upward through the grid, one row at a time. Each rectangle replaces a bottom-edge loop with top/side-edge loops using a relation that holds in $\pi_1(A)$ or $\pi_1(B)$. If an edge lies in $A\cap B$, the corresponding edge-loop lies in $\pi_1(A\cap B)$, and moving it between the $A$ and $B$ factors is exactly the amalgamation relation $i_*(c) = j_*(c)$.</p>
+
+  <p>After pushing all the way to the top row (where everything is trivial), we have shown that the original word $[\alpha_1][\beta_1]\cdots[\alpha_m][\beta_m]$ can be reduced to the identity using only: (i) relations within $\pi_1(A)$ or $\pi_1(B)$, and (ii) the amalgamation relations $i_*(c) = j_*(c)$ for $c\in\pi_1(A\cap B)$. These are precisely the relations in $\pi_1(A)*_{\pi_1(A\cap B)}\pi_1(B)$. So the word is trivial there. &square;</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.2 &mdash; Proof Visualization: Decomposing a Loop</div>
+  <canvas id="c_loopsplit" width="820" height="380"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setSplitView(0,this)">A loop in $X$</button>
+    <button onclick="setSplitView(1,this)">Subdivision</button>
+    <button onclick="setSplitView(2,this)">Connecting paths</button>
+  </div>
+  <div class="viz-caption"><strong>Surjectivity argument.</strong> A loop $\gamma$ in $X$ is subdivided so each piece lies in $A$ or $B$. Connecting paths $\sigma_k$ in $A\cap B$ (from $x_0$ to subdivision points) break $\gamma$ into a product of loops, each in $A$ or $B$.</div>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 1.3 &mdash; Proof Visualization: The Null-Homotopy Grid</div>
+  <canvas id="c_grid" width="820" height="400"></canvas>
+  <div class="ctrls">
+    <button class="on" onclick="setGridView(0,this)">The homotopy $H$</button>
+    <button onclick="setGridView(1,this)">Grid &amp; coloring</button>
+    <button onclick="setGridView(2,this)">Pushing upward</button>
+  </div>
+  <div class="viz-caption"><strong>Injectivity argument.</strong> The null-homotopy $H:[0,1]^2\to X$ is covered by a fine grid. Each small rectangle maps into $A$ or $B$, giving a relation in $\pi_1(A)$ or $\pi_1(B)$. Telescoping these relations from bottom to top reduces the word to trivial.</div>
+</div>
+
+</div>
+
+<!-- ============================== SECTION 2 ============================== -->
+<div id="s2" class="sec">
+<h2>2. Applications</h2>
+
+<h3>2.0 &ensp; Preliminary: Deformation Retractions</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Retraction and Deformation Retraction</div>
+  <p>Let $A\subseteq X$ be a subspace. A <strong>retraction</strong> of $X$ onto $A$ is a continuous map $r\colon X\to A$ such that $r(a) = a$ for all $a\in A$ (i.e., $r\circ\iota = \mathrm{id}_A$, where $\iota\colon A\hookrightarrow X$ is the inclusion).</p>
+  <p>A <strong>deformation retraction</strong> of $X$ onto $A$ is a continuous map $H\colon X\times[0,1]\to X$ such that:</p>
+  <p>(i) $H(x,0) = x$ for all $x\in X$ &ensp;(starts as the identity),</p>
+  <p>(ii) $H(x,1)\in A$ for all $x\in X$ &ensp;(ends in $A$),</p>
+  <p>(iii) $H(a,t) = a$ for all $a\in A$ and all $t\in[0,1]$ &ensp;(points of $A$ stay fixed throughout).</p>
+  <p>In other words, $H$ is a homotopy from $\mathrm{id}_X$ to a retraction $r = H(\cdot,1)$, and this homotopy keeps $A$ fixed at all times. We say $A$ is a <strong>deformation retract</strong> of $X$.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Proposition</div>
+  <p>If $A$ is a deformation retract of $X$ and $x_0\in A$, then the inclusion $\iota\colon A\hookrightarrow X$ induces an isomorphism
+  $$\iota_*\colon \pi_1(A,x_0) \;\xrightarrow{\;\cong\;}\; \pi_1(X,x_0).$$</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Let $r\colon X\to A$ be the retraction $r(x) = H(x,1)$. Since $r\circ\iota = \mathrm{id}_A$, we have $r_*\circ\iota_* = \mathrm{id}_{\pi_1(A)}$. In particular, $\iota_*$ is injective and $r_*$ is surjective.</p>
+  <p>It remains to show $\iota_*\circ r_* = \mathrm{id}_{\pi_1(X)}$, i.e., $\iota\circ r \simeq \mathrm{id}_X$ as maps $X\to X$. But this is exactly what the deformation retraction $H$ provides: $H(\cdot,0) = \mathrm{id}_X$ and $H(\cdot,1) = \iota\circ r$, so $\iota\circ r\simeq \mathrm{id}_X$.</p>
+  <p>For any loop $\gamma$ in $X$ at $x_0$, the map $t\mapsto H(\gamma(\cdot),t)$ gives a homotopy from $\gamma$ to $\iota\circ r\circ\gamma$ (which is a loop in $A$ viewed in $X$). Moreover, since $H(x_0,t) = x_0$ for all $t$ (condition (iii), as $x_0\in A$), this homotopy fixes the basepoint. Therefore $[\gamma] = \iota_*([r\circ\gamma])$, showing $\iota_*\circ r_* = \mathrm{id}_{\pi_1(X)}$.</p>
+  <p>Thus $\iota_*$ and $r_*$ are mutual inverses. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Why This Matters</div>
+  <p>This result lets us replace a complicated space $X$ with a simpler subspace $A$ (its deformation retract) when computing fundamental groups. We will use this repeatedly in the applications below: to identify $\pi_1$ of an open set, we deformation-retract it onto a simpler space whose $\pi_1$ we already know.</p>
+</div>
+
+<h3>2.1 &ensp; Wedge of Circles: $\pi_1(S^1\vee S^1)\cong \mathbb{Z}*\mathbb{Z}$</h3>
+
+<div class="card thm">
+  <div class="tag">Proposition</div>
+  <p>The fundamental group of the wedge of two circles is the free group on two generators:
+  $$\pi_1(S^1\vee S^1) \;\cong\; \mathbb{Z}*\mathbb{Z} \;=\; F_2.$$</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Let $X = S^1\vee S^1$, the one-point union at $x_0$. Let $A$ be the union of the first circle and a small open arc of the second circle containing $x_0$, and let $B$ be the union of the second circle and a small open arc of the first circle containing $x_0$.</p>
+  <p>Then $A$ and $B$ are open in $X$, both path-connected, and $A\cap B$ is a small "cross" shape centered at $x_0$, which is contractible and hence simply connected.</p>
+  <p>Now $A$ deformation-retracts onto $S^1$ (the first circle), so $\pi_1(A)\cong\mathbb{Z}$. Similarly $\pi_1(B)\cong\mathbb{Z}$. Since $A\cap B$ is simply connected, Seifert&ndash;van Kampen gives:
+  $$\pi_1(X) \;\cong\; \pi_1(A)*\pi_1(B) \;\cong\; \mathbb{Z}*\mathbb{Z}. \quad\square$$</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Generalization</div>
+  <p>By induction, the fundamental group of a wedge of $n$ circles is the free group on $n$ generators:
+  $$\pi_1\bigl(\textstyle\bigvee_{k=1}^n S^1\bigr) \cong F_n = \underbrace{\mathbb{Z}*\mathbb{Z}*\cdots*\mathbb{Z}}_n.$$</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 2.1 &mdash; Wedge of Circles: $S^1\vee S^1$</div>
+  <canvas id="c_wedge" width="820" height="340"></canvas>
+  <div class="viz-caption">The wedge $S^1\vee S^1$ is two circles joined at a point $x_0$. The open sets $A$ (blue) and $B$ (purple) each contain one full circle plus a small arc of the other, so that $A\cap B$ (green) is contractible.</div>
+</div>
+
+<h3>2.2 &ensp; Higher Spheres: $\pi_1(S^n) = \{e\}$ for $n\ge 2$</h3>
+
+<div class="card thm">
+  <div class="tag">Proposition</div>
+  <p>For $n\ge 2$, the sphere $S^n$ is simply connected: $\pi_1(S^n)=\{e\}$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Write $S^n = A\cup B$ where $A = S^n\setminus\{N\}$ (remove the north pole) and $B = S^n\setminus\{S\}$ (remove the south pole).</p>
+  <p>Both $A$ and $B$ are homeomorphic to $\mathbb{R}^n$ via stereographic projection, so $\pi_1(A)=\pi_1(B)=\{e\}$.</p>
+  <p>The intersection $A\cap B = S^n\setminus\{N,S\}$ is homeomorphic to $\mathbb{R}^n\setminus\{0\}\cong S^{n-1}\times\mathbb{R}$. For $n\ge 2$, this is path-connected (since $S^{n-1}$ is path-connected for $n-1\ge 1$).</p>
+  <p>By Seifert&ndash;van Kampen:
+  $$\pi_1(S^n) \cong \pi_1(A)*_{\pi_1(A\cap B)}\pi_1(B) = \{e\}*_{\pi_1(A\cap B)}\{e\} = \{e\}. \quad\square$$</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Why $n\ge 2$?</div>
+  <p>For $n=1$, the intersection $A\cap B = S^1\setminus\{N,S\}$ consists of two disjoint open arcs, which is <em>not</em> path-connected. So the hypothesis of the theorem fails, and indeed $\pi_1(S^1)\cong\mathbb{Z}\ne\{e\}$ (as we computed using covering spaces).</p>
+</div>
+
+<h3>2.3 &ensp; Orientable Surfaces</h3>
+
+<div class="card thm">
+  <div class="tag">Proposition</div>
+  <p>Let $\Sigma_g$ be the closed orientable surface of genus $g\ge 1$ (the $g$-holed torus). Then
+  $$\pi_1(\Sigma_g) \;\cong\; \bigl\langle a_1,b_1,\ldots,a_g,b_g \;\big|\; [a_1,b_1][a_2,b_2]\cdots[a_g,b_g]=1 \bigr\rangle$$
+  where $[a_i,b_i] = a_i b_i a_i^{-1} b_i^{-1}$ is the commutator.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>Realize $\Sigma_g$ as a quotient of a $4g$-gon $P$ by the identification $a_1 b_1 a_1^{-1}b_1^{-1}a_2 b_2 a_2^{-1}b_2^{-1}\cdots a_g b_g a_g^{-1}b_g^{-1}$ on the boundary.</p>
+  <p>Let $x_0$ be the single vertex (all vertices of $P$ are identified to one point). Let $A$ be the image of the interior of $P$ together with a small strip along the boundary — concretely, $A = \Sigma_g\setminus\{x_0\}$. Let $B$ be a small open disk around $x_0$ in $\Sigma_g$.</p>
+  <p>Then $B$ is contractible, so $\pi_1(B) = \{e\}$, and the Seifert&ndash;van Kampen theorem gives
+  $$\pi_1(\Sigma_g) \cong \pi_1(A)*_{\pi_1(A\cap B)}\{e\} \cong \pi_1(A)/N$$
+  where $N$ is the normal closure of $\mathrm{Im}(j_*\colon \pi_1(A\cap B)\to\pi_1(A))$.</p>
+  <p>Now $A = \Sigma_g\setminus\{x_0\}$ deformation-retracts onto the $1$-skeleton, which is a wedge of $2g$ circles: $\pi_1(A)\cong F_{2g} = \langle a_1,b_1,\ldots,a_g,b_g\rangle$.</p>
+  <p>The intersection $A\cap B$ is an annulus (a punctured disk), with $\pi_1(A\cap B)\cong\mathbb{Z}$ generated by a small loop around $x_0$. The map $j_*$ sends this generator to the boundary word $[a_1,b_1]\cdots[a_g,b_g]\in\pi_1(A)$ (this is the single loop formed by the boundary of the polygon, which becomes a loop around the missing point $x_0$).</p>
+  <p>Since $j_*$ is trivial into $\pi_1(B)=\{e\}$, the amalgamation kills $j_*(\text{generator})$, giving
+  $$\pi_1(\Sigma_g) \cong F_{2g}/\langle\!\langle [a_1,b_1]\cdots[a_g,b_g]\rangle\!\rangle = \langle a_1,b_1,\ldots,a_g,b_g \mid [a_1,b_1]\cdots[a_g,b_g]=1\rangle. \quad\square$$</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 2.2 &mdash; Surface as a Polygon Quotient</div>
+  <canvas id="c_surface" width="820" height="400"></canvas>
+  <div class="srow">
+    <span>Genus $g$ =</span>
+    <input type="range" id="sl_genus" min="1" max="4" value="1" oninput="drawSurface()">
+    <span id="lb_genus">1</span>
+  </div>
+  <div class="viz-caption">The orientable surface $\Sigma_g$ is obtained by identifying the edges of a $4g$-gon. The boundary word $a_1 b_1 a_1^{-1}b_1^{-1}\cdots a_g b_g a_g^{-1}b_g^{-1}$ becomes the single relation in $\pi_1(\Sigma_g)$.</div>
+</div>
+
+<h3>2.4 &ensp; Attaching Cells</h3>
+
+<div class="card rmk">
+  <div class="tag">General Principle</div>
+  <p>The Seifert&ndash;van Kampen theorem is especially powerful for CW complexes. To build a space cell by cell:</p>
+  <p><strong>$0$-cells and $1$-cells:</strong> Each $1$-cell attached to a discrete set of $0$-cells contributes a generator. A maximal tree in the $1$-skeleton contributes trivially. So $\pi_1(X^{(1)})$ is a free group, with one generator for each $1$-cell not in a chosen maximal tree.</p>
+  <p><strong>$2$-cells:</strong> Each $2$-cell is a disk attached along its boundary circle $S^1\to X^{(1)}$. By SVK (with $A = X^{(1)}\cup(\text{open $2$-cell})$ minus a point in the interior, and $B =$ open $2$-cell), each $2$-cell contributes one relation: the attaching map read as a word in the generators.</p>
+  <p><strong>Higher cells ($n\ge 3$):</strong> Attaching $n$-cells for $n\ge 3$ does not change $\pi_1$ (since $S^{n-1}$ is simply connected for $n\ge 3$).</p>
+</div>
+
+</div>
+
+<!-- ============================== SECTION 3 ============================== -->
+<div id="s3" class="sec">
+<h2>3. Classification of Closed Orientable Surfaces</h2>
+
+<h3>3.1 &ensp; The Classification Theorem</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem (Classification of Closed Orientable Surfaces)</div>
+  <p>Every closed (= compact, without boundary) connected orientable surface is homeomorphic to exactly one of the following:
+  $$S^2,\; \Sigma_1,\; \Sigma_2,\; \Sigma_3,\; \ldots$$
+  where $\Sigma_g$ is the orientable surface of genus $g$ (the connected sum of $g$ copies of the torus $T^2$), and $\Sigma_0 = S^2$.</p>
+  <p>The non-negative integer $g$ is called the <strong>genus</strong> and is a complete topological invariant: $\Sigma_g\cong\Sigma_h$ if and only if $g = h$.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Proof Strategy (Outline)</div>
+  <p>The proof proceeds in two stages. First, one shows that every closed orientable surface admits a triangulation, and any triangulated surface can be reduced to one of the standard polygon presentations $a_1 b_1 a_1^{-1}b_1^{-1}\cdots a_g b_g a_g^{-1}b_g^{-1}$ by a sequence of combinatorial moves (cutting and pasting along edges). This shows existence of the normal form.</p>
+  <p>Second, one must show that surfaces with different genus are genuinely non-homeomorphic. This is where the fundamental group enters: it provides a computable invariant that distinguishes them.</p>
+</div>
+
+<h3>3.2 &ensp; Fundamental Groups of Surfaces (Recap)</h3>
+
+<div class="card rmk">
+  <div class="tag">Summary of $\pi_1(\Sigma_g)$</div>
+  <p>From Section 2.3, we computed using the Seifert&ndash;van Kampen theorem:
+  $$\pi_1(\Sigma_0) = \pi_1(S^2) = \{e\}, \qquad \pi_1(\Sigma_1) = \pi_1(T^2) \cong \mathbb{Z}^2,$$
+  $$\pi_1(\Sigma_g) \cong \bigl\langle a_1,b_1,\ldots,a_g,b_g \;\big|\; [a_1,b_1]\cdots[a_g,b_g]=1\bigr\rangle \quad(g\ge 1).$$</p>
+  <p>Note that $\pi_1(\Sigma_1)$ is abelian ($\mathbb{Z}^2$), but $\pi_1(\Sigma_g)$ is non-abelian for $g\ge 2$.</p>
+</div>
+
+<h3>3.3 &ensp; The Abelianization Distinguishes Genus</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Abelianization</div>
+  <p>For any group $G$, the <strong>abelianization</strong> is the quotient $G^{\mathrm{ab}} = G/[G,G]$, where $[G,G]$ is the commutator subgroup (the normal subgroup generated by all commutators $ghg^{-1}h^{-1}$). This is the largest abelian quotient of $G$.</p>
+  <p>Key property: any homomorphism from $G$ to an abelian group factors through $G^{\mathrm{ab}}$.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Proposition</div>
+  <p>The abelianization of $\pi_1(\Sigma_g)$ is $\mathbb{Z}^{2g}$:
+  $$\pi_1(\Sigma_g)^{\mathrm{ab}} \;\cong\; \mathbb{Z}^{2g}.$$</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>The abelianization of a group with presentation $\langle S \mid R \rangle$ is obtained by adding the relations $[s,t]=1$ for all generators $s,t\in S$ (i.e., making all generators commute). So:
+  $$\pi_1(\Sigma_g)^{\mathrm{ab}} = \bigl\langle a_1,b_1,\ldots,a_g,b_g \;\big|\; [a_1,b_1]\cdots[a_g,b_g]=1,\;\text{all generators commute}\bigr\rangle.$$</p>
+  <p>Once all generators commute, $[a_i,b_i] = a_i b_i a_i^{-1}b_i^{-1} = e$ for each $i$, so the single relation $[a_1,b_1]\cdots[a_g,b_g]=1$ becomes $e\cdots e = 1$, which is automatically satisfied. The abelianization is therefore the free abelian group on $2g$ generators:
+  $$\pi_1(\Sigma_g)^{\mathrm{ab}} \cong \mathbb{Z}^{2g}. \quad\square$$</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Remark: This is the First Homology</div>
+  <p>The abelianization $\pi_1(X)^{\mathrm{ab}}$ is naturally isomorphic to the first homology group $H_1(X;\mathbb{Z})$. So $H_1(\Sigma_g;\mathbb{Z})\cong\mathbb{Z}^{2g}$. The number $2g$ is called the <em>first Betti number</em> $b_1(\Sigma_g)$.</p>
+</div>
+
+<h3>3.4 &ensp; The Fundamental Group Classifies Surfaces</h3>
+
+<div class="card thm">
+  <div class="tag">Theorem</div>
+  <p>Let $\Sigma_g$ and $\Sigma_h$ be closed orientable surfaces. Then the following are equivalent:</p>
+  <p>(i) $\Sigma_g$ is homeomorphic to $\Sigma_h$.</p>
+  <p>(ii) $\pi_1(\Sigma_g)\cong\pi_1(\Sigma_h)$.</p>
+  <p>(iii) $g = h$.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>(i) $\Rightarrow$ (ii):</strong> This is immediate: homeomorphic spaces have isomorphic fundamental groups.</p>
+  <p><strong>(ii) $\Rightarrow$ (iii):</strong> If $\pi_1(\Sigma_g)\cong\pi_1(\Sigma_h)$, then their abelianizations are isomorphic: $\mathbb{Z}^{2g}\cong\mathbb{Z}^{2h}$. A free abelian group $\mathbb{Z}^n$ has rank $n$, and the rank is an isomorphism invariant (for instance, $\mathbb{Z}^n\otimes_{\mathbb{Z}}\mathbb{Q}\cong\mathbb{Q}^n$ as a $\mathbb{Q}$-vector space, and vector space dimension is an invariant). Therefore $2g = 2h$, hence $g = h$.</p>
+  <p><strong>(iii) $\Rightarrow$ (i):</strong> This is the content of the Classification Theorem: there is, up to homeomorphism, exactly one closed orientable surface of genus $g$. &square;</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Why This Is Remarkable</div>
+  <p>In general, the fundamental group does <em>not</em> determine a space up to homeomorphism. For instance, $S^2\times S^1$ and $\mathbb{R}P^3\;\#\;\mathbb{R}P^3$ are non-homeomorphic 3-manifolds that share the same fundamental group. In higher dimensions the situation is even worse.</p>
+  <p>The fact that $\pi_1$ alone classifies closed orientable surfaces is a special feature of dimension $2$. It reflects the fact that surfaces have very constrained topology: they are completely determined by a single integer (the genus), and the fundamental group is rich enough to detect it.</p>
+</div>
+
+<h3>3.5 &ensp; The Euler Characteristic</h3>
+
+<div class="card def">
+  <div class="tag">Definition: Euler Characteristic</div>
+  <p>For a surface $\Sigma$ with a triangulation having $V$ vertices, $E$ edges, and $F$ faces, the <strong>Euler characteristic</strong> is
+  $$\chi(\Sigma) = V - E + F.$$
+  This is independent of the choice of triangulation.</p>
+</div>
+
+<div class="card thm">
+  <div class="tag">Proposition</div>
+  <p>For the orientable surface $\Sigma_g$: $\chi(\Sigma_g) = 2 - 2g.$</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p>From the polygon presentation, $\Sigma_g$ has a CW structure with $1$ vertex (all corners identified), $2g$ edges (the $a_i, b_i$), and $1$ face (the $4g$-gon itself). So
+  $$\chi(\Sigma_g) = 1 - 2g + 1 = 2 - 2g. \quad\square$$</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Alternative Detection of Genus</div>
+  <p>So the genus $g$ can also be read off from the Euler characteristic: $g = (2-\chi)/2$. For a triangulated surface, $\chi$ can be computed directly by counting simplices. This gives a second (and more elementary) proof that surfaces of different genus are non-homeomorphic, without using the fundamental group at all.</p>
+  <p>However, the fundamental group approach is more powerful in several ways: it applies to non-orientable surfaces as well, it interacts with covering space theory, and it generalizes to higher-dimensional manifolds (even though it is no longer a complete invariant there).</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.1 &mdash; The Classification at a Glance</div>
+  <canvas id="c_classify" width="820" height="420"></canvas>
+  <div class="viz-caption">Each closed orientable surface is determined by its genus $g$. The fundamental group, the Euler characteristic, and the first Betti number all detect $g$. The table shows that these invariants grow systematically and distinguish every surface from every other.</div>
+</div>
+
+</div>
+
+<!-- ===================== JS ===================== -->
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  if(id==='s0'){drawWords();drawPushout();}
+  if(id==='s1'){drawLoopSplit();drawGrid();}
+  if(id==='s2'){drawWedge();drawSurface();}
+  if(id==='s3'){drawClassify();}
+}
+
+function bg(c,w,h){c.fillStyle='var(--surface,#131b2e)';c.fillRect(0,0,w,h);}
+function arr(c,x1,y1,x2,y2,col,lw){
+  c.strokeStyle=col;c.lineWidth=lw;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+  var a=Math.atan2(y2-y1,x2-x1),hl=10;
+  c.fillStyle=col;c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-hl*Math.cos(a-0.3),y2-hl*Math.sin(a-0.3));c.lineTo(x2-hl*Math.cos(a+0.3),y2-hl*Math.sin(a+0.3));c.fill();
+}
+function rr(c,x,y,w,h,r,fill,stroke){
+  c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
+  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);
+  c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
+  if(fill)c.fill();if(stroke)c.stroke();
+}
+
+// ==== S0: Words ====
+var wordView=0;
+function setWordView(v,btn){wordView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawWords();}
+
+function drawWords(){
+  var c=document.getElementById('c_words').getContext('2d'),W=820,H=320;bg(c,W,H);
+  if(wordView===0){
+    // Word reduction example: g1 e_H g2 h1 -> g1g2 h1
+    var y0=60;
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Word Reduction',30,30);
+
+    // Unreduced word
+    var letters=[
+      {t:'a',g:'G',col:'#38bdf8'},{t:'e',g:'H',col:'#a78bfa'},
+      {t:'b',g:'G',col:'#38bdf8'},{t:'x',g:'H',col:'#a78bfa'},
+      {t:'e',g:'G',col:'#38bdf8'},{t:'y',g:'H',col:'#a78bfa'}
+    ];
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Unreduced:',30,y0+20);
+    for(var i=0;i<letters.length;i++){
+      var lx=140+i*80,ly=y0;
+      var lt=letters[i];
+      var isId=lt.t==='e';
+      c.fillStyle=isId?'rgba(136,153,180,.1)':'rgba(136,153,180,.06)';
+      c.strokeStyle=isId?'rgba(136,153,180,.3)':lt.col;
+      c.lineWidth=isId?1:2;
+      rr(c,lx,ly,55,40,6,true,true);
+      c.fillStyle=isId?'#556677':lt.col;c.font=isId?'italic 15px system-ui':'bold 15px system-ui';
+      c.fillText(isId?'e_'+lt.g:lt.t,lx+12,ly+26);
+      if(isId){
+        // strikethrough
+        c.strokeStyle='#f87171';c.lineWidth=2;c.setLineDash([4,3]);
+        c.beginPath();c.moveTo(lx-2,ly+20);c.lineTo(lx+57,ly+20);c.stroke();
+        c.setLineDash([]);
+      }
+    }
+    // Arrow
+    arr(c,W/2,y0+60,W/2,y0+90,'#fbbf24',2);
+
+    // Reduced
+    var rletters=[
+      {t:'a',g:'G',col:'#38bdf8'},{t:'b',g:'G',col:'#38bdf8'},
+      {t:'x',g:'H',col:'#a78bfa'},{t:'y',g:'H',col:'#a78bfa'}
+    ];
+    var y1=y0+100;
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Remove e\'s:',30,y1+20);
+    for(var i2=0;i2<rletters.length;i2++){
+      var lx2=140+i2*80;
+      c.fillStyle='rgba(136,153,180,.06)';c.strokeStyle=rletters[i2].col;c.lineWidth=2;
+      rr(c,lx2,y1,55,40,6,true,true);
+      c.fillStyle=rletters[i2].col;c.font='bold 15px system-ui';
+      c.fillText(rletters[i2].t,lx2+18,y1+26);
+    }
+    // Combine adjacent same-group
+    arr(c,W/2,y1+60,W/2,y1+90,'#fbbf24',2);
+    var y2=y1+100;
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Combine:',30,y2+20);
+    var fletters=[{t:'ab',g:'G',col:'#38bdf8'},{t:'xy',g:'H',col:'#a78bfa'}];
+    for(var i3=0;i3<fletters.length;i3++){
+      var lx3=140+i3*110;
+      c.fillStyle='rgba(136,153,180,.06)';c.strokeStyle=fletters[i3].col;c.lineWidth=2;
+      rr(c,lx3,y2,75,40,6,true,true);
+      c.fillStyle=fletters[i3].col;c.font='bold 15px system-ui';
+      c.fillText(fletters[i3].t,lx3+18,y2+26);
+      c.fillStyle='rgba(136,153,180,.4)';c.font='10px system-ui';
+      c.fillText('∈ '+fletters[i3].g,lx3+50,y2+14);
+    }
+    c.fillStyle='#34d399';c.font='bold 13px system-ui';
+    c.fillText('Reduced word in G * H',140,y2+60);
+  }
+  else{
+    // Concatenation: (a x)(b y) -> a x b y (already reduced if junction ok)
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Multiplication in G * H',30,30);
+
+    var y0b=70;
+    // First word
+    var w1=[{t:'a',col:'#38bdf8'},{t:'x',col:'#a78bfa'}];
+    var w2=[{t:'b',col:'#38bdf8'},{t:'y',col:'#a78bfa'}];
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Word 1:',30,y0b+20);
+    for(var j=0;j<w1.length;j++){
+      var wx=140+j*70;
+      c.fillStyle='rgba(136,153,180,.06)';c.strokeStyle=w1[j].col;c.lineWidth=2;
+      rr(c,wx,y0b,50,36,6,true,true);
+      c.fillStyle=w1[j].col;c.font='bold 15px system-ui';c.fillText(w1[j].t,wx+16,y0b+24);
+    }
+    c.fillStyle='#e2e8f0';c.font='bold 20px system-ui';c.fillText('·',300,y0b+22);
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Word 2:',330,y0b+20);
+    for(var j2=0;j2<w2.length;j2++){
+      var wx2=420+j2*70;
+      c.fillStyle='rgba(136,153,180,.06)';c.strokeStyle=w2[j2].col;c.lineWidth=2;
+      rr(c,wx2,y0b,50,36,6,true,true);
+      c.fillStyle=w2[j2].col;c.font='bold 15px system-ui';c.fillText(w2[j2].t,wx2+16,y0b+24);
+    }
+
+    arr(c,W/2,y0b+55,W/2,y0b+85,'#fbbf24',2);
+
+    var y1b=y0b+95;
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText('Concatenate:',30,y1b+20);
+    var concat=[{t:'a',col:'#38bdf8'},{t:'x',col:'#a78bfa'},{t:'b',col:'#38bdf8'},{t:'y',col:'#a78bfa'}];
+    for(var j3=0;j3<concat.length;j3++){
+      var wx3=160+j3*70;
+      c.fillStyle='rgba(136,153,180,.06)';c.strokeStyle=concat[j3].col;c.lineWidth=2;
+      rr(c,wx3,y1b,50,36,6,true,true);
+      c.fillStyle=concat[j3].col;c.font='bold 15px system-ui';c.fillText(concat[j3].t,wx3+16,y1b+24);
+    }
+    // Junction highlight
+    c.strokeStyle='#fbbf24';c.lineWidth=2;c.setLineDash([4,3]);
+    c.beginPath();c.arc(160+2*70-10,y1b+18,40,0,Math.PI*2);c.stroke();
+    c.setLineDash([]);
+    c.fillStyle='#fbbf24';c.font='11px system-ui';
+    c.fillText('Check junction: x ∈ H, b ∈ G',160+2*70-55,y1b+55);
+    c.fillText('Different groups → already reduced!',160+2*70-65,y1b+72);
+
+    // If same group: show reduction
+    var y2b=y1b+100;
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('If junction letters are in the same group,',30,y2b);
+    c.fillText('multiply them and continue reducing.',30,y2b+20);
+  }
+}
+
+function drawPushout(){
+  var c=document.getElementById('c_pushout').getContext('2d'),W=820,H=300;bg(c,W,H);
+  // Pushout diagram
+  var cx=W/2,cy=H/2-10;
+  // C top
+  var cX=cx,cY=cy-80;
+  c.fillStyle='rgba(136,153,180,.07)';c.strokeStyle='#34d399';c.lineWidth=2;
+  c.beginPath();c.arc(cX,cY,26,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#34d399';c.font='bold 16px system-ui';c.fillText('C',cX-6,cY+6);
+
+  // G left
+  var gX=cx-160,gY=cy+40;
+  c.fillStyle='rgba(136,153,180,.07)';c.strokeStyle='#38bdf8';c.lineWidth=2;
+  c.beginPath();c.arc(gX,gY,26,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#38bdf8';c.font='bold 16px system-ui';c.fillText('G',gX-7,gY+6);
+
+  // H right
+  var hX=cx+160,hY=cy+40;
+  c.fillStyle='rgba(136,153,180,.07)';c.strokeStyle='#a78bfa';c.lineWidth=2;
+  c.beginPath();c.arc(hX,hY,26,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 16px system-ui';c.fillText('H',hX-7,hY+6);
+
+  // G *_C H bottom
+  var pX=cx,pY=cy+120;
+  c.fillStyle='rgba(251,191,36,.08)';c.strokeStyle='#fbbf24';c.lineWidth=2;
+  rr(c,pX-55,pY-22,110,44,10,true,true);
+  c.fillStyle='#fbbf24';c.font='bold 14px system-ui';c.fillText('G *  H',pX-35,pY+6);
+  c.font='bold 10px system-ui';c.fillText('C',pX-8,pY+12);
+
+  // K far right
+  var kX=cx+340,kY=cy+40;
+  c.fillStyle='rgba(136,153,180,.07)';c.strokeStyle='#f87171';c.lineWidth=2;
+  c.beginPath();c.arc(kX,kY,26,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#f87171';c.font='bold 16px system-ui';c.fillText('K',kX-7,kY+6);
+
+  // Arrows C -> G, C -> H
+  arr(c,cX-18,cY+20,gX+18,gY-20,'#34d399',2);
+  c.fillStyle='#34d399';c.font='italic 13px system-ui';c.fillText('i',cX-80,cY-5);
+  arr(c,cX+18,cY+20,hX-18,hY-20,'#34d399',2);
+  c.fillText('j',cX+65,cY-5);
+
+  // Arrows G -> G*_C H, H -> G*_C H
+  arr(c,gX+15,gY+22,pX-40,pY-22,'#8899b4',1.5);
+  arr(c,hX-15,hY+22,pX+40,pY-22,'#8899b4',1.5);
+
+  // Arrows G -> K, H -> K
+  arr(c,gX+26,gY,kX-28,kY,'#f87171',1.5);
+  c.fillStyle='#f87171';c.font='italic 13px system-ui';c.fillText('φ',cx,gY-20);
+  arr(c,hX+26,hY,kX-28,kY,'#f87171',1.5);
+  c.fillText('ψ',hX+100,hY-20);
+
+  // Dashed arrow G*_C H -> K
+  c.setLineDash([6,4]);c.strokeStyle='#fbbf24';c.lineWidth=2;
+  c.beginPath();c.moveTo(pX+55,pY);c.lineTo(kX-28,kY);c.stroke();
+  c.setLineDash([]);
+  c.fillStyle='#fbbf24';
+  var a=Math.atan2(kY-pY,kX-28-pX-55);
+  c.beginPath();c.moveTo(kX-28,kY);c.lineTo(kX-28-10*Math.cos(a-0.3),kY-10*Math.sin(a-0.3));c.lineTo(kX-28-10*Math.cos(a+0.3),kY-10*Math.sin(a+0.3));c.fill();
+  c.fillStyle='#fbbf24';c.font='bold italic 14px system-ui';c.fillText('∃! Φ',pX+130,pY+10);
+
+  // Condition label
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('Condition: φ ∘ i = ψ ∘ j  (agree on C)',cx-120,H-20);
+}
+
+// ==== S1: Loop splitting ====
+var splitView=0;
+function setSplitView(v,btn){splitView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawLoopSplit();}
+
+function drawLoopSplit(){
+  var c=document.getElementById('c_loopsplit').getContext('2d'),W=820,H=380;bg(c,W,H);
+
+  // Draw X = A ∪ B
+  var cx=250,cy=190;
+  // A (left blob)
+  c.fillStyle='rgba(56,189,248,.06)';c.strokeStyle='rgba(56,189,248,.4)';c.lineWidth=2;
+  c.beginPath();c.ellipse(cx-60,cy,160,140,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='rgba(56,189,248,.6)';c.font='bold 14px system-ui';c.fillText('A',cx-170,cy-100);
+
+  // B (right blob)
+  c.fillStyle='rgba(167,139,250,.06)';c.strokeStyle='rgba(167,139,250,.4)';c.lineWidth=2;
+  c.beginPath();c.ellipse(cx+60,cy,160,140,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='rgba(167,139,250,.6)';c.font='bold 14px system-ui';c.fillText('B',cx+150,cy-100);
+
+  // A∩B (overlap)
+  c.fillStyle='rgba(52,211,153,.08)';
+  c.beginPath();c.ellipse(cx,cy,100,140,0,0,Math.PI*2);c.fill();
+  c.fillStyle='rgba(52,211,153,.6)';c.font='bold 12px system-ui';c.fillText('A∩B',cx-15,cy-120);
+
+  // Basepoint x0
+  c.beginPath();c.arc(cx,cy+60,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText('x₀',cx+8,cy+58);
+
+  // A loop γ going through A and B
+  var pts=[
+    {x:cx,y:cy+60},         // start at x0
+    {x:cx-120,y:cy+20},     // into A
+    {x:cx-140,y:cy-60},     // deep in A
+    {x:cx-60,y:cy-100},     // A near intersection
+    {x:cx+20,y:cy-90},      // through A∩B
+    {x:cx+120,y:cy-50},     // into B
+    {x:cx+150,y:cy+10},     // deep in B
+    {x:cx+100,y:cy+80},     // B going back
+    {x:cx+30,y:cy+90},      // through A∩B
+    {x:cx,y:cy+60}          // back to x0
+  ];
+
+  // Draw the loop
+  c.strokeStyle='#fb923c';c.lineWidth=3;c.beginPath();
+  c.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<pts.length;i++){
+    var prev=pts[i-1],curr=pts[i];
+    var mx=(prev.x+curr.x)/2,my=(prev.y+curr.y)/2;
+    c.quadraticCurveTo(prev.x,prev.y,mx,my);
+  }
+  c.lineTo(pts[pts.length-1].x,pts[pts.length-1].y);
+  c.stroke();
+  c.fillStyle='#fb923c';c.font='bold 14px system-ui';c.fillText('γ',cx-150,cy-30);
+
+  if(splitView>=1){
+    // Subdivision points
+    var subPts=[0,2,4,6,8]; // indices into pts where we subdivide
+    for(var k=0;k<subPts.length;k++){
+      var p=pts[subPts[k]];
+      c.beginPath();c.arc(p.x,p.y,5,0,Math.PI*2);
+      c.fillStyle='#f87171';c.fill();
+      c.fillStyle='#f87171';c.font='10px system-ui';
+      c.fillText('t₊',p.x+8,p.y-5);
+    }
+    // Color segments
+    var segColors=['#38bdf8','#38bdf8','#a78bfa','#a78bfa'];
+    var segLabels=['in A','in A','in B','in B'];
+
+    // Right side: explanation
+    var rx=530,ry=60;
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';
+    c.fillText('Subdivision',rx,ry);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Lebesgue number ⟹ partition',rx,ry+30);
+    c.fillText('0 = t₀ < t₁ < ⋯ < tₙ = 1',rx,ry+50);
+    c.fillText('Each γ([tₖ,tₖ₊₁]) ⊆ A or B',rx,ry+80);
+
+    // Color labels
+    c.fillStyle='#38bdf8';c.fillText('● Segments in A',rx,ry+120);
+    c.fillStyle='#a78bfa';c.fillText('● Segments in B',rx,ry+145);
+    c.fillStyle='#f87171';c.fillText('● Subdivision points (in A∩B)',rx,ry+170);
+  }
+
+  if(splitView>=2){
+    // Connecting paths σ_k from x0 to subdivision points
+    var subPtsCoords=[pts[2],pts[4],pts[6],pts[8]];
+    c.setLineDash([4,3]);c.lineWidth=2;
+    for(var k2=0;k2<subPtsCoords.length;k2++){
+      c.strokeStyle='rgba(52,211,153,.6)';
+      c.beginPath();c.moveTo(cx,cy+60);c.quadraticCurveTo(cx,cy,subPtsCoords[k2].x,subPtsCoords[k2].y);c.stroke();
+    }
+    c.setLineDash([]);
+
+    c.fillStyle='#34d399';c.font='12px system-ui';
+    c.fillText('● Connecting paths σₖ in A∩B',530,ry+195);
+
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';
+    c.fillText('γ ≃ λ₁ * λ₂ * ⋯ * λₙ',530,ry+235);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('where λₖ = σₖ₋₁ * γ|[tₖ₋₁,tₖ] * σₖ⁻¹',530,ry+258);
+    c.fillText('Each λₖ is a loop at x₀ in A or B',530,ry+280);
+  }
+}
+
+// ==== S1: Grid ====
+var gridView=0;
+function setGridView(v,btn){gridView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawGrid();}
+
+function drawGrid(){
+  var c=document.getElementById('c_grid').getContext('2d'),W=820,H=400;bg(c,W,H);
+  var sx=60,sy=40,sw=320,sh=300;
+  var M=6,N=6;
+
+  // [0,1]^2
+  c.strokeStyle='#2a3a5c';c.lineWidth=2;c.strokeRect(sx,sy,sw,sh);
+  c.fillStyle='#8899b4';c.font='13px system-ui';
+  c.fillText('[0,1]²',sx+sw/2-20,sy-12);
+  c.fillText('s →',sx+sw/2,sy+sh+20);
+  c.save();c.translate(sx-14,sy+sh/2);c.rotate(-Math.PI/2);c.fillText('t →',0,0);c.restore();
+
+  // Bottom = γ, top/sides = x0
+  c.fillStyle='#fb923c';c.font='11px system-ui';c.fillText('γ (bottom)',sx+sw/2-25,sy+sh+36);
+  c.fillStyle='#8899b4';c.fillText('x₀ (top, sides)',sx+sw/2-35,sy-28);
+
+  if(gridView===0){
+    // Just the square with H labeled
+    c.fillStyle='#e2e8f0';c.font='bold 15px system-ui';c.fillText('H : [0,1]² → X',sx+sw/2-60,sy+sh/2+5);
+    c.fillStyle='#8899b4';c.font='13px system-ui';c.fillText('Null-homotopy of γ',sx+sw/2-55,sy+sh/2+28);
+
+    // Bottom edge colored
+    c.strokeStyle='#fb923c';c.lineWidth=3;
+    c.beginPath();c.moveTo(sx,sy+sh);c.lineTo(sx+sw,sy+sh);c.stroke();
+    // Other edges dim
+    c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=2;
+    c.beginPath();c.moveTo(sx,sy);c.lineTo(sx+sw,sy);c.stroke();
+    c.beginPath();c.moveTo(sx,sy);c.lineTo(sx,sy+sh);c.stroke();
+    c.beginPath();c.moveTo(sx+sw,sy);c.lineTo(sx+sw,sy+sh);c.stroke();
+
+    // Right explanation
+    var rx=440,ry=60;
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Injectivity Setup',rx,ry);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Given: word α₁β₁⋯αₘβₘ = e',rx,ry+35);
+    c.fillText('in π₁(X). So there exists a',rx,ry+60);
+    c.fillText('null-homotopy H of the',rx,ry+85);
+    c.fillText('concatenation γ = a₁*b₁*⋯',rx,ry+110);
+    c.fillStyle='#fbbf24';c.font='13px system-ui';
+    c.fillText('H(s,0) = γ(s)',rx,ry+150);
+    c.fillText('H(s,1) = H(0,t) = H(1,t) = x₀',rx,ry+175);
+  }
+
+  if(gridView>=1){
+    // Draw grid
+    c.strokeStyle='rgba(251,191,36,.25)';c.lineWidth=1;c.setLineDash([3,3]);
+    for(var i=1;i<M;i++){var x=sx+i*sw/M;c.beginPath();c.moveTo(x,sy);c.lineTo(x,sy+sh);c.stroke();}
+    for(var j=1;j<N;j++){var y=sy+j*sh/N;c.beginPath();c.moveTo(sx,y);c.lineTo(sx+sw,y);c.stroke();}
+    c.setLineDash([]);
+
+    // Color each rectangle A or B
+    // Deterministic pattern
+    var pattern=[
+      [0,0,1,1,0,0],
+      [0,1,1,0,0,1],
+      [0,0,1,1,1,1],
+      [1,1,0,0,1,0],
+      [0,1,0,1,1,0],
+      [1,0,0,1,0,1]
+    ];
+    for(var j2=0;j2<N;j2++){
+      for(var i2=0;i2<M;i2++){
+        var isA=pattern[j2][i2]===0;
+        c.fillStyle=isA?'rgba(56,189,248,.08)':'rgba(167,139,250,.08)';
+        c.fillRect(sx+i2*sw/M+1,sy+j2*sh/N+1,sw/M-2,sh/N-2);
+      }
+    }
+
+    var rx2=440,ry2=60;
+    c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';c.fillText('Lebesgue Grid',rx2,ry2);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Mesh < δ (Lebesgue number)',rx2,ry2+30);
+    c.fillText('Each small rectangle maps',rx2,ry2+60);
+    c.fillText('entirely into A or B.',rx2,ry2+85);
+    c.fillStyle='#38bdf8';c.fillText('■ maps into A',rx2,ry2+120);
+    c.fillStyle='#a78bfa';c.fillText('■ maps into B',rx2,ry2+145);
+    c.fillStyle='#8899b4';c.font='13px system-ui';
+    c.fillText('Each rectangle gives a',rx2,ry2+185);
+    c.fillText('relation in π₁(A) or π₁(B).',rx2,ry2+210);
+  }
+
+  if(gridView>=2){
+    // Show "pushing upward" with highlighted rows
+    var pushRow=2; // highlight row being pushed
+    c.fillStyle='rgba(251,191,36,.15)';
+    c.fillRect(sx+1,sy+pushRow*sh/N+1,sw-2,sh/N-2);
+    c.strokeStyle='#fbbf24';c.lineWidth=2;
+    c.strokeRect(sx,sy+pushRow*sh/N,sw,sh/N);
+
+    // Arrow showing upward push
+    var midX=sx+sw+20,arY=sy+sh-30;
+    c.strokeStyle='#fb923c';c.lineWidth=2;
+    c.beginPath();c.moveTo(midX,sy+sh);c.lineTo(midX,sy);c.stroke();
+    c.beginPath();c.moveTo(midX,sy);c.lineTo(midX-5,sy+10);c.moveTo(midX,sy);c.lineTo(midX+5,sy+10);c.stroke();
+    c.fillStyle='#fb923c';c.font='11px system-ui';c.fillText('push',midX+5,sy+sh/2);
+
+    var rx3=440,ry3=250;
+    c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
+    c.fillText('Telescoping: row by row',rx3,ry3);
+    c.fillStyle='#8899b4';c.font='12px system-ui';
+    c.fillText('Replace bottom-edge loops',rx3,ry3+25);
+    c.fillText('with top-edge loops using',rx3,ry3+45);
+    c.fillText('rectangle relations in π₁(A)',rx3,ry3+65);
+    c.fillText('or π₁(B). Edges in A∩B give',rx3,ry3+85);
+    c.fillText('amalgamation relations.',rx3,ry3+105);
+    c.fillStyle='#34d399';c.font='bold 12px system-ui';
+    c.fillText('Top row = trivial ⟹ word = e',rx3,ry3+135);
+    c.fillText('in G *  H.  ■',rx3,ry3+158);
+    c.font='bold 9px system-ui';c.fillText('C',rx3+35,ry3+164);
+  }
+}
+
+// ==== S1: Decomp ====
+var decompView=0;
+function setDecompView(v,btn){decompView=v;btn.closest('.ctrls').querySelectorAll('button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');drawDecomp();}
+
+function drawDecomp(){
+  var c=document.getElementById('c_decomp').getContext('2d'),W=820,H=380;bg(c,W,H);
+  var cx=300,cy=190;
+
+  // A
+  c.fillStyle='rgba(56,189,248,.07)';c.strokeStyle='rgba(56,189,248,.5)';c.lineWidth=2;
+  c.beginPath();c.ellipse(cx-70,cy,180,150,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#38bdf8';c.font='bold 18px system-ui';c.fillText('A',cx-200,cy-80);
+
+  // B
+  c.fillStyle='rgba(167,139,250,.07)';c.strokeStyle='rgba(167,139,250,.5)';c.lineWidth=2;
+  c.beginPath();c.ellipse(cx+70,cy,180,150,0,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 18px system-ui';c.fillText('B',cx+175,cy-80);
+
+  // A∩B overlay
+  c.fillStyle='rgba(52,211,153,.1)';
+  c.beginPath();
+  // approximate intersection
+  c.ellipse(cx,cy,110,150,0,0,Math.PI*2);c.fill();
+  c.fillStyle='#34d399';c.font='bold 15px system-ui';c.fillText('A ∩ B',cx-22,cy-125);
+
+  // x0
+  c.beginPath();c.arc(cx,cy+30,6,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('x₀',cx+10,cy+28);
+
+  if(decompView===1){
+    // Show induced homomorphisms diagram on the right
+    var rx=580,ry=80;
+    // π₁(A∩B) at top
+    c.fillStyle='rgba(52,211,153,.1)';c.strokeStyle='#34d399';c.lineWidth=2;
+    rr(c,rx+20,ry,120,36,8,true,true);
+    c.fillStyle='#34d399';c.font='bold 12px system-ui';c.fillText('π₁(A∩B)',rx+30,ry+24);
+
+    // π₁(A) left
+    c.fillStyle='rgba(56,189,248,.1)';c.strokeStyle='#38bdf8';c.lineWidth=2;
+    rr(c,rx-40,ry+100,90,36,8,true,true);
+    c.fillStyle='#38bdf8';c.font='bold 12px system-ui';c.fillText('π₁(A)',rx-28,ry+124);
+
+    // π₁(B) right
+    c.fillStyle='rgba(167,139,250,.1)';c.strokeStyle='#a78bfa';c.lineWidth=2;
+    rr(c,rx+110,ry+100,90,36,8,true,true);
+    c.fillStyle='#a78bfa';c.font='bold 12px system-ui';c.fillText('π₁(B)',rx+122,ry+124);
+
+    // π₁(X) bottom
+    c.fillStyle='rgba(251,191,36,.1)';c.strokeStyle='#fbbf24';c.lineWidth=2;
+    rr(c,rx+25,ry+200,110,36,8,true,true);
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText('π₁(X)',rx+50,ry+224);
+
+    // Arrows
+    arr(c,rx+50,ry+38,rx+5,ry+98,'#34d399',1.5);
+    c.fillStyle='#34d399';c.font='italic 12px system-ui';c.fillText('i*',rx+8,ry+70);
+    arr(c,rx+110,ry+38,rx+155,ry+98,'#34d399',1.5);
+    c.fillText('j*',rx+140,ry+70);
+    arr(c,rx+5,ry+138,rx+50,ry+198,'#8899b4',1.5);
+    arr(c,rx+155,ry+138,rx+110,ry+198,'#8899b4',1.5);
+
+    c.fillStyle='#fbbf24';c.font='bold 12px system-ui';
+    c.fillText('SVK: π₁(X) ≅ π₁(A) *        π₁(B)',rx-50,ry+270);
+    c.font='bold 9px system-ui';c.fillText('π₁(A∩B)',rx+72,ry+276);
+  }
+}
+
+// ==== S2: Wedge ====
+function drawWedge(){
+  var c=document.getElementById('c_wedge').getContext('2d'),W=820,H=340;bg(c,W,H);
+  var cx=250,cy=170,r=80;
+
+  // First circle (left)
+  c.strokeStyle='#38bdf8';c.lineWidth=3;
+  c.beginPath();c.arc(cx-r+10,cy,r,0,Math.PI*2);c.stroke();
+  c.fillStyle='#38bdf8';c.font='bold 14px system-ui';c.fillText('a',cx-2*r+10,cy-r-5);
+
+  // Second circle (right)
+  c.strokeStyle='#a78bfa';c.lineWidth=3;
+  c.beginPath();c.arc(cx+r-10,cy,r,0,Math.PI*2);c.stroke();
+  c.fillStyle='#a78bfa';c.font='bold 14px system-ui';c.fillText('b',cx+2*r-15,cy-r-5);
+
+  // Wedge point
+  c.beginPath();c.arc(cx,cy,6,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';c.fillText('x₀',cx+8,cy-8);
+
+  // A region (includes first circle + arc of second)
+  c.setLineDash([4,4]);c.strokeStyle='rgba(56,189,248,.3)';c.lineWidth=1;
+  c.beginPath();c.ellipse(cx-50,cy,r+55,r+30,0,0,Math.PI*2);c.stroke();
+  c.fillStyle='rgba(56,189,248,.4)';c.font='12px system-ui';c.fillText('A',cx-r-60,cy+r+30);
+  c.setLineDash([]);
+
+  // B region
+  c.setLineDash([4,4]);c.strokeStyle='rgba(167,139,250,.3)';c.lineWidth=1;
+  c.beginPath();c.ellipse(cx+50,cy,r+55,r+30,0,0,Math.PI*2);c.stroke();
+  c.fillStyle='rgba(167,139,250,.4)';c.font='12px system-ui';c.fillText('B',cx+r+50,cy+r+30);
+  c.setLineDash([]);
+
+  // A∩B label
+  c.fillStyle='#34d399';c.font='bold 12px system-ui';c.fillText('A∩B ≃ pt',cx-20,cy+r+45);
+
+  // Right side: result
+  var rx=500,ry=60;
+  c.fillStyle='#e2e8f0';c.font='bold 15px system-ui';
+  c.fillText('Result',rx,ry);
+  c.fillStyle='#8899b4';c.font='13px system-ui';
+  c.fillText('A ≃ S¹ ⟹ π₁(A) ≅ ℤ = ⟨a⟩',rx,ry+40);
+  c.fillText('B ≃ S¹ ⟹ π₁(B) ≅ ℤ = ⟨b⟩',rx,ry+70);
+  c.fillText('A∩B ≃ pt ⟹ π₁(A∩B) = {e}',rx,ry+100);
+  c.fillStyle='#fbbf24';c.font='bold 14px system-ui';
+  c.fillText('π₁(S¹ ∨ S¹) ≅ ℤ * ℤ = F₂',rx,ry+150);
+  c.fillStyle='#8899b4';c.font='13px system-ui';
+  c.fillText('Free group on {a, b}',rx,ry+175);
+  c.fillText('Non-abelian!  ab ≠ ba',rx,ry+200);
+}
+
+// ==== S2: Surface ====
+function drawSurface(){
+  var c=document.getElementById('c_surface').getContext('2d'),W=820,H=400;bg(c,W,H);
+  var g=parseInt(document.getElementById('sl_genus').value);
+  document.getElementById('lb_genus').textContent=g;
+  var n=4*g; // number of edges
+  var cx=280,cy=200,R=140;
+  var colors=['#38bdf8','#a78bfa','#f87171','#fb923c','#34d399','#fbbf24','#f472b6','#818cf8'];
+
+  // Draw polygon
+  c.strokeStyle='#2a3a5c';c.lineWidth=2;
+  c.beginPath();
+  for(var i=0;i<=n;i++){
+    var ang=-Math.PI/2+2*Math.PI*i/n;
+    var px=cx+R*Math.cos(ang),py=cy+R*Math.sin(ang);
+    if(i===0)c.moveTo(px,py);else c.lineTo(px,py);
+  }
+  c.closePath();c.stroke();
+  c.fillStyle='rgba(136,153,180,.03)';c.fill();
+
+  // Draw edges with labels
+  var labels=[];
+  for(var gi=0;gi<g;gi++){
+    labels.push({t:'a'+(gi+1),dir:1,ci:gi*2%colors.length});
+    labels.push({t:'b'+(gi+1),dir:1,ci:(gi*2+1)%colors.length});
+    labels.push({t:'a'+(gi+1),dir:-1,ci:gi*2%colors.length});
+    labels.push({t:'b'+(gi+1),dir:-1,ci:(gi*2+1)%colors.length});
+  }
+
+  for(var i2=0;i2<n;i2++){
+    var ang1=-Math.PI/2+2*Math.PI*i2/n;
+    var ang2=-Math.PI/2+2*Math.PI*(i2+1)/n;
+    var x1=cx+R*Math.cos(ang1),y1=cy+R*Math.sin(ang1);
+    var x2=cx+R*Math.cos(ang2),y2=cy+R*Math.sin(ang2);
+    var lbl=labels[i2];
+    c.strokeStyle=colors[lbl.ci];c.lineWidth=3;
+    c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+
+    // Arrow at midpoint
+    var mx=(x1+x2)/2,my=(y1+y2)/2;
+    var dx=x2-x1,dy=y2-y1;
+    if(lbl.dir===-1){dx=-dx;dy=-dy;}
+    var len=Math.sqrt(dx*dx+dy*dy);
+    dx/=len;dy/=len;
+    c.fillStyle=colors[lbl.ci];
+    c.beginPath();c.moveTo(mx+dx*8,my+dy*8);c.lineTo(mx+dx*8-8*dx+5*dy,my+dy*8-8*dy-5*dx);c.lineTo(mx+dx*8-8*dx-5*dy,my+dy*8-8*dy+5*dx);c.fill();
+
+    // Label outside
+    var lx=cx+(R+25)*Math.cos((ang1+ang2)/2);
+    var ly=cy+(R+25)*Math.sin((ang1+ang2)/2);
+    c.fillStyle=colors[lbl.ci];c.font='bold 13px system-ui';
+    var txt=lbl.t+(lbl.dir===-1?'⁻¹':'');
+    c.fillText(txt,lx-c.measureText(txt).width/2,ly+5);
+  }
+
+  // Single vertex label
+  c.beginPath();c.arc(cx+R*Math.cos(-Math.PI/2),cy+R*Math.sin(-Math.PI/2),5,0,Math.PI*2);
+  c.fillStyle='#fbbf24';c.fill();
+
+  // Right side: result
+  var rx=500,ry=50;
+  c.fillStyle='#e2e8f0';c.font='bold 15px system-ui';
+  c.fillText('Σ'+subDigit(g)+' — genus '+g+' surface',rx,ry);
+
+  c.fillStyle='#8899b4';c.font='13px system-ui';
+  c.fillText('All vertices identified to one point x₀',rx,ry+35);
+  c.fillText('A = Σ  ∖ {x₀}  ≃  ⋁²   S¹',rx,ry+65);
+  c.font='10px system-ui';c.fillText('g',rx+23,ry+70);c.fillText('g',rx+134,ry+62);
+  c.font='13px system-ui';
+  c.fillText('B = small disk around x₀ ≃ pt',rx,ry+95);
+  c.fillText('A ∩ B ≃ S¹  (annulus)',rx,ry+125);
+
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
+  c.fillText('π₁(Σ ) ≅ ⟨ a₁,b₁,…,a ,b',rx,ry+175);
+  c.font='bold 10px system-ui';c.fillText('g',rx+33,ry+181);c.fillText('g  g',rx+180,ry+181);
+  c.font='bold 13px system-ui';
+  c.fillText('| [a₁,b₁]⋯[a ,b ] = 1 ⟩',rx+30,ry+198);
+  c.font='bold 10px system-ui';c.fillText('g  g',rx+137,ry+204);
+
+  // Boundary word
+  c.fillStyle='#8899b4';c.font='13px system-ui';
+  c.fillText('Boundary word:',rx,ry+240);
+  var bw='';
+  for(var gi2=0;gi2<g;gi2++){
+    if(gi2>0)bw+=' ';
+    bw+='a'+(gi2+1)+' b'+(gi2+1)+' a'+(gi2+1)+'⁻¹ b'+(gi2+1)+'⁻¹';
+  }
+  c.fillStyle='#fb923c';c.font='12px system-ui';
+  // Truncate if too long
+  if(bw.length>45)bw=bw.substring(0,42)+'…';
+  c.fillText(bw,rx,ry+262);
+}
+
+function subDigit(n){
+  var subs='₀₁₂₃₄₅₆₇₈₉';
+  var s='';
+  var str=String(n);
+  for(var i=0;i<str.length;i++)s+=subs[parseInt(str[i])];
+  return s;
+}
+
+// ==== S3: Classification ====
+function drawClassify(){
+  var c=document.getElementById('c_classify').getContext('2d'),W=820,H=420;bg(c,W,H);
+
+  // Table of surfaces
+  var cols=[
+    {label:'Surface',x:30,w:120},
+    {label:'g',x:150,w:40},
+    {label:'χ',x:200,w:40},
+    {label:'b₁',x:250,w:40},
+    {label:'π₁',x:310,w:180},
+    {label:'Picture',x:520,w:280}
+  ];
+  var rowH=52,topY=50;
+
+  // Header
+  c.fillStyle='rgba(56,189,248,.1)';c.fillRect(0,topY-5,W,30);
+  c.fillStyle='#38bdf8';c.font='bold 12px system-ui';
+  for(var ci=0;ci<cols.length;ci++){
+    c.fillText(cols[ci].label,cols[ci].x,topY+14);
+  }
+
+  // Data rows
+  var surfaces=[
+    {name:'S²',g:0,chi:2,b1:0,pi:'{e}',col:'#38bdf8'},
+    {name:'T² = Σ₁',g:1,chi:0,b1:2,pi:'ℤ²',col:'#34d399'},
+    {name:'Σ₂',g:2,chi:-2,b1:4,pi:'⟨a₁,b₁,a₂,b₂ | …⟩',col:'#fbbf24'},
+    {name:'Σ₃',g:3,chi:-4,b1:6,pi:'⟨a₁,…,b₃ | …⟩',col:'#fb923c'},
+    {name:'Σ₄',g:4,chi:-6,b1:8,pi:'⟨a₁,…,b₄ | …⟩',col:'#f87171'},
+    {name:'Σ  ',g:'g',chi:'2−2g',b1:'2g',pi:'⟨a₁,b₁,… | ∏[aᵢ,bᵢ]=1⟩',col:'#a78bfa'}
+  ];
+
+  for(var ri=0;ri<surfaces.length;ri++){
+    var s=surfaces[ri],ry=topY+30+ri*rowH;
+
+    // Alternating row bg
+    if(ri%2===0){c.fillStyle='rgba(136,153,180,.03)';c.fillRect(0,ry-2,W,rowH);}
+    // Row separator
+    c.strokeStyle='rgba(136,153,180,.08)';c.lineWidth=1;
+    c.beginPath();c.moveTo(0,ry+rowH-2);c.lineTo(W,ry+rowH-2);c.stroke();
+
+    // Name
+    c.fillStyle=s.col;c.font='bold 13px system-ui';c.fillText(s.name,cols[0].x,ry+22);
+    if(ri===5){c.font='bold 9px system-ui';c.fillText('g',cols[0].x+16,ry+27);}
+
+    // g
+    c.fillStyle='#e2e8f0';c.font='13px system-ui';c.fillText(String(s.g),cols[1].x,ry+22);
+
+    // chi
+    c.fillStyle='#e2e8f0';c.fillText(String(s.chi),cols[2].x,ry+22);
+
+    // b1
+    c.fillStyle='#e2e8f0';c.fillText(String(s.b1),cols[3].x,ry+22);
+
+    // pi1
+    c.fillStyle='#8899b4';c.font='12px system-ui';c.fillText(s.pi,cols[4].x,ry+22);
+
+    // Picture
+    var px=cols[5].x+40,py=ry+18;
+    if(ri===0){
+      // Sphere
+      c.strokeStyle=s.col;c.lineWidth=2;
+      c.beginPath();c.arc(px,py,16,0,Math.PI*2);c.stroke();
+      // equator dashed
+      c.setLineDash([3,3]);c.strokeStyle='rgba(56,189,248,.3)';
+      c.beginPath();c.ellipse(px,py,16,5,0,0,Math.PI*2);c.stroke();
+      c.setLineDash([]);
+    }
+    else if(ri<5){
+      // g-holed torus: draw g connected tori as humps
+      var gVal=ri;
+      var totalW=gVal*32;
+      var startX=px-totalW/2;
+      for(var ti=0;ti<gVal;ti++){
+        var tx=startX+ti*32+16;
+        // Outer torus shape (two bumps)
+        c.strokeStyle=s.col;c.lineWidth=1.5;
+        c.beginPath();c.arc(tx,py-4,14,Math.PI,0);c.stroke();
+        c.beginPath();c.arc(tx,py+4,14,0,Math.PI);c.stroke();
+        // Hole
+        c.strokeStyle='rgba(136,153,180,.3)';c.lineWidth=1;
+        c.beginPath();c.ellipse(tx,py,8,4,0,0,Math.PI*2);c.stroke();
+      }
+      // Connect them with a base line
+      if(gVal>1){
+        c.strokeStyle=s.col;c.lineWidth=1.5;
+        c.beginPath();c.moveTo(startX+2,py+4);c.lineTo(startX+totalW-2,py+4);c.stroke();
+        c.beginPath();c.moveTo(startX+2,py-4);c.lineTo(startX+totalW-2,py-4);c.stroke();
+      }
+    }
+    else{
+      // General: just dots
+      c.fillStyle=s.col;c.font='13px system-ui';
+      c.fillText('g holes',px-15,py+5);
+    }
+  }
+
+  // Arrows on the right showing the classification logic
+  var ax=710,ay=topY+60;
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
+  c.fillText('π₁',ax,ay);
+  arr(c,ax+5,ay+8,ax+5,ay+38,'#fbbf24',1.5);
+  c.fillText('ab.',ax-5,ay+55);
+  arr(c,ax+5,ay+62,ax+5,ay+92,'#fbbf24',1.5);
+  c.fillStyle='#34d399';c.font='bold 13px system-ui';
+  c.fillText('ℤ²ᵍ',ax-12,ay+108);
+  arr(c,ax+5,ay+115,ax+5,ay+145,'#34d399',1.5);
+  c.fillStyle='#fb923c';c.font='bold 13px system-ui';
+  c.fillText('rank',ax-8,ay+162);
+  arr(c,ax+5,ay+168,ax+5,ay+198,'#fb923c',1.5);
+  c.fillStyle='#f87171';c.font='bold 15px system-ui';
+  c.fillText('g',ax,ay+218);
+
+  // Bottom summary
+  c.fillStyle='#fbbf24';c.font='bold 13px system-ui';
+  c.fillText('π₁(Σ ) ≅ π₁(Σ )   ⇒   ℤ²ᵍ ≅ ℤ²ʰ   ⇒   g = h   ⇒   Σ  ≅ Σ',W/2-200,H-20);
+  c.font='bold 9px system-ui';
+  c.fillText('g',W/2-200+24,H-14);c.fillText('h',W/2-200+76,H-14);
+  c.fillText('g',W/2-200+298,H-14);c.fillText('h',W/2-200+326,H-14);
+}
+
+// Init
+window.addEventListener('load',function(){drawWords();drawPushout();});
+</script>
+</body>
+</html>

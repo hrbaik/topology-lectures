@@ -434,7 +434,28 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 <div class="card def">
   <div class="tag">Hypothesis: Semi-Locally Simply Connected</div>
   <p>A space $B$ is <strong>semi-locally simply connected</strong> if every point $b\in B$ has a neighborhood $U$ such that the inclusion-induced map $\pi_1(U,b)\to\pi_1(B,b)$ is trivial: every loop in $U$ is null-homotopic <em>in $B$</em> (not necessarily in $U$).</p>
-  <p>This is the precise condition needed for the universal cover to exist. All manifolds and CW complexes satisfy it.</p>
+  <p>This is the precise condition needed for the universal cover to exist. All manifolds and CW complexes satisfy it. But not every space does — see the example below.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Non-Example: The Hawaiian Earring</div>
+  <p>The <strong>Hawaiian earring</strong> is the subspace of $\mathbb{R}^2$ defined by
+  $$\mathbb{H} = \bigcup_{n=1}^{\infty} C_n, \qquad C_n = \bigl\{(x,y)\in\mathbb{R}^2 : (x-\tfrac{1}{n})^2+y^2 = \tfrac{1}{n^2}\bigr\},$$
+  i.e., the union of circles of radius $1/n$ centered at $(1/n,0)$, all passing through the origin $\mathbf{0}$.</p>
+  <p>This space is <strong>not</strong> semi-locally simply connected at the origin. Indeed, let $U$ be any neighborhood of $\mathbf{0}$ in $\mathbb{H}$. Since the circles $C_n$ shrink to $\mathbf{0}$, for all sufficiently large $n$ the entire circle $C_n$ lies inside $U$. The loop going once around $C_n$ lies in $U$, but it is not null-homotopic in $\mathbb{H}$ (intuitively, it "wraps around the $n$-th circle" and cannot be contracted past it). So $\pi_1(U,\mathbf{0})\to\pi_1(\mathbb{H},\mathbf{0})$ is not trivial, no matter how small $U$ is.</p>
+  <p>Consequently, the Hawaiian earring has <strong>no universal cover</strong>. Its fundamental group is an enormously complicated (uncountably generated) group — very different from the free group $F_\infty$ that one might naively expect by analogy with finite wedges of circles.</p>
+</div>
+
+<div class="card rmk">
+  <div class="tag">Why This Condition is Needed</div>
+  <p>In the construction of the universal cover (below), we define $\widetilde{B}$ as a space of homotopy classes of paths from $b_0$. To put a topology on $\widetilde{B}$ that makes $p$ a covering map, we need the basic open sets $\langle[\gamma],U\rangle$ to depend only on the homotopy class of the path $\eta$ within $U$. This requires that loops in $U$ that are null-homotopic in $B$ do not create distinct points in $\widetilde{B}$ — which is exactly what semi-local simple connectedness guarantees.</p>
+  <p>Without this condition, the fiber over a point would not be discrete, and the "covering" would fail to be a covering map.</p>
+</div>
+
+<div class="viz">
+  <div class="viz-title">Figure 3.0 &mdash; The Hawaiian Earring</div>
+  <canvas id="c_hawaiian" width="820" height="300"></canvas>
+  <div class="viz-caption">The Hawaiian earring $\mathbb{H}$: circles $C_n$ of radius $1/n$ all passing through the origin. Any neighborhood $U$ of the origin (dashed) contains infinitely many entire circles, each carrying a non-trivial loop. So $\mathbb{H}$ is not semi-locally simply connected at $\mathbf{0}$.</div>
 </div>
 
 <div class="card thm">
@@ -547,7 +568,7 @@ function showTab(id,btn){
     if(id==='s0'){drawSC();}
     if(id==='s1'){drawEvenly();drawHelix();}
     if(id==='s2'){drawPathLift();drawHLift();}
-    if(id==='s3'){drawUniv();drawGalois();drawBigPic();}
+    if(id==='s3'){drawUniv();drawHawaiian();drawGalois();drawBigPic();}
   });
 }
 
@@ -1081,6 +1102,82 @@ function drawUniv(){
     }
     c.fillStyle='#34d399';c.font='11px system-ui';c.fillText('+1',rx+unit/2-5,ry-28);
   }
+}
+
+function drawHawaiian(){
+  var c=document.getElementById('c_hawaiian').getContext('2d'),W=820,H=300;bg(c,W,H);
+  // Origin in canvas coordinates
+  var ox=280,oy=H/2;
+  var scale=220; // pixels per unit in R^2
+
+  // Draw circles C_n: center (1/n, 0), radius 1/n
+  var nMax=20;
+  for(var n=1;n<=nMax;n++){
+    var cx=ox+scale*(1.0/n);
+    var r=scale*(1.0/n);
+    var alpha=n<=5?0.7:0.15+0.55*(5.0/n);
+    var hue=n<=5?(200+n*25):200;
+    c.strokeStyle='hsla('+hue+',70%,65%,'+alpha+')';
+    c.lineWidth=n<=3?2.5:n<=6?1.5:1;
+    c.beginPath();c.arc(cx,oy,r,0,Math.PI*2);c.stroke();
+    // Label first few
+    if(n<=4){
+      c.fillStyle='hsla('+hue+',70%,70%,0.9)';c.font='bold 11px system-ui';
+      c.fillText('C'+subDigit(n),cx+r*0.3,oy-r-5);
+    }
+  }
+
+  // Origin dot
+  c.beginPath();c.arc(ox,oy,5,0,Math.PI*2);c.fillStyle='#fbbf24';c.fill();
+  c.fillStyle='#fbbf24';c.font='bold 12px system-ui';c.fillText('0',ox-14,oy+5);
+
+  // Dashed neighborhood U around origin
+  var uRad=scale*0.12;
+  c.setLineDash([5,4]);c.strokeStyle='rgba(248,113,113,.5)';c.lineWidth=2;
+  c.beginPath();c.arc(ox,oy,uRad,0,Math.PI*2);c.stroke();
+  c.setLineDash([]);
+  c.fillStyle='#f87171';c.font='bold 12px system-ui';c.fillText('U',ox-uRad-18,oy-uRad+5);
+
+  // Arrow pointing out that small circles are entirely inside U
+  var arrN=8;
+  var arrCx=ox+scale/arrN;
+  var arrR=scale/arrN;
+  c.strokeStyle='rgba(251,191,36,.6)';c.lineWidth=1.5;
+  c.setLineDash([3,3]);
+  c.beginPath();c.moveTo(arrCx+arrR+5,oy-arrR-5);c.lineTo(arrCx+arrR+40,oy-arrR-30);c.stroke();
+  c.setLineDash([]);
+  c.fillStyle='#fbbf24';c.font='11px system-ui';
+  c.fillText('C₈, C₉, C₁₀, … all inside U',arrCx+arrR+10,oy-arrR-35);
+
+  // Right side: explanation
+  var rx=560,ry=40;
+  c.fillStyle='#e2e8f0';c.font='bold 14px system-ui';
+  c.fillText('Hawaiian Earring  H',rx,ry);
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('C  = circle of radius 1/n',rx,ry+30);
+  c.font='10px system-ui';c.fillText('n',rx+8,ry+35);
+  c.font='12px system-ui';
+  c.fillText('centered at (1/n, 0)',rx,ry+50);
+  c.fillText('All pass through the origin 0.',rx,ry+80);
+  c.fillStyle='#f87171';c.font='bold 12px system-ui';
+  c.fillText('At 0: not semi-locally',rx,ry+115);
+  c.fillText('simply connected!',rx,ry+135);
+  c.fillStyle='#8899b4';c.font='12px system-ui';
+  c.fillText('Any nbhd U of 0 contains',rx,ry+165);
+  c.fillText('entire circles C  for large n.',rx,ry+185);
+  c.font='10px system-ui';c.fillText('n',rx+100,ry+190);
+  c.font='12px system-ui';
+  c.fillText('Each C  carries a loop that is',rx,ry+210);
+  c.font='10px system-ui';c.fillText('n',rx+38,ry+215);
+  c.font='12px system-ui';
+  c.fillText('non-trivial in π₁(H, 0).',rx,ry+230);
+}
+
+function subDigit(n){
+  var subs='₀₁₂₃₄₅₆₇₈₉';
+  var s='',str=String(n);
+  for(var i=0;i<str.length;i++)s+=subs[parseInt(str[i])];
+  return s;
 }
 
 function drawGalois(){

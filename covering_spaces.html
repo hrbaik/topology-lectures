@@ -407,9 +407,26 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
   <p>Equivalently (by the Lifting Criterion), $\widetilde{B}$ is universal because it covers <em>every</em> connected covering of $B$: if $q\colon E\to B$ is any connected covering, there exists a covering map $r\colon\widetilde{B}\to E$ with $q\circ r = p$.</p>
 </div>
 
-<div class="card rmk">
-  <div class="tag">Why "Universal"</div>
-  <p>Let $q\colon (E,e_0)\to (B,b_0)$ be any connected covering. Since $\widetilde{B}$ is simply connected, $p_*(\pi_1(\widetilde{B})) = \{e\} \subseteq q_*(\pi_1(E))$. By the Lifting Criterion, $p$ lifts through $q$: there exists $r\colon\widetilde{B}\to E$ with $q\circ r = p$. One checks that $r$ is itself a covering map. So the universal cover sits "above" every other cover.</p>
+<div class="card thm">
+  <div class="tag">Proposition: Why "Universal"</div>
+  <p>Let $p\colon(\widetilde{B},\tilde{b}_0)\to(B,b_0)$ be the universal covering, and $q\colon (E,e_0)\to (B,b_0)$ any connected covering. Then there exists a covering map $r\colon\widetilde{B}\to E$ with $q\circ r = p$. In other words, the universal cover covers every other connected covering.</p>
+</div>
+
+<div class="card prf">
+  <div class="tag">Proof</div>
+  <p><strong>Step 1 — Existence of $r$.</strong> Since $\widetilde{B}$ is simply connected, $p_*(\pi_1(\widetilde{B},\tilde{b}_0)) = \{e\}$. This is trivially contained in $q_*(\pi_1(E,e_0))$. By the Lifting Criterion (with $Y=\widetilde{B}$, $f=p$, and the covering $q\colon E\to B$), there exists a unique continuous map $r\colon(\widetilde{B},\tilde{b}_0)\to(E,e_0)$ with $q\circ r = p$.</p>
+
+  <p><strong>Step 2 — $r$ is surjective.</strong> Let $e\in E$. Since $q$ is surjective and $E$ is connected, choose a path $\alpha$ in $E$ from $e_0$ to $e$. Then $q\circ\alpha$ is a path in $B$ from $b_0$ to $q(e)$. Lift $q\circ\alpha$ via $p$ to a path $\tilde{\alpha}$ in $\widetilde{B}$ starting at $\tilde{b}_0$. Then $q(r(\tilde{\alpha}(t))) = p(\tilde{\alpha}(t)) = q(\alpha(t))$ for all $t$, and both $r\circ\tilde{\alpha}$ and $\alpha$ start at $e_0$, so by the Unique Lifting Property (for the covering $q$) we get $r\circ\tilde{\alpha} = \alpha$. In particular $r(\tilde{\alpha}(1)) = \alpha(1) = e$.</p>
+
+  <p><strong>Step 3 — $r$ is a covering map.</strong> Let $e\in E$ and set $b = q(e)\in B$. Choose an evenly covered neighborhood $U$ of $b$ for <em>both</em> $p$ and $q$ (intersect two such neighborhoods if necessary). Write
+  $$p^{-1}(U) = \bigsqcup_\alpha \widetilde{V}_\alpha, \qquad q^{-1}(U) = \bigsqcup_\beta W_\beta$$
+  where each $\widetilde{V}_\alpha$ maps homeomorphically onto $U$ via $p$, and each $W_\beta$ maps homeomorphically onto $U$ via $q$.</p>
+
+  <p>For any sheet $\widetilde{V}_\alpha$: since $q\circ r = p$ and $p|_{\widetilde{V}_\alpha}\colon\widetilde{V}_\alpha\to U$ is a homeomorphism, we have $r(\widetilde{V}_\alpha)\subseteq q^{-1}(U) = \bigsqcup W_\beta$. Since $\widetilde{V}_\alpha$ is connected, $r(\widetilde{V}_\alpha)$ lies in a single sheet $W_\beta$. Now on $\widetilde{V}_\alpha$:
+  $$r|_{\widetilde{V}_\alpha} = (q|_{W_\beta})^{-1}\circ p|_{\widetilde{V}_\alpha}\colon \widetilde{V}_\alpha \xrightarrow{\;\cong\;} U \xrightarrow{\;\cong\;} W_\beta$$
+  which is a composition of homeomorphisms, hence a homeomorphism onto $W_\beta$.</p>
+
+  <p>Conversely, fix the sheet $W_\beta$ containing $e$. The preimage $r^{-1}(W_\beta)$ is a union of sheets $\widetilde{V}_\alpha$: precisely those $\widetilde{V}_\alpha$ that $r$ maps into $W_\beta$. We just showed each such $r|_{\widetilde{V}_\alpha}\colon\widetilde{V}_\alpha\to W_\beta$ is a homeomorphism, and the $\widetilde{V}_\alpha$'s are disjoint. So $W_\beta$ is evenly covered by $r$, proving $r$ is a covering map. &square;</p>
 </div>
 
 <h3>3.2 &ensp; Existence of the Universal Cover</h3>

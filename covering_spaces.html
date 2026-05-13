@@ -329,8 +329,9 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 
 <div class="card prf">
   <div class="tag">Proof</div>
-  <p>Suppose $p_*([\tilde\gamma]) = [p\circ\tilde\gamma] = [c_{b_0}]$ (the constant loop at $b_0$). Then $p\circ\tilde\gamma$ is homotopic to the constant loop at $b_0$. The constant loop at $b_0$ lifts to the constant loop at $e_0$. By the previous corollary, $\tilde\gamma$ and the constant loop at $e_0$ share the same endpoint, which is $e_0$.</p>
-  <p>Now lift the homotopy between $p\circ\tilde\gamma$ and $c_{b_0}$: we get a homotopy between $\tilde\gamma$ and $c_{e_0}$ in $E$. So $[\tilde\gamma] = [c_{e_0}]$ is trivial. &square;</p>
+  <p>Suppose $p_*([\tilde\gamma]) = [p\circ\tilde\gamma] = [c_{b_0}]$ (the constant loop at $b_0$). Then there is a homotopy $H$ in $B$ from $p\circ\tilde\gamma$ to $c_{b_0}$ rel endpoints. Lift $H$ via the Homotopy Lifting Property to $\widetilde{H}\colon[0,1]^2\to E$ with $\widetilde{H}(\cdot,0) = \tilde\gamma$ (since $\tilde\gamma$ is a lift of $p\circ\tilde\gamma$ starting at $e_0$).</p>
+  <p>Now $\widetilde{H}(\cdot,1)$ is a lift of $H(\cdot,1) = c_{b_0}$ starting at $\widetilde{H}(0,1)$. The path $t\mapsto\widetilde{H}(0,t)$ is a continuous map into the fiber $p^{-1}(b_0)$ (since $H(0,t)=b_0$ for all $t$); the fiber is discrete, so this map is constant, giving $\widetilde{H}(0,1)=\widetilde{H}(0,0)=e_0$. By the same argument, $\widetilde{H}(1,1)=e_0$. So $\widetilde{H}(\cdot,1)$ is a lift of the constant loop $c_{b_0}$ starting at $e_0$; since the constant path $c_{e_0}$ is also such a lift, uniqueness gives $\widetilde{H}(\cdot,1) = c_{e_0}$.</p>
+  <p>Therefore $\widetilde{H}$ is a homotopy from $\tilde\gamma$ to $c_{e_0}$ in $E$ (rel endpoints, by the same discrete-fiber argument on the boundary), so $[\tilde\gamma] = [c_{e_0}]$ is trivial. &square;</p>
 </div>
 
 <div class="card rmk">

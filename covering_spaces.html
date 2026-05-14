@@ -114,7 +114,7 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
   <p><strong>Given</strong> a path-connected, locally path-connected, semi-locally simply connected space $B$:</p>
   <p>1. There exists a <strong>universal covering space</strong> $\widetilde{B}\to B$, which is simply connected.</p>
   <p>2. The fundamental group $\pi_1(B)$ acts on $\widetilde{B}$ by <strong>deck transformations</strong>, freely and properly discontinuously, and $B \cong \widetilde{B}/\pi_1(B)$.</p>
-  <p>3. <strong>Every</strong> connected covering space of $B$ corresponds to a conjugacy class of subgroups of $\pi_1(B)$.</p>
+  <p>3. <strong>Every</strong> path-connected covering space of $B$ corresponds to a conjugacy class of subgroups of $\pi_1(B)$.</p>
   <p>So knowing $\widetilde{B}$ (a simply connected space) and $\pi_1(B)$ (a group) completely determines the topology of $B$ and all its coverings. This is why the Poincar&eacute; conjecture — a statement about simply connected spaces — has such far-reaching consequences.</p>
 </div>
 
@@ -350,7 +350,7 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 
 <div class="card prf">
   <div class="tag">Proof</div>
-  <p><strong>Uniqueness.</strong> This is the Unique Lifting Property: $Y$ is connected, and any two lifts agree at $y_0$, so they agree everywhere.</p>
+  <p><strong>Uniqueness.</strong> This is the Unique Lifting Property: $Y$ is path-connected (hence connected), and any two lifts agree at $y_0$, so they agree everywhere.</p>
   <p><strong>($\Rightarrow$)</strong> If $\tilde{f}$ exists, then $f = p\circ\tilde{f}$, so $f_* = p_*\circ\tilde{f}_*$, hence $\mathrm{Im}(f_*)\subseteq\mathrm{Im}(p_*)$.</p>
   <p><strong>($\Leftarrow$, Construction)</strong> For $y\in Y$, choose a path $\alpha$ in $Y$ from $y_0$ to $y$. Then $f\circ\alpha$ is a path in $B$ from $b_0$ to $f(y)$. By the Path Lifting Property, lift it to $\widetilde{f\circ\alpha}$ starting at $e_0$. Define
   $$\tilde{f}(y) \;=\; \widetilde{f\circ\alpha}(1).$$</p>
@@ -405,19 +405,19 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 <div class="card def">
   <div class="tag">Definition: Universal Cover</div>
   <p>A covering map $p\colon\widetilde{B}\to B$ is a <strong>universal covering</strong> if $\widetilde{B}$ is simply connected.</p>
-  <p>Equivalently (by the Lifting Criterion), $\widetilde{B}$ is universal because it covers <em>every</em> connected covering of $B$: if $q\colon E\to B$ is any connected covering, there exists a covering map $r\colon\widetilde{B}\to E$ with $q\circ r = p$.</p>
+  <p>Equivalently (by the Lifting Criterion), $\widetilde{B}$ is universal because it covers <em>every</em> path-connected covering of $B$: if $q\colon E\to B$ is any path-connected covering, there exists a covering map $r\colon\widetilde{B}\to E$ with $q\circ r = p$.</p>
 </div>
 
 <div class="card thm">
   <div class="tag">Proposition: Why "Universal"</div>
-  <p>Let $p\colon(\widetilde{B},\tilde{b}_0)\to(B,b_0)$ be the universal covering, and $q\colon (E,e_0)\to (B,b_0)$ any connected covering. Then there exists a covering map $r\colon\widetilde{B}\to E$ with $q\circ r = p$. In other words, the universal cover covers every other connected covering.</p>
+  <p>Let $p\colon(\widetilde{B},\tilde{b}_0)\to(B,b_0)$ be the universal covering, and $q\colon (E,e_0)\to (B,b_0)$ any path-connected covering. Then there exists a covering map $r\colon\widetilde{B}\to E$ with $q\circ r = p$. In other words, the universal cover covers every other path-connected covering.</p>
 </div>
 
 <div class="card prf">
   <div class="tag">Proof</div>
   <p><strong>Step 1 — Existence of $r$.</strong> Since $\widetilde{B}$ is simply connected, $p_*(\pi_1(\widetilde{B},\tilde{b}_0)) = \{e\}$. This is trivially contained in $q_*(\pi_1(E,e_0))$. By the Lifting Criterion (with $Y=\widetilde{B}$, $f=p$, and the covering $q\colon E\to B$), there exists a unique continuous map $r\colon(\widetilde{B},\tilde{b}_0)\to(E,e_0)$ with $q\circ r = p$.</p>
 
-  <p><strong>Step 2 — $r$ is surjective.</strong> Let $e\in E$. Since $q$ is surjective and $E$ is connected, choose a path $\alpha$ in $E$ from $e_0$ to $e$. Then $q\circ\alpha$ is a path in $B$ from $b_0$ to $q(e)$. Lift $q\circ\alpha$ via $p$ to a path $\tilde{\alpha}$ in $\widetilde{B}$ starting at $\tilde{b}_0$. Then $q(r(\tilde{\alpha}(t))) = p(\tilde{\alpha}(t)) = q(\alpha(t))$ for all $t$, and both $r\circ\tilde{\alpha}$ and $\alpha$ start at $e_0$, so by the Unique Lifting Property (for the covering $q$) we get $r\circ\tilde{\alpha} = \alpha$. In particular $r(\tilde{\alpha}(1)) = \alpha(1) = e$.</p>
+  <p><strong>Step 2 — $r$ is surjective.</strong> Let $e\in E$. Since $E$ is path-connected, choose a path $\alpha$ in $E$ from $e_0$ to $e$. Then $q\circ\alpha$ is a path in $B$ from $b_0$ to $q(e)$. Lift $q\circ\alpha$ via $p$ to a path $\tilde{\alpha}$ in $\widetilde{B}$ starting at $\tilde{b}_0$. Then $q(r(\tilde{\alpha}(t))) = p(\tilde{\alpha}(t)) = q(\alpha(t))$ for all $t$, and both $r\circ\tilde{\alpha}$ and $\alpha$ start at $e_0$, so by the Unique Lifting Property (for the covering $q$) we get $r\circ\tilde{\alpha} = \alpha$. In particular $r(\tilde{\alpha}(1)) = \alpha(1) = e$.</p>
 
   <p><strong>Step 3 — $r$ is a covering map.</strong> Let $e\in E$ and set $b = q(e)\in B$. Choose an evenly covered neighborhood $U$ of $b$ for <em>both</em> $p$ and $q$ (intersect two such neighborhoods if necessary). Write
   $$p^{-1}(U) = \bigsqcup_\alpha \widetilde{V}_\alpha, \qquad q^{-1}(U) = \bigsqcup_\beta W_\beta$$
@@ -521,7 +521,7 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 <div class="card thm">
   <div class="tag">Theorem (Classification of Coverings)</div>
   <p>Let $B$ be path-connected, locally path-connected, and semi-locally simply connected, with basepoint $b_0$. There is a bijection
-  $$\left\{\begin{array}{c}\text{Connected covering spaces}\\p\colon(E,e_0)\to(B,b_0)\\\text{(up to isomorphism)}\end{array}\right\} \;\;\longleftrightarrow\;\; \left\{\begin{array}{c}\text{Subgroups}\\ H\le\pi_1(B,b_0)\end{array}\right\}$$
+  $$\left\{\begin{array}{c}\text{Path-connected covering spaces}\\p\colon(E,e_0)\to(B,b_0)\\\text{(up to isomorphism)}\end{array}\right\} \;\;\longleftrightarrow\;\; \left\{\begin{array}{c}\text{Subgroups}\\ H\le\pi_1(B,b_0)\end{array}\right\}$$
   given by $p\mapsto p_*(\pi_1(E,e_0))$. The correspondence reverses inclusions: a larger subgroup $H$ corresponds to a "smaller" (fewer sheets) covering.</p>
 </div>
 
@@ -535,7 +535,7 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 <div class="viz">
   <div class="viz-title">Figure 3.2 — Galois Correspondence for $S^1$</div>
   <canvas id="c_galois" width="820" height="380"></canvas>
-  <div class="viz-caption">The lattice of subgroups of $\pi_1(S^1)\cong\mathbb{Z}$ (left) is in bijection with the lattice of connected coverings of $S^1$ (right). The trivial subgroup $\{0\}$ corresponds to the universal cover $\mathbb{R}\to S^1$. The subgroup $n\mathbb{Z}$ corresponds to the $n$-fold cover $S^1\xrightarrow{z^n}S^1$. The full group $\mathbb{Z}$ corresponds to the identity cover. Larger subgroups give smaller (fewer-sheeted) coverings.</div>
+  <div class="viz-caption">The lattice of subgroups of $\pi_1(S^1)\cong\mathbb{Z}$ (left) is in bijection with the lattice of path-connected coverings of $S^1$ (right). The trivial subgroup $\{0\}$ corresponds to the universal cover $\mathbb{R}\to S^1$. The subgroup $n\mathbb{Z}$ corresponds to the $n$-fold cover $S^1\xrightarrow{z^n}S^1$. The full group $\mathbb{Z}$ corresponds to the identity cover. Larger subgroups give smaller (fewer-sheeted) coverings.</div>
 </div>
 
 <h3>3.5 &ensp; Back to Poincar&eacute;</h3>

@@ -419,15 +419,21 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 
   <p><strong>Step 2 — $r$ is surjective.</strong> Let $e\in E$. Since $E$ is path-connected, choose a path $\alpha$ in $E$ from $e_0$ to $e$. Then $q\circ\alpha$ is a path in $B$ from $b_0$ to $q(e)$. Lift $q\circ\alpha$ via $p$ to a path $\tilde{\alpha}$ in $\widetilde{B}$ starting at $\tilde{b}_0$. Then $q(r(\tilde{\alpha}(t))) = p(\tilde{\alpha}(t)) = q(\alpha(t))$ for all $t$, and both $r\circ\tilde{\alpha}$ and $\alpha$ start at $e_0$, so by the Unique Lifting Property (for the covering $q$) we get $r\circ\tilde{\alpha} = \alpha$. In particular $r(\tilde{\alpha}(1)) = \alpha(1) = e$.</p>
 
-  <p><strong>Step 3 — $r$ is a covering map.</strong> Let $e\in E$ and set $b = q(e)\in B$. Choose an evenly covered neighborhood $U$ of $b$ for <em>both</em> $p$ and $q$ (intersect two such neighborhoods if necessary). Write
-  $$p^{-1}(U) = \bigsqcup_\alpha \widetilde{V}_\alpha, \qquad q^{-1}(U) = \bigsqcup_\beta W_\beta$$
-  where each $\widetilde{V}_\alpha$ maps homeomorphically onto $U$ via $p$, and each $W_\beta$ maps homeomorphically onto $U$ via $q$.</p>
+  <p><strong>Step 3 — $r$ is a covering map.</strong> We show that every point of $E$ has a neighborhood evenly covered by $r$.</p>
 
-  <p>For any sheet $\widetilde{V}_\alpha$: since $q\circ r = p$ and $p|_{\widetilde{V}_\alpha}\colon\widetilde{V}_\alpha\to U$ is a homeomorphism, we have $r(\widetilde{V}_\alpha)\subseteq q^{-1}(U) = \bigsqcup W_\beta$. Since $\widetilde{V}_\alpha$ is connected, $r(\widetilde{V}_\alpha)$ lies in a single sheet $W_\beta$. Now on $\widetilde{V}_\alpha$:
-  $$r|_{\widetilde{V}_\alpha} = (q|_{W_\beta})^{-1}\circ p|_{\widetilde{V}_\alpha}\colon \widetilde{V}_\alpha \xrightarrow{\;\cong\;} U \xrightarrow{\;\cong\;} W_\beta$$
-  which is a composition of homeomorphisms, hence a homeomorphism onto $W_\beta$.</p>
+  <p><em>Setup.</em> Let $e\in E$ and set $b = q(e)\in B$. Choose a connected open neighborhood $U$ of $b$ that is evenly covered by <em>both</em> $p$ and $q$ (intersect two such neighborhoods). Write
+  $$p^{-1}(U) = \bigsqcup_{\alpha\in A} \widetilde{V}_\alpha, \qquad q^{-1}(U) = \bigsqcup_{\beta\in I} W_\beta$$
+  where each $p|_{\widetilde{V}_\alpha}\colon\widetilde{V}_\alpha\xrightarrow{\;\cong\;} U$ and each $q|_{W_\beta}\colon W_\beta\xrightarrow{\;\cong\;} U$.</p>
 
-  <p>Conversely, fix the sheet $W_\beta$ containing $e$. The preimage $r^{-1}(W_\beta)$ is a union of sheets $\widetilde{V}_\alpha$: precisely those $\widetilde{V}_\alpha$ that $r$ maps into $W_\beta$. We just showed each such $r|_{\widetilde{V}_\alpha}\colon\widetilde{V}_\alpha\to W_\beta$ is a homeomorphism, and the $\widetilde{V}_\alpha$'s are disjoint. So $W_\beta$ is evenly covered by $r$, proving $r$ is a covering map. &square;</p>
+  <p><em>Each sheet $\widetilde{V}_\alpha$ maps homeomorphically onto some $W_\beta$.</em> Fix any $\alpha$. For $\tilde{x}\in\widetilde{V}_\alpha$, we have $q(r(\tilde{x}))=p(\tilde{x})\in U$, so $r(\tilde{x})\in q^{-1}(U)=\bigsqcup W_\beta$. Since $\widetilde{V}_\alpha$ is connected and the $W_\beta$'s are disjoint open sets, $r(\widetilde{V}_\alpha)$ is entirely contained in a single sheet — call it $W_{\beta(\alpha)}$. On this sheet:
+  $$r|_{\widetilde{V}_\alpha} = \bigl(q|_{W_{\beta(\alpha)}}\bigr)^{-1}\circ\; p|_{\widetilde{V}_\alpha}\colon \widetilde{V}_\alpha \xrightarrow{\;\cong\;} U \xrightarrow{\;\cong\;} W_{\beta(\alpha)}$$
+  is a composition of two homeomorphisms, hence a homeomorphism.</p>
+
+  <p><em>$W_\beta$ is evenly covered by $r$.</em> Let $W_\beta$ be the sheet containing $e$. We claim
+  $$r^{-1}(W_\beta) = \bigsqcup_{\{\alpha\in A\,:\,\beta(\alpha)=\beta\}} \widetilde{V}_\alpha.$$
+  Indeed, if $\tilde{x}\in r^{-1}(W_\beta)$, then $p(\tilde{x})=q(r(\tilde{x}))\in U$, so $\tilde{x}\in p^{-1}(U)$, hence $\tilde{x}$ lies in some $\widetilde{V}_\alpha$. Since $r$ maps all of $\widetilde{V}_\alpha$ into the single sheet $W_{\beta(\alpha)}$ and $r(\tilde{x})\in W_\beta$, we get $\beta(\alpha)=\beta$. Conversely, if $\beta(\alpha)=\beta$ then $r(\widetilde{V}_\alpha)\subseteq W_\beta$ by definition.</p>
+
+  <p>Thus $r^{-1}(W_\beta)$ is a disjoint union of the sheets $\widetilde{V}_\alpha$ with $\beta(\alpha)=\beta$, and we showed above that each $r|_{\widetilde{V}_\alpha}\colon\widetilde{V}_\alpha\to W_\beta$ is a homeomorphism. This is exactly the definition of $W_\beta$ being evenly covered by $r$, so $r$ is a covering map. &square;</p>
 </div>
 
 <h3>3.2 &ensp; Existence of the Universal Cover</h3>

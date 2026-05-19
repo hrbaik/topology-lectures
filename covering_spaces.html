@@ -471,21 +471,41 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
 </div>
 
 <div class="card prf">
-  <div class="tag">Construction</div>
-  <p>Fix a basepoint $b_0\in B$. As a set, define
-  $$\widetilde{B} \;=\; \bigl\{[\gamma] : \gamma \text{ is a path in } B \text{ from } b_0 \text{ to some point } b\bigr\},$$
-  where $[\gamma]$ denotes the homotopy class of $\gamma$ rel endpoints.</p>
+  <div class="tag">Construction and Proof</div>
 
-  <p><strong>The projection.</strong> Define $p([\gamma]) = \gamma(1)$ (the endpoint of $\gamma$). This is well-defined since homotopic paths rel endpoints share the same endpoint.</p>
+  <p>Fix a basepoint $b_0\in B$. We construct $\widetilde{B}$ in three steps, marking explicitly where each hypothesis is used.</p>
 
-  <p><strong>Topology.</strong> For an open set $U\subseteq B$ that is path-connected and whose loops are null-homotopic in $B$, and for a class $[\gamma]$ with $\gamma(1)\in U$, define
+  <p><strong>Step 1 — The set $\widetilde{B}$ and the projection $p$.</strong> Define
+  $$\widetilde{B} \;=\; \bigl\{[\gamma] : \gamma \text{ is a path in } B \text{ starting at } b_0\bigr\},$$
+  where $[\gamma]$ denotes the homotopy class of $\gamma$ rel endpoints. Define $p\colon\widetilde{B}\to B$ by $p([\gamma]) = \gamma(1)$. This is well-defined since homotopic paths (rel endpoints) share the same endpoint. Since $B$ is <strong>path-connected</strong>, $p$ is surjective: for any $b\in B$, there is a path from $b_0$ to $b$.</p>
+
+  <p><strong>Step 2 — Topology on $\widetilde{B}$.</strong> Call an open set $U\subseteq B$ <em>elementary</em> if $U$ is path-connected and every loop in $U$ is null-homotopic in $B$. For $[\gamma]\in\widetilde{B}$ with $\gamma(1)\in U$, define
   $$\langle [\gamma], U\rangle \;=\; \bigl\{[\gamma*\eta] : \eta \text{ is a path in } U \text{ starting at } \gamma(1)\bigr\}.$$
-  These sets form a basis for a topology on $\widetilde{B}$.</p>
+  We claim these sets form a basis for a topology on $\widetilde{B}$.</p>
 
-  <p><strong>Key verifications:</strong></p>
-  <p>(i) $p$ is continuous and maps each $\langle[\gamma],U\rangle$ homeomorphically onto $U$.</p>
-  <p>(ii) $p^{-1}(U) = \bigsqcup_{[\gamma]} \langle[\gamma],U\rangle$ where $[\gamma]$ ranges over distinct homotopy classes of paths ending in $U$, giving the evenly covered property.</p>
-  <p>(iii) $\widetilde{B}$ is simply connected: a loop $\tilde\alpha$ in $\widetilde{B}$ based at $[c_{b_0}]$ projects to a loop $\alpha = p\circ\tilde\alpha$ in $B$. The lift $\tilde\alpha$ returns to $[c_{b_0}]$, which means $[\alpha]$ is trivial in $\pi_1(B,b_0)$. But the endpoint of $\tilde\alpha$ is exactly $[\alpha]$, so $[\alpha]=[c_{b_0}]$. Hence $\alpha$ is null-homotopic, so $\tilde\alpha$ is null-homotopic by lifting. &square;</p>
+  <p><em>Covering:</em> every $[\gamma]\in\widetilde{B}$ belongs to some basis element. Set $b = \gamma(1)$. By <strong>semi-local simple connectedness</strong>, there is an open $V\ni b$ whose loops are null-homotopic in $B$. By <strong>local path-connectedness</strong>, shrink $V$ to a path-connected open $U\subseteq V$ containing $b$. Then $U$ is elementary, and $[\gamma]\in\langle[\gamma],U\rangle$ (take $\eta = c_b$, the constant path).</p>
+
+  <p><em>Intersection:</em> suppose $[\delta]\in\langle[\gamma_1],U_1\rangle\cap\langle[\gamma_2],U_2\rangle$. Then $\delta(1)\in U_1\cap U_2$, and for each $i$ we have $[\delta]=[\gamma_i*\eta_i]$ for some path $\eta_i$ in $U_i$ (by definition of $\langle[\gamma_i],U_i\rangle$). Choose an elementary open $W\subseteq U_1\cap U_2$ containing $\delta(1)$. For any $[\delta*\mu]\in\langle[\delta],W\rangle$ (where $\mu$ is a path in $W$), we have $[\delta*\mu]=[\gamma_i*(\eta_i*\mu)]$ and $\eta_i*\mu$ is a path in $U_i$ starting at $\gamma_i(1)$, so $[\delta*\mu]\in\langle[\gamma_i],U_i\rangle$. This holds for both $i=1,2$, giving $\langle[\delta],W\rangle\subseteq\langle[\gamma_1],U_1\rangle\cap\langle[\gamma_2],U_2\rangle$.</p>
+
+  <p><strong>Step 3 — $p$ is a covering map.</strong> Let $U\subseteq B$ be elementary. We show $U$ is evenly covered by $p$.</p>
+
+  <p><em>(a) $p$ maps $\langle[\gamma],U\rangle$ onto $U$:</em> for any $b\in U$, path-connectedness of $U$ gives a path $\eta$ in $U$ from $\gamma(1)$ to $b$, so $[\gamma*\eta]\in\langle[\gamma],U\rangle$ and $p([\gamma*\eta])=b$.</p>
+
+  <p><em>(b) $p$ is injective on each $\langle[\gamma],U\rangle$ — this is where semi-local simple connectedness is essential:</em> suppose $[\gamma*\eta_1],[\gamma*\eta_2]\in\langle[\gamma],U\rangle$ satisfy $p([\gamma*\eta_1])=p([\gamma*\eta_2])$, i.e., $\eta_1(1)=\eta_2(1)$. Then $\eta_1*\bar\eta_2$ is a loop in $U$. Since $U$ is elementary, this loop is null-homotopic in $B$, so $[\eta_1]=[\eta_2]$ as paths (rel endpoints), hence $[\gamma*\eta_1]=[\gamma*\eta_2]$.</p>
+
+  <p><em>Without semi-local simple connectedness, this step fails:</em> if $U$ contained a loop $\ell$ based at $\gamma(1)$ that is non-trivial in $\pi_1(B,\gamma(1))$, then $[\gamma*\eta]$ and $[\gamma*(\ell*\eta)]$ would be distinct points in $\widetilde{B}$ (since $[\eta]\ne[\ell*\eta]$ in $B$) but $p([\gamma*\eta])=\eta(1)=p([\gamma*(\ell*\eta)])$, so $p$ would not be injective on $\langle[\gamma],U\rangle$.</p>
+
+  <p><em>(c) Different sheets over $U$ are disjoint:</em> suppose $\langle[\gamma_1],U\rangle\cap\langle[\gamma_2],U\rangle\ne\emptyset$, say $[\gamma_1*\eta_1]=[\gamma_2*\eta_2]$ where $\eta_i$ is a path in $U$ from $\gamma_i(1)$. From $\gamma_1*\eta_1\simeq\gamma_2*\eta_2$ (rel endpoints), concatenating with $\bar\eta_1$ on the right gives $\gamma_1\simeq\gamma_2*\eta_2*\bar\eta_1$ (rel endpoints). Now for any $[\gamma_1*\mu]\in\langle[\gamma_1],U\rangle$:
+  $$[\gamma_1*\mu]=[\gamma_2*\eta_2*\bar\eta_1*\mu].$$
+  The path $\eta_2*\bar\eta_1*\mu$ lies entirely in $U$ and starts at $\gamma_2(1)$, so $[\gamma_1*\mu]\in\langle[\gamma_2],U\rangle$. By symmetry $\langle[\gamma_1],U\rangle=\langle[\gamma_2],U\rangle$. Thus any two sheets over $U$ are either identical or disjoint.</p>
+
+  <p><em>(d) Putting it together:</em> every $[\delta]\in p^{-1}(U)$ belongs to $\langle[\delta],U\rangle$ (take $\eta=c_{\delta(1)}$), so $p^{-1}(U)$ is the union of all sheets over $U$. By (c) this union is disjoint, and by (a)–(b) each sheet maps bijectively onto $U$ via $p$. This bijection is a homeomorphism: it is continuous (the preimage of any open $V\subseteq U$ under $p|_{\langle[\gamma],U\rangle}$ is $\langle[\gamma],V\rangle$, which is open in $\widetilde{B}$), and it is an open map (it sends the basis element $\langle[\delta],V\rangle$ to $V$). So $p$ is a covering map.</p>
+
+  <p><strong>Step 4 — $\widetilde{B}$ is simply connected.</strong> Let $\tilde\alpha\colon[0,1]\to\widetilde{B}$ be a loop based at $\tilde{b}_0 := [c_{b_0}]$ (the constant path at $b_0$). Set $\alpha = p\circ\tilde\alpha$, a loop in $B$ based at $b_0$.</p>
+
+  <p><em>Key observation:</em> define $\varphi\colon[0,1]\to\widetilde{B}$ by $\varphi(t) = [\alpha|_{[0,t]}]$ (the homotopy class of $\alpha$ restricted to $[0,t]$, reparametrized to $[0,1]$). One checks: $\varphi(0) = [c_{b_0}] = \tilde{b}_0$, and $p(\varphi(t)) = \alpha(t)$, so $\varphi$ is a lift of $\alpha$ starting at $\tilde{b}_0$. By the Unique Lifting Property, $\varphi = \tilde\alpha$. In particular,
+  $$\tilde\alpha(1) = \varphi(1) = [\alpha|_{[0,1]}] = [\alpha].$$
+  The loop condition $\tilde\alpha(1)=\tilde{b}_0=[c_{b_0}]$ therefore gives $[\alpha]=[c_{b_0}]$, i.e., $\alpha$ is null-homotopic in $B$. Now lift this null-homotopy to $\widetilde{B}$ via the Homotopy Lifting Property: the lifted homotopy shows $\tilde\alpha$ is null-homotopic in $\widetilde{B}$. Hence $\pi_1(\widetilde{B},\tilde{b}_0) = 0$. &square;</p>
 </div>
 
 <div class="viz">

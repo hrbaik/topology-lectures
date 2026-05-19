@@ -479,7 +479,9 @@ mjx-container{overflow-x:auto;overflow-y:hidden}
   $$\widetilde{B} \;=\; \bigl\{[\gamma] : \gamma \text{ is a path in } B \text{ starting at } b_0\bigr\},$$
   where $[\gamma]$ denotes the homotopy class of $\gamma$ rel endpoints. Define $p\colon\widetilde{B}\to B$ by $p([\gamma]) = \gamma(1)$. This is well-defined since homotopic paths (rel endpoints) share the same endpoint. Since $B$ is <strong>path-connected</strong>, $p$ is surjective: for any $b\in B$, there is a path from $b_0$ to $b$.</p>
 
-  <p><strong>Step 2 — Topology on $\widetilde{B}$.</strong> Call an open set $U\subseteq B$ <em>elementary</em> if $U$ is path-connected and every loop in $U$ is null-homotopic in $B$. For $[\gamma]\in\widetilde{B}$ with $\gamma(1)\in U$, define
+  <p><strong>Step 2 — Topology on $\widetilde{B}$.</strong> The points of $\widetilde{B}$ are homotopy classes of paths from $b_0$. When should two such classes $[\gamma]$ and $[\delta]$ be considered "close"? The intuition is: <em>$[\gamma]$ and $[\delta]$ are close if they share the same history and differ only at the tail end, within a small neighborhood $U$.</em> More precisely, $[\delta]$ is near $[\gamma]$ if $\delta$ is obtained by extending (or slightly perturbing the endpoint of) $\gamma$ within $U$ — that is, $[\delta] = [\gamma*\eta]$ for some short path $\eta$ inside $U$. The basic open set $\langle[\gamma],U\rangle$ collects all such nearby classes: those that "agree with $[\gamma]$ up to the last step, which stays in $U$."</p>
+
+  <p>Formally: call an open set $U\subseteq B$ <em>elementary</em> if $U$ is path-connected and every loop in $U$ is null-homotopic in $B$. For $[\gamma]\in\widetilde{B}$ with $\gamma(1)\in U$, define
   $$\langle [\gamma], U\rangle \;=\; \bigl\{[\gamma*\eta] : \eta \text{ is a path in } U \text{ starting at } \gamma(1)\bigr\}.$$
   We claim these sets form a basis for a topology on $\widetilde{B}$.</p>
 
